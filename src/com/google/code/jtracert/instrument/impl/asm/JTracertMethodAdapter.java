@@ -85,7 +85,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                     INVOKESTATIC,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
                     "getMethodCallTraceBuilder",
-                    "()Lru/bedrin/traceBuilder/MethodCallTraceBuilder;"
+                    "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
             );
 
             mv.visitMethodInsn(
@@ -179,7 +179,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                         INVOKEINTERFACE,
                         "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
                         "enter",
-                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;Lru/bedrin/model/JTracertObjectCompanion;)V"
+                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;Lcom/google/code/jtracert/model/JTracertObjectCompanion;)V"
                 );
 
 
@@ -206,7 +206,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                         INVOKEINTERFACE,
                         "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
                         "enter",
-                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;Lru/bedrin/model/JTracertObjectCompanion;)V"
+                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;Lcom/google/code/jtracert/model/JTracertObjectCompanion;)V"
                 );
             }
         } catch (Throwable e) {

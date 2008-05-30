@@ -1,8 +1,7 @@
 package com.google.code.jtracert.instrument.impl.adapter;
 
-import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
-import com.google.code.jtracert.instrument.impl.adapter.ByteCodeTransformerAdapter;
 import com.google.code.jtracert.config.InstrumentationProperties;
+import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
 
 /**
  * @author Dmitry Bedrin

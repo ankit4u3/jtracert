@@ -1,11 +1,11 @@
 package com.google.code.jtracert.instrument.impl.asm;
 
-import org.objectweb.asm.commons.AdviceAdapter;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.Type;
-import com.google.code.jtracert.instrument.ConfigurableTransformer;
 import com.google.code.jtracert.config.InstrumentationProperties;
+import com.google.code.jtracert.instrument.ConfigurableTransformer;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.commons.AdviceAdapter;
 
 /**
  * @author Dmitry Bedrin

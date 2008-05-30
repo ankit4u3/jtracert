@@ -1,7 +1,7 @@
 package com.google.code.jtracert.model;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dmitry Bedrin

@@ -2,7 +2,6 @@ package com.google.code.jtracert.instrument.impl.asm;
 
 import com.google.code.jtracert.instrument.ByteCodeTransformException;
 import com.google.code.jtracert.instrument.impl.BaseJTracertByteCodeTransformer;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;

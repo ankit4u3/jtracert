@@ -1,12 +1,12 @@
 package com.google.code.jtracert.agent;
 
-import com.google.code.jtracert.instrument.ConfigurableTransformer;
-import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
-import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
-import com.google.code.jtracert.instrument.ByteCodeTransformException;
-import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
-import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.ProjectInfo;
+import com.google.code.jtracert.config.InstrumentationProperties;
+import com.google.code.jtracert.instrument.ByteCodeTransformException;
+import com.google.code.jtracert.instrument.ConfigurableTransformer;
+import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
+import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
+import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -28,6 +28,7 @@ public class JTracertClassFileTransformer implements ClassFileTransformer, Confi
         this.instrumentationProperties = instrumentationProperties;
     }
 
+    @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
         className = className.replace('/','.');

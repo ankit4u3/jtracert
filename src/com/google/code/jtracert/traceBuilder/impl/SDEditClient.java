@@ -1,9 +1,12 @@
 package com.google.code.jtracert.traceBuilder.impl;
 
-import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.model.JTracertObjectCompanion;
+import com.google.code.jtracert.model.MethodCall;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Bedrin

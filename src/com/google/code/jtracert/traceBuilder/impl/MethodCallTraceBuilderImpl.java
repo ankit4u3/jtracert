@@ -1,10 +1,13 @@
 package com.google.code.jtracert.traceBuilder.impl;
 
-import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
-import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.model.JTracertObjectCompanion;
+import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Dmitry Bedrin

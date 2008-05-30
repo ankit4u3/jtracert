@@ -7,6 +7,4 @@ import java.io.Serializable;
  */
 public class JTracertObjectCompanion implements Serializable {
 
-
-
 }

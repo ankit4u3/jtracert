@@ -1,8 +1,8 @@
 package com.google.code.jtracert.agent;
 
-import java.lang.instrument.Instrumentation;
-
 import com.google.code.jtracert.config.InstrumentationProperties;
+
+import java.lang.instrument.Instrumentation;
 
 /**
  * @author Dmitry Bedrin

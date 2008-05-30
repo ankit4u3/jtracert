@@ -28,7 +28,6 @@ public class JTracertClassFileTransformer implements ClassFileTransformer, Confi
         this.instrumentationProperties = instrumentationProperties;
     }
 
-    @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
         className = className.replace('/','.');

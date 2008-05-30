@@ -25,7 +25,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     private ThreadLocal<MethodCall> contextMethodCall = new ThreadLocal<MethodCall>();
 
     private ExecutorService executorService =
-            new ThreadPoolExecutor(1, 8, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+            new ThreadPoolExecutor(0, 8, 1L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion) {
 

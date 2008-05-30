@@ -1,7 +1,7 @@
 package com.google.code.jtracert.instrument.impl.adapter;
 
-import com.google.code.jtracert.instrument.ByteCodeTransformer;
 import com.google.code.jtracert.instrument.ByteCodeTransformException;
+import com.google.code.jtracert.instrument.ByteCodeTransformer;
 
 import java.io.*;
 
@@ -66,7 +66,7 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
             try {
                 originalByteArrayOutputStream.close();
             } catch (IOException e) {
-                throw new ByteCodeTransformException(e);
+                e.printStackTrace(); // todo refactor this line
             }
         }
 
@@ -86,7 +86,7 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
                 try {
                     transformedByteArrayInputStream.close();
                 } catch (IOException e) {
-                    throw new ByteCodeTransformException(e);
+                    e.printStackTrace(); // todo refactor this line
                 }
             }
 

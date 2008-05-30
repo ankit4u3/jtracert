@@ -1,13 +1,13 @@
 package com.google.code.jtracert.instrument.impl.asm;
 
+import com.google.code.jtracert.config.InstrumentationProperties;
+import com.google.code.jtracert.instrument.ConfigurableTransformer;
+import com.google.code.jtracert.util.ClassUtils;
 import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.FieldNode;
-import com.google.code.jtracert.util.ClassUtils;
-import com.google.code.jtracert.instrument.ConfigurableTransformer;
-import com.google.code.jtracert.config.InstrumentationProperties;
 
 /**
  * @author Dmitry Bedrin
@@ -78,7 +78,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                 exceptions
         );
 
-        MethodVisitor jTracertMethodAdapter = new JTracertMethodAdapter(
+        return new JTracertMethodAdapter(
                 parentMethodVisitor,
                 access,
                 name,
@@ -86,8 +86,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                 getClassName(),
                 getInstrumentationProperties()
         );
-
-        return jTracertMethodAdapter;
 
     }
 

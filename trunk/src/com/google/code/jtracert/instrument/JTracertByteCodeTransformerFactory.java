@@ -1,7 +1,7 @@
 package com.google.code.jtracert.instrument;
 
-import com.google.code.jtracert.instrument.impl.asm.JTracertASMByteCodeTransformer;
 import com.google.code.jtracert.config.InstrumentationProperties;
+import com.google.code.jtracert.instrument.impl.asm.JTracertASMByteCodeTransformer;
 
 /**
  * @author Dmitry Bedrin

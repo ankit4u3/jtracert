@@ -6,8 +6,11 @@
     <property name="compile.debug" value="true" />
 
     <property name="src.dir" value="src"/>
+    <property name="src.test.dir" value="test"/>
     <property name="config.dir" value="config"/>
     <property name="classes.dir" value="classes"/>
+    <property name="classes.project.dir" value="${classes.dir}/project"/>
+    <property name="classes.test.dir" value="${classes.dir}/test"/>
     <property name="deploy.dir" value="deploy"/>
     <property name="lib.dir" value="lib"/>
     <property name="lib.build.dir" value="lib/build"/>
@@ -26,11 +29,33 @@
 
     <target name="init">
         <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${classes.project.dir}"/>
+        <mkdir dir="${classes.test.dir}"/>
         <mkdir dir="${deploy.dir}"/>
     </target>
 
+    <target name="compile.test" depends="compile">
+        <javac destdir="${classes.test.dir}" debug="${compile.debug}">
+            <src path="${src.test.dir}"/>
+            <classpath refid="build.classpath"/>
+            <classpath path="${classes.project.dir}"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="compile.test">
+        <junit printsummary="yes" haltonerror="yes">
+            <classpath path="${classes.project.dir}"/>
+            <classpath path="${classes.test.dir}"/>
+
+            <batchtest >
+                <fileset dir="${classes.test.dir}"/>
+            </batchtest>
+
+        </junit>
+    </target>
+
     <target name="compile" depends="init">
-        <javac destdir="${classes.dir}" debug="${compile.debug}">
+        <javac destdir="${classes.project.dir}" debug="${compile.debug}">
             <src path="${src.dir}"/>
             <classpath refid="build.classpath"/>
         </javac>
@@ -42,7 +67,7 @@
             classname="com.tonicsystems.jarjar.JarJarTask"
             classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
         <jarjar destfile="${deploy.dir}/jtracer.jar" manifest="${config.dir}/manifest.mf">
-            <fileset dir="${classes.dir}"/>
+            <fileset dir="${classes.project.dir}"/>
             <zipfileset src="${lib.runtime.dir}/asm-3.1.jar"/>
             <zipfileset src="${lib.runtime.dir}/asm-commons-3.1.jar"/>
             <zipfileset src="${lib.runtime.dir}/asm-tree-3.1.jar"/>

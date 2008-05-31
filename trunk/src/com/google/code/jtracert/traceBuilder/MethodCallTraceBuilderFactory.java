@@ -21,6 +21,10 @@ public class MethodCallTraceBuilderFactory {
         return methodCallTraceBuilder;
     }
 
+    public static void setMethodCallTraceBuilder(MethodCallTraceBuilder methodCallTraceBuilder) {
+        MethodCallTraceBuilderFactory.methodCallTraceBuilder = methodCallTraceBuilder;
+    }
+
     public static Method getMethodCallTraceBuilderFactoryMethod() {
         if (null == methodCallTraceBuilderFactoryMethod) {
             try {

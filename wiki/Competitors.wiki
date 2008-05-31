@@ -14,3 +14,4 @@ I didn't manage to find an opensource dynamic-analysis tool for generating seque
 
  # Flowchart4J http://www.codeswat.com/cswat/index.php?option=com_content&task=view&id=70&Itemid=101 Proprietary
  # CodeLogic for Java http://jtracert.googlecode.com/ Proprietary
+ # NetBeans 6.0+ http://www.netbeans.org/ Free

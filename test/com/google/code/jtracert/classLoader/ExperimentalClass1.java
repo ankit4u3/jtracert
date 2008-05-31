@@ -5,7 +5,7 @@ package com.google.code.jtracert.classLoader;
  */
 public class ExperimentalClass1 {
 
-    public int experimentalMethod(int argument) {
+    public int increment(int argument) {
         return argument + 1;
     }
 

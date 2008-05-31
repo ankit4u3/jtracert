@@ -111,8 +111,8 @@ public class JTracertClassLoaderTest extends TestCase {
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
-            Method experimentalMethod = experimentalClass1.getMethod("methodReturnVoid",new Class[]{});
-            experimentalMethod.invoke(experimentalObject1,new Class[]{});
+            Method experimentalMethod = experimentalClass1.getMethod("methodReturnVoid");
+            experimentalMethod.invoke(experimentalObject1);
 
             assertNotNull(experimentalObject1);
 
@@ -150,8 +150,8 @@ public class JTracertClassLoaderTest extends TestCase {
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
-            Method experimentalMethod = experimentalClass1.getMethod("emptyMethod",new Class[]{});
-            experimentalMethod.invoke(experimentalObject1,new Class[]{});
+            Method experimentalMethod = experimentalClass1.getMethod("emptyMethod");
+            experimentalMethod.invoke(experimentalObject1);
 
             assertNotNull(experimentalObject1);
 
@@ -189,8 +189,8 @@ public class JTracertClassLoaderTest extends TestCase {
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
-            Method experimentalMethod = experimentalClass1.getMethod("methodReturnObject",new Class[]{});
-            experimentalMethod.invoke(experimentalObject1,new Class[]{});
+            Method experimentalMethod = experimentalClass1.getMethod("methodReturnObject");
+            experimentalMethod.invoke(experimentalObject1);
 
             assertNotNull(experimentalObject1);
 
@@ -228,10 +228,10 @@ public class JTracertClassLoaderTest extends TestCase {
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
-            Method experimentalMethod = experimentalClass1.getMethod("methodThrowException",new Class[]{});
+            Method experimentalMethod = experimentalClass1.getMethod("methodThrowException");
 
             try {
-                experimentalMethod.invoke(experimentalObject1,new Class[]{});
+                experimentalMethod.invoke(experimentalObject1);
                 fail();
             } catch (InvocationTargetException e) {
                 assertNotNull(e);
@@ -271,10 +271,10 @@ public class JTracertClassLoaderTest extends TestCase {
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
-            Method experimentalMethod = experimentalClass1.getMethod("methodReThrowException",new Class[]{});
+            Method experimentalMethod = experimentalClass1.getMethod("methodReThrowException");
 
             try {
-                experimentalMethod.invoke(experimentalObject1,new Class[]{});
+                experimentalMethod.invoke(experimentalObject1);
                 fail();
             } catch (InvocationTargetException e) {
                 assertNotNull(e);

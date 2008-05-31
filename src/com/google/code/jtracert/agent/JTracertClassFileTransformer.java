@@ -33,7 +33,6 @@ public class JTracertClassFileTransformer implements ClassFileTransformer, Confi
         className = className.replace('/','.');
 
         if (className.startsWith(ProjectInfo.PROJECT_PACKAGE_NAME)) return null;
-        if (className.startsWith("ru.bedrin")) return null;
 
         if (loader != ClassLoader.getSystemClassLoader()) return null;
 

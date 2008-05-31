@@ -9,4 +9,24 @@ public class ExperimentalClass1 {
         return argument + 1;
     }
 
+    public void emptyMethod() {
+
+    }
+
+    public void methodReturnVoid() {
+        return;
+    }
+
+    public Object methodReturnObject() {
+        return new Object();
+    }
+
+    public void methodThrowException() {
+        throw new RuntimeException();
+    }
+
+    public void methodReThrowException() {
+        methodThrowException();
+    }
+
 }

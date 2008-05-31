@@ -2,8 +2,14 @@ package com.google.code.jtracert.traceBuilder.impl;
 
 import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.config.InstrumentationProperties;
 
 import java.util.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.io.IOException;
+import java.io.Writer;
+import java.io.OutputStreamWriter;
 
 /**
  * @author Dmitry Bedrin
@@ -29,20 +35,23 @@ public class SDEditClient {
 
         methodCallStrings = getMethodCallStrings(methodCall, methodCallStrings);
 
-        int methodCallGraphHashCode = methodCallStrings.hashCode();
-
-        synchronized (processedMethodCallGraphHashCodes) {
-        
-            if (processedMethodCallGraphHashCodes.contains(methodCallGraphHashCode)) {
-                return;
-            } else {
-                processedMethodCallGraphHashCodes.add(methodCallGraphHashCode);
-            }
-
-        }
-
         // Begining output
 
+        String agentType = System.getProperty(InstrumentationProperties.TYPE);
+
+        if ((null != agentType) && (agentType.equals("client"))) {
+            String host = System.getProperty(InstrumentationProperties.HOST);
+            int port = Integer.parseInt(System.getProperty(InstrumentationProperties.PORT));
+            sendDiagramToRTServer(methodCall, headers, methodCallStrings, host, port);
+        } else {
+            printDiagram(methodCall, headers, methodCallStrings);
+        }
+
+
+
+    }
+
+    private void printDiagram(MethodCall methodCall, Set<String> headers, Set<String> methodCallStrings) {
         StringBuffer diagrammStringBuffer = new StringBuffer();
 
         diagrammStringBuffer.append("user:Actor").append(newline);
@@ -61,7 +70,46 @@ public class SDEditClient {
 
         System.out.println(diagrammStringBuffer);
 
+    }
 
+    private void sendDiagramToRTServer(MethodCall methodCall, Set<String> headers, Set<String> methodCallStrings, String host, int port) {
+        Socket socket = null;
+
+        try {
+
+            socket = new Socket(host, port);
+
+            Writer diagramWriter = new OutputStreamWriter(socket.getOutputStream());
+
+            diagramWriter.append("diagram name").append(newline);
+
+            diagramWriter.append("user:Actor").append(newline);
+
+            for (String header : headers) {
+                diagramWriter.append(header).append(newline);
+            }
+
+            diagramWriter.append(newline);
+
+            diagramWriter.append("user:" + methodCallObjectNames.get(methodCall) + "." + methodCall.getMethodName()).append(newline);
+
+            for (String methodCallString : methodCallStrings) {
+                diagramWriter.append(methodCallString).append(newline);
+            }
+
+            diagramWriter.append("end");
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
     }
 
     private Set<String> getMethodCallStrings(MethodCall methodCall, Set<String> methodCallStrings) {

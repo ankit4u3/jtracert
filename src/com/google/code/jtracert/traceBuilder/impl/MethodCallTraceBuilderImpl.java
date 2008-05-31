@@ -4,17 +4,34 @@ import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author Dmitry Bedrin
  */
+class MethodCallTraceBuilderState {
+
+    public MethodCall methodCall = null;
+    public boolean buildingTrace = false;
+    public int graphHashCode = 17;
+    public int level = 1;
+
+}
+
+class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTraceBuilderState> {
+
+    protected MethodCallTraceBuilderState initialValue() {
+        return new MethodCallTraceBuilderState();
+    }
+}
+
 public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
-    private ThreadLocal<Boolean> buildingMethodCallTrace = new ThreadLocal<Boolean>() {
+    private static MethodCallTraceBuilderStateThreadLocal traceBuilderState = new MethodCallTraceBuilderStateThreadLocal();
+
+    /*private ThreadLocal<Boolean> buildingMethodCallTrace = new ThreadLocal<Boolean>() {
 
         public Boolean initialValue() {
             return Boolean.FALSE;
@@ -22,30 +39,36 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     };
 
-    private ThreadLocal<MethodCall> contextMethodCall = new ThreadLocal<MethodCall>();
+    private ThreadLocal<MethodCall> contextMethodCall = new ThreadLocal<MethodCall>();*/
 
     private ExecutorService executorService =
-            new ThreadPoolExecutor(0, 8, 1L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+            new ThreadPoolExecutor(0, 1, 1L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5), new ThreadPoolExecutor.DiscardPolicy());
+
+
+    private Set<Integer> processedHashCodes = new HashSet<Integer>();
 
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion) {
 
-        if (buildingMethodCallTrace.get()) return;
+        MethodCallTraceBuilderState state = traceBuilderState.get();
+
+        if (state.buildingTrace) return;
 
         try {
 
-            buildingMethodCallTrace.set(Boolean.TRUE);
+            state.buildingTrace = true;
 
             // Bla
 
             MethodCall currentMethodCall = new MethodCall();
 
-            MethodCall contextMethodCall = this.contextMethodCall.get();
+            MethodCall contextMethodCall = state.methodCall;
 
             if (null != contextMethodCall) {
                 contextMethodCall.addCallee(currentMethodCall);
             }
 
-            this.contextMethodCall.set(currentMethodCall);
+            state.methodCall = currentMethodCall;
+            state.level++;
 
             // Bla
 
@@ -54,17 +77,25 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             currentMethodCall.setjTracertObjectCompanion(jTracertObjectCompanion);
 
+            int hashCode = state.graphHashCode;
+            hashCode = (37 * (37 * hashCode + methodName.hashCode()) + state.level);
+
+            /*if (null != jTracertObjectCompanion)
+                hashCode = 37 * hashCode + jTracertObjectCompanion.hashCode();*/
+
             if (object == null) {
                 currentMethodCall.setRealClassName(className);
             } else {
                 currentMethodCall.setRealClassName(object.getClass().getName());
             }
 
+            state.graphHashCode = hashCode;
+
 
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            buildingMethodCallTrace.set(Boolean.FALSE);
+            state.buildingTrace = false;
         }
 
     }
@@ -89,26 +120,32 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     public void leave() {
 
-        if (buildingMethodCallTrace.get()) return;
+        MethodCallTraceBuilderState state = traceBuilderState.get();
+
+        if (state.buildingTrace) return;
 
         try {
 
-            buildingMethodCallTrace.set(Boolean.TRUE);
+            state.buildingTrace = true;
 
-            MethodCall contextMethodCall = this.contextMethodCall.get();
+            MethodCall contextMethodCall = state.methodCall;
 
             MethodCall callerMethodCall = contextMethodCall.getCalleer();
             if (null == callerMethodCall) {
-                this.contextMethodCall.remove();
-                graphFinished(contextMethodCall);
+                if (!processedHashCodes.contains(state.graphHashCode)) {
+                    graphFinished(contextMethodCall);
+                    processedHashCodes.add(state.graphHashCode);
+                }
+                traceBuilderState.remove();
             } else {
-                this.contextMethodCall.set(callerMethodCall);
+                state.methodCall = callerMethodCall;
+                state.level--;
             }
 
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            buildingMethodCallTrace.set(Boolean.FALSE);
+            state.buildingTrace = false;
         }
 
     }

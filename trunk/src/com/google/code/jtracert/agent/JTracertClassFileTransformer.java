@@ -36,8 +36,6 @@ public class JTracertClassFileTransformer implements ClassFileTransformer, Confi
 
         if (loader != ClassLoader.getSystemClassLoader()) return null;
 
-        System.out.println("Transforming " + className);
-
         JTracertByteCodeTransformer jTracertByteCodeTransformer =
                 JTracertByteCodeTransformerFactory.getJTracertByteCodeTransformer(getInstrumentationProperties());
 

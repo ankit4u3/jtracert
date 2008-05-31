@@ -1,0 +1,15 @@
+#summary List of known competitors
+
+= Overview =
+
+I didn't manage to find an opensource dynamic-analysis tool for generating sequence diagrams from execution trace, though there're a few tools making static analysis.
+
+= List of similar tools =
+
+== Dynamic Analysis ==
+
+ # MaintainJ http://www.maintainj.com/ Proprietary
+
+== Static Analysis ==
+
+ # Flowchart4J http://www.codeswat.com/cswat/index.php?option=com_content&task=view&id=70&Itemid=101 Proprietary

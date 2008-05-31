@@ -3,10 +3,7 @@ package com.google.code.jtracert.traceBuilder.impl;
 import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
 
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Dmitry Bedrin
@@ -17,31 +14,52 @@ public class SDEditClient {
     private Map<String, Integer> objectCount = new HashMap<String, Integer>();
     private Map<MethodCall, String> methodCallObjectNames = new HashMap<MethodCall, String>();
 
+    public static String newline = System.getProperty("line.separator");
+    private static Set<Integer> processedMethodCallGraphHashCodes = new HashSet<Integer>();
+
     public void processMethodCall(MethodCall methodCall) {
 
-        System.out.println("user:Actor");
+        // Analyzing call graph
 
         Set<String> headers = new LinkedHashSet<String>();
 
         headers = getObjectNames(methodCall, headers);
 
-        for (String header : headers) {
-            System.out.println(header);
-        }
-
-        headers = null;
-
-        System.out.println();
-
         Set<String> methodCallStrings = new LinkedHashSet<String>();
 
         methodCallStrings = getMethodCallStrings(methodCall, methodCallStrings);
 
-        System.out.println("user:" + methodCallObjectNames.get(methodCall) + "." + methodCall.getMethodName());
+        int methodCallGraphHashCode = methodCallStrings.hashCode();
+
+        synchronized (processedMethodCallGraphHashCodes) {
+        
+            if (processedMethodCallGraphHashCodes.contains(methodCallGraphHashCode)) {
+                return;
+            } else {
+                processedMethodCallGraphHashCodes.add(methodCallGraphHashCode);
+            }
+
+        }
+
+        // Begining output
+
+        StringBuffer diagrammStringBuffer = new StringBuffer();
+
+        diagrammStringBuffer.append("user:Actor").append(newline);
+
+        for (String header : headers) {
+            diagrammStringBuffer.append(header).append(newline);
+        }
+
+        diagrammStringBuffer.append(newline);
+
+        diagrammStringBuffer.append("user:" + methodCallObjectNames.get(methodCall) + "." + methodCall.getMethodName()).append(newline);
 
         for (String methodCallString : methodCallStrings) {
-            System.out.println(methodCallString);
+            diagrammStringBuffer.append(methodCallString).append(newline);
         }
+
+        System.out.println(diagrammStringBuffer);
 
 
     }

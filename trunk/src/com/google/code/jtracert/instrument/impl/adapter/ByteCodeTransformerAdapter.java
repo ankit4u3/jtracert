@@ -46,31 +46,7 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
         assert null != inputStream;
         assert null != outputStream;
 
-        // Read byte array from input stream and transform it
-
-        byte[] transformedByteArray;
-
-        ByteArrayOutputStream originalByteArrayOutputStream = new ByteArrayOutputStream();
-
-        try {
-
-            while (inputStream.available() > 0) {
-                originalByteArrayOutputStream.write(inputStream.read());
-            }
-
-            transformedByteArray = transform(originalByteArrayOutputStream.toByteArray());
-
-        } catch (IOException e) {
-            throw new ByteCodeTransformException(e);
-        } finally {
-            try {
-                originalByteArrayOutputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace(); // todo refactor this line
-            }
-        }
-
-        // Write transformed byte array to given output stream
+        byte[] transformedByteArray = transform(inputStream);
 
         if (null != transformedByteArray) {
 
@@ -90,6 +66,34 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
                 }
             }
 
+        }
+
+    }
+
+    public byte[] transform(InputStream inputStream) throws ByteCodeTransformException {
+
+        assert null != inputStream;
+
+        // Read byte array from input stream and transform it
+
+        ByteArrayOutputStream originalByteArrayOutputStream = new ByteArrayOutputStream();
+
+        try {
+
+            while (inputStream.available() > 0) {
+                originalByteArrayOutputStream.write(inputStream.read());
+            }
+
+            return transform(originalByteArrayOutputStream.toByteArray());
+
+        } catch (IOException e) {
+            throw new ByteCodeTransformException(e);
+        } finally {
+            try {
+                originalByteArrayOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace(); // todo refactor this line
+            }
         }
 
     }

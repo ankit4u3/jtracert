@@ -43,13 +43,14 @@
     </target>
 
     <target name="test" depends="compile.test">
-        <junit printsummary="yes" haltonerror="yes" fork="yes" showoutput="yes">
+        <junit printsummary="yes" haltonerror="yes" showoutput="yes">
             <classpath path="${classes.project.dir}"/>
             <classpath path="${classes.test.dir}"/>
-
+            <classpath refid="build.classpath"/>
+            
             <batchtest >
-                <fileset dir="${classes.test.dir}">
-                    <include name="**/*Test*"/>
+                <fileset dir="${src.test.dir}">
+                    <include name="**/*Test.java"/>
                 </fileset>
             </batchtest>
 

@@ -35,17 +35,17 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     @Override
     public void visitCode() {
         super.visitCode();
-        mv.visitLabel(startFinallyLabel);
+        super.visitLabel(startFinallyLabel);
     }
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
         Label endFinallyLabel = new Label();
-        mv.visitTryCatchBlock(startFinallyLabel, endFinallyLabel, endFinallyLabel, null);
-        mv.visitLabel(endFinallyLabel);
+        super.visitTryCatchBlock(startFinallyLabel, endFinallyLabel, endFinallyLabel, null);
+        super.visitLabel(endFinallyLabel);
         onFinally(ATHROW);
-        mv.visitInsn(ATHROW);
-        mv.visitMaxs(maxStack, maxLocals);
+        super.visitInsn(ATHROW);
+        super.visitMaxs(maxStack, maxLocals);
     }
 
     @Override
@@ -58,21 +58,21 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     private void onFinally(int opcode) {
         if (opcode == ATHROW) {
 
-            mv.visitInsn(DUP);
+            super.visitInsn(DUP);
 
             int exceptionVar = newLocal(Type.getType(Throwable.class));
-            mv.visitVarInsn(ASTORE,exceptionVar);
+            super.visitVarInsn(ASTORE,exceptionVar);
 
-            mv.visitMethodInsn(
+            super.visitMethodInsn(
                     INVOKESTATIC,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
                     "getMethodCallTraceBuilder",
                     "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
             );
 
-            mv.visitVarInsn(ALOAD,exceptionVar);
+            super.visitVarInsn(ALOAD,exceptionVar);
 
-            mv.visitMethodInsn(
+            super.visitMethodInsn(
                     INVOKEINTERFACE,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
                     "exception",
@@ -81,14 +81,14 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
         } else if (opcode == RETURN) {
 
-            mv.visitMethodInsn(
+            super.visitMethodInsn(
                     INVOKESTATIC,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
                     "getMethodCallTraceBuilder",
                     "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
             );
 
-            mv.visitMethodInsn(
+            super.visitMethodInsn(
                     INVOKEINTERFACE,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
                     "leave",
@@ -98,25 +98,25 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         } else {
 
             if(opcode==LRETURN || opcode==DRETURN) {
-                mv.visitInsn(DUP2);
+                super.visitInsn(DUP2);
             } else {
-                mv.visitInsn(DUP);
+                super.visitInsn(DUP);
             }
             box(Type.getReturnType(this.methodDesc));
 
             int returnVar = newLocal(Type.getType(Throwable.class));
-            mv.visitVarInsn(ASTORE,returnVar);
+            super.visitVarInsn(ASTORE,returnVar);
 
-            mv.visitMethodInsn(
+            super.visitMethodInsn(
                     INVOKESTATIC,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
                     "getMethodCallTraceBuilder",
                     "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
             );
 
-            mv.visitVarInsn(ALOAD,returnVar);
+            super.visitVarInsn(ALOAD,returnVar);
 
-            mv.visitMethodInsn(
+            super.visitMethodInsn(
                     INVOKEINTERFACE,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
                     "leave",

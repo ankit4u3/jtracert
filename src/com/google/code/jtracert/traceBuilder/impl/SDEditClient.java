@@ -44,8 +44,8 @@ public class SDEditClient {
             int port = Integer.parseInt(System.getProperty(InstrumentationProperties.PORT));
             sendDiagramToRTServer(methodCall, headers, methodCallStrings, host, port);
         } else {
-            //printDiagram(methodCall, headers, methodCallStrings);
-            System.out.println("!!!!!!!!!!!! DIAGRAM COMPLETE");
+            printDiagram(methodCall, headers, methodCallStrings);
+            //System.out.println("!!!!!!!!!!!! DIAGRAM COMPLETE");
         }
 
 

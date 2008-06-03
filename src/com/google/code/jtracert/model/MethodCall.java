@@ -1,5 +1,7 @@
 package com.google.code.jtracert.model;
 
+import com.google.code.jtracert.traceBuilder.impl.graph.MethodCallVisitor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
@@ -19,8 +21,19 @@ public class MethodCall implements Serializable  {
     private List<MethodCall> callees;
     private MethodCall calleer;
 
+    private int callCount;
+
     public MethodCall() {
         this.setCallees(new LinkedList<MethodCall>());
+        this.callCount = 1;
+    }
+
+    public MethodCall(String className, String methodName, String methodSignature, JTracertObjectCompanion jTracertObjectCompanion) {
+        this();
+        this.realClassName = className;
+        this.methodName = methodName;
+        this.methodSignature = methodSignature;
+        this.jTracertObjectCompanion = jTracertObjectCompanion;
     }
 
     public String getMethodName() {
@@ -76,4 +89,30 @@ public class MethodCall implements Serializable  {
         this.realClassName = realClassName;
     }
 
+    public int getCallCount() {
+        return callCount;
+    }
+
+    public void setCallCount(int callCount) {
+        this.callCount = callCount;
+    }
+
+    public void incrementCallCount() {
+        this.callCount++;
+    }
+
+    public <T> T accept(MethodCallVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("MethodCall[");
+        builder.append("className=").append(getRealClassName()).append(';');
+        builder.append("methodName=").append(getMethodName()).append(';');
+        builder.append("methodSignature=").append(getMethodSignature()).append(';');
+        builder.append("callCount=").append(getCallCount()).append(']');
+        return builder.toString();
+    }
 }

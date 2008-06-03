@@ -2,11 +2,13 @@ package com.google.code.jtracert.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
+import java.io.Serializable;
 
 /**
  * @author Dmitry Bedrin
  */
-public class MethodCall {
+public class MethodCall implements Serializable  {
 
     private String methodName;
     private String methodSignature;
@@ -18,7 +20,7 @@ public class MethodCall {
     private MethodCall calleer;
 
     public MethodCall() {
-        this.setCallees(new ArrayList<MethodCall>());
+        this.setCallees(new LinkedList<MethodCall>());
     }
 
     public String getMethodName() {

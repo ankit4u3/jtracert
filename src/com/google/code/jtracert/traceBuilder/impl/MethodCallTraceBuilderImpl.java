@@ -7,6 +7,9 @@ import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import java.util.concurrent.*;
 import java.util.Set;
 import java.util.HashSet;
+import java.io.OutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 /**
  * @author Dmitry Bedrin
@@ -22,30 +25,65 @@ class MethodCallTraceBuilderState {
 
 class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTraceBuilderState> {
 
+    @Override
     protected MethodCallTraceBuilderState initialValue() {
         return new MethodCallTraceBuilderState();
     }
+
+}
+
+class SizeOutputStream extends OutputStream {
+
+    private long size = 0;
+
+    @Override
+    public void write(int b) throws IOException {
+        size++;
+    }
+
+    @Override
+    public void write(byte b[]) throws IOException {
+        size += b.length;
+    }
+
+    @Override
+    public void write(byte b[], int off, int len) throws IOException {
+        size += len;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
 }
 
 public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
+    private final static String newline = System.getProperty("line.separator");
+
     private static MethodCallTraceBuilderStateThreadLocal traceBuilderState = new MethodCallTraceBuilderStateThreadLocal();
 
-    /*private ThreadLocal<Boolean> buildingMethodCallTrace = new ThreadLocal<Boolean>() {
+    private ThreadPoolExecutor executorService;
+    private Set<Integer> processedHashCodes;
+    private boolean verbose;
+    
+    public MethodCallTraceBuilderImpl() {
 
-        public Boolean initialValue() {
-            return Boolean.FALSE;
-        }
+        verbose = true;
 
-    };
+        processedHashCodes = new HashSet<Integer>();
 
-    private ThreadLocal<MethodCall> contextMethodCall = new ThreadLocal<MethodCall>();*/
+        executorService = new ThreadPoolExecutor(
+                0,
+                10,
+                60L,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<Runnable>(20,true),
+                new ThreadPoolExecutor.CallerRunsPolicy()
+        );
 
-    private ExecutorService executorService =
-            new ThreadPoolExecutor(0, 1, 1L, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5), new ThreadPoolExecutor.DiscardPolicy());
+    }
 
-
-    private Set<Integer> processedHashCodes = new HashSet<Integer>();
 
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion) {
 
@@ -101,7 +139,40 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     private void graphFinished(final MethodCall methodCall) {
+
+        if (verbose) {
+
+            try {
+                SizeOutputStream out = new SizeOutputStream();
+                ObjectOutputStream outputStream = new ObjectOutputStream(out);
+                outputStream.writeObject(methodCall);
+                outputStream.flush();
+                long size = out.getSize();
+
+                System.out.println();
+                System.out.println("Call trace size is " + size + " bytes");
+                System.out.println();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            StringBuffer executorServiceDebugInfo = new StringBuffer();
+            executorServiceDebugInfo.append("ActiveCount").append(executorService.getActiveCount()).append(newline);
+            executorServiceDebugInfo.append("CompletedTaskCount").append(executorService.getCompletedTaskCount()).append(newline);
+            executorServiceDebugInfo.append("CorePoolSize").append(executorService.getCorePoolSize()).append(newline);
+            executorServiceDebugInfo.append("LargestPoolSize").append(executorService.getLargestPoolSize()).append(newline);
+            executorServiceDebugInfo.append("MaximumPoolSize").append(executorService.getMaximumPoolSize()).append(newline);
+            executorServiceDebugInfo.append("PoolSize").append(executorService.getPoolSize()).append(newline);
+            executorServiceDebugInfo.append("TaskCount").append(executorService.getTaskCount()).append(newline);
+
+            System.out.println(executorServiceDebugInfo);
+
+
+        }
+
         executorService.execute(new SDEditClientRunnable(methodCall));
+
     }
 
     private class SDEditClientRunnable implements Runnable {

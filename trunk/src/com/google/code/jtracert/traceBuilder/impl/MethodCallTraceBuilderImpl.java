@@ -3,6 +3,7 @@ package com.google.code.jtracert.traceBuilder.impl;
 import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
+import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
 
 import java.util.concurrent.*;
 import java.util.Set;
@@ -65,7 +66,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
-    private boolean verbose;
+    private boolean verbose = true;
     
     public MethodCallTraceBuilderImpl() {
 
@@ -168,8 +169,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             System.out.println(executorServiceDebugInfo);
 
-
         }
+
+        new SDEditClient().processMethodCall(methodCall);
 
         executorService.execute(new SDEditClientRunnable(methodCall));
 

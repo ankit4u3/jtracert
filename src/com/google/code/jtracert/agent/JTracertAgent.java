@@ -14,7 +14,7 @@ public class JTracertAgent {
         InstrumentationProperties instrumentationProperties = new InstrumentationProperties();
 
         JTracertClassFileTransformer jTracertClassFileTransformer = new JTracertClassFileTransformer(instrumentationProperties);
-
+        
         instrumentation.addTransformer(jTracertClassFileTransformer);
 
     }

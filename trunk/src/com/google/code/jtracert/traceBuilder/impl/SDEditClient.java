@@ -76,11 +76,13 @@ public class SDEditClient {
     private void sendDiagramToRTServer(MethodCall methodCall, Set<String> headers, Set<String> methodCallStrings, String host, int port) {
         Socket socket = null;
 
+        Writer diagramWriter = null;
+
         try {
 
             socket = new Socket(host, port);
 
-            Writer diagramWriter = new OutputStreamWriter(socket.getOutputStream());
+            diagramWriter = new OutputStreamWriter(socket.getOutputStream());
 
             diagramWriter.append("diagram name").append(newline);
 
@@ -106,6 +108,8 @@ public class SDEditClient {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {
             try {
+                diagramWriter.close();
+                socket.getOutputStream().close();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

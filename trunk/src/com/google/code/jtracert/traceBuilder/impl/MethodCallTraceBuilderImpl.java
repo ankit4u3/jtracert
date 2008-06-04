@@ -4,6 +4,8 @@ import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.graph.ExtendedNormalizeMetodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
 
 import java.util.concurrent.*;
 import java.util.Set;
@@ -66,7 +68,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
-    private boolean verbose = true;
+    private boolean verbose = false;
     
     public MethodCallTraceBuilderImpl() {
 
@@ -87,6 +89,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
 
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion) {
+
+        jTracertObjectCompanion = null;
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
 
@@ -171,9 +175,18 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
         }
 
-        new SDEditClient().processMethodCall(methodCall);
+        MethodCallTraceBuilderState state = traceBuilderState.get();
 
-        executorService.execute(new SDEditClientRunnable(methodCall));
+        methodCall.accept(new ExtendedNormalizeMetodCallGraphVisitor());
+
+        int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
+
+        if (processedHashCodes.contains(hashCode)) {
+            return;
+        } else {
+            processedHashCodes.add(hashCode);
+            executorService.execute(new SDEditClientRunnable(methodCall));
+        }
 
     }
 
@@ -209,6 +222,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                     graphFinished(contextMethodCall);
                     processedHashCodes.add(state.graphHashCode);
                 }
+                //graphFinished(contextMethodCall);
                 traceBuilderState.remove();
             } else {
                 state.methodCall = callerMethodCall;

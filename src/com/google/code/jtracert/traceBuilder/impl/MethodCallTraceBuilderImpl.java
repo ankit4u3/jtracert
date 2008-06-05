@@ -3,7 +3,6 @@ package com.google.code.jtracert.traceBuilder.impl;
 import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
-import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.ExtendedNormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
 
@@ -69,7 +68,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
     private boolean verbose = false;
-    
+
     public MethodCallTraceBuilderImpl() {
 
         verbose = true;
@@ -175,18 +174,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
         }
 
-        MethodCallTraceBuilderState state = traceBuilderState.get();
-
-        methodCall.accept(new ExtendedNormalizeMetodCallGraphVisitor());
-
-        int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
-
-        if (processedHashCodes.contains(hashCode)) {
-            return;
-        } else {
-            processedHashCodes.add(hashCode);
-            executorService.execute(new SDEditClientRunnable(methodCall));
-        }
+        executorService.execute(new SDEditClientRunnable(methodCall));
 
     }
 
@@ -199,7 +187,34 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         }
 
         public void run() {
-            new SDEditClient().processMethodCall(methodCall);
+
+            long currentTime = System.nanoTime();
+
+            if (verbose) {
+                System.out.println("Normalizing Call Graph <<<");
+            }
+            methodCall.accept(new ExtendedNormalizeMetodCallGraphVisitor());
+            if (verbose) {
+                System.out.println("Normalizing Call Graph >>>");
+                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
+            }
+
+            if (verbose) {
+                System.out.println("Calculating Call Graph Hash <<<");
+            }
+            int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
+            if (verbose) {
+                System.out.println("Calculating Call Graph Hash >>>");
+                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
+            }
+
+            if (processedHashCodes.contains(hashCode)) {
+                return;
+            } else {
+                processedHashCodes.add(hashCode);
+                new SDEditClient().processMethodCall(methodCall);
+            }
+
         }
 
     }

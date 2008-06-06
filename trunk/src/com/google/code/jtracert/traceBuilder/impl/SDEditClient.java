@@ -108,8 +108,8 @@ public class SDEditClient {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {
             try {
-                diagramWriter.close();
                 socket.getOutputStream().close();
+                diagramWriter.close();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -117,15 +117,29 @@ public class SDEditClient {
         }
     }
 
+    private Map<String,Integer> objectReturnCount = new HashMap<String,Integer>();
+
     private Set<String> getMethodCallStrings(MethodCall methodCall, Set<String> methodCallStrings) {
 
         String callerName = methodCallObjectNames.get(methodCall);
+
+        int objectReturnCount = 0;
+
         for (MethodCall callee : methodCall.getCallees()) {
+
             String calleeName = methodCallObjectNames.get(callee);
 
-            methodCallStrings.add(callerName + ":" + calleeName + "." + callee.getMethodName());
+            methodCallStrings.add(callerName + "[" + (callerName.equals(calleeName) ? objectReturnCount : 0) + "]:" + calleeName + "." + callee.getMethodName());
+
+            if (callerName.equals(calleeName)) {
+                objectReturnCount--;
+            }
 
             methodCallStrings.addAll(getMethodCallStrings(callee, methodCallStrings));
+
+            if (callerName.equals(calleeName)) {
+                objectReturnCount++;
+            }
 
         }
 

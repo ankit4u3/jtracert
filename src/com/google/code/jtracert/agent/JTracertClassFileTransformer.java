@@ -56,7 +56,7 @@ public class JTracertClassFileTransformer implements ClassFileTransformer, Confi
 
         //if (!className.startsWith("net.tmobile")) return null;
 
-//        System.out.println("Transforming " + className);
+        //System.out.println("Transforming " + className);
 
         JTracertByteCodeTransformer jTracertByteCodeTransformer =
                 JTracertByteCodeTransformerFactory.getJTracertByteCodeTransformer(getInstrumentationProperties());

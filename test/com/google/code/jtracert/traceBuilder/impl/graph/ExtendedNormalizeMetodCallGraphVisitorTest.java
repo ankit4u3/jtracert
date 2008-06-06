@@ -32,10 +32,6 @@ public class ExtendedNormalizeMetodCallGraphVisitorTest extends TestCase {
 
         parentMethodCall.accept(new ExtendedNormalizeMetodCallGraphVisitor());
 
-        for (MethodCall callee : parentMethodCall.getCallees()) {
-            System.out.println(callee);
-        }
-
         assertEquals(1,parentMethodCall.getCallees().size());
 
 

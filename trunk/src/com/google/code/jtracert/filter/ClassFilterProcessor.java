@@ -5,6 +5,7 @@ import static com.google.code.jtracert.filter.FilterAction.DENY;
 import com.google.code.jtracert.filter.impl.AllowClassFilter;
 import com.google.code.jtracert.filter.impl.DenyBootstrapAndExtensionsClassLoaders;
 import com.google.code.jtracert.filter.impl.DenyJTracertClassesFilter;
+import com.google.code.jtracert.filter.impl.DenyClassByPackageNameFilter;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class ClassFilterProcessor {
         addFilter(new AllowClassFilter());
         addFilter(new DenyJTracertClassesFilter());
         addFilter(new DenyBootstrapAndExtensionsClassLoaders());
+        addFilter(new DenyClassByPackageNameFilter("sun.reflect"));
     }
 
     public ClassFilterProcessor(Collection<ClassFilter> classFilters) {

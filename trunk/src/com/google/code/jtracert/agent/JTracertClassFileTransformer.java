@@ -1,6 +1,7 @@
 package com.google.code.jtracert.agent;
 
 import com.google.code.jtracert.ProjectInfo;
+import com.google.code.jtracert.filter.ClassFilterProcessor;
 import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.instrument.ByteCodeTransformException;
 import com.google.code.jtracert.instrument.ConfigurableTransformer;
@@ -33,30 +34,13 @@ public class JTracertClassFileTransformer implements ClassFileTransformer, Confi
 
         className = className.replace('/','.');
 
-        if (className.startsWith(ProjectInfo.PROJECT_PACKAGE_NAME)) return null;
+        ClassFilterProcessor classFilterProcessor = new ClassFilterProcessor();
 
-        /*if (className.startsWith("sun.reflect")) return null; // MAGIC
+        if (!classFilterProcessor.processClass(className, loader)) {
+            return null;
+        }
 
-        if (className.startsWith("weblogic")) return null; // Early OutOfMemory
-        if (className.startsWith("com.bea")) return null;
-
-        if (className.startsWith("javax.servlet")) return null; // Invalid Length in LocalVariableTable
-        if (className.startsWith("com.octetstring")) return null; // Invalid Length in LocalVariableTable*/
-
-        /*boolean isSystemClassLoaderChild = false;
-
-        do {
-            if (loader == ClassLoader.getSystemClassLoader()) isSystemClassLoaderChild = true;
-            loader = loader.getParent();
-        } while (loader != null);
-
-        if (!isSystemClassLoaderChild) return null;*/
-
-        if (loader != ClassLoader.getSystemClassLoader()) return null;
-
-        //if (!className.startsWith("net.tmobile")) return null;
-
-        //System.out.println("Transforming " + className);
+        System.out.println("Transforming " + className);
 
         JTracertByteCodeTransformer jTracertByteCodeTransformer =
                 JTracertByteCodeTransformerFactory.getJTracertByteCodeTransformer(getInstrumentationProperties());

@@ -102,6 +102,8 @@ public class SDEditClient {
 
             diagramWriter.append("end");
 
+            diagramWriter.flush();
+
         } catch (UnknownHostException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
@@ -117,33 +119,43 @@ public class SDEditClient {
         }
     }
 
-    private Map<String,Integer> objectReturnCount = new HashMap<String,Integer>();
+    private Map<String,Integer> objectReturnCountMap = new HashMap<String,Integer>();
 
     private Set<String> getMethodCallStrings(MethodCall methodCall, Set<String> methodCallStrings) {
 
         String callerName = methodCallObjectNames.get(methodCall);
 
-        int objectReturnCount = 0;
+        int objectReturnCount;
+
+        if (!objectReturnCountMap.containsKey(callerName)) {
+            objectReturnCountMap.put(callerName,0);
+        }
 
         for (MethodCall callee : methodCall.getCallees()) {
 
             String calleeName = methodCallObjectNames.get(callee);
 
-            methodCallStrings.add(callerName + "[" + (callerName.equals(calleeName) ? objectReturnCount : 0) + "]:" + calleeName + "." + callee.getMethodName());
+            objectReturnCount = objectReturnCountMap.get(callerName);
 
-            if (callerName.equals(calleeName)) {
-                objectReturnCount--;
+            methodCallStrings.add(callerName + "[" + objectReturnCount + "]:" + calleeName + "." + callee.getMethodName());
+
+            objectReturnCountMap.put(callerName,0);
+
+            if (!callerName.equals(calleeName)) {
+                objectReturnCountMap.put(calleeName,0);
             }
-
             methodCallStrings.addAll(getMethodCallStrings(callee, methodCallStrings));
 
             if (callerName.equals(calleeName)) {
+                objectReturnCount = objectReturnCountMap.get(callerName);
                 objectReturnCount++;
+                objectReturnCountMap.put(callerName,objectReturnCount);
             }
 
         }
 
         return methodCallStrings;
+
     }
 
     private Set<String> getObjectNames(MethodCall methodCall, Set<String> objectNames) {

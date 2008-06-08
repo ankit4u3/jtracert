@@ -9,20 +9,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.io.OutputStreamWriter;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author dmitry.bedrin
  */
-public class SDEditRtClient {
+public class SDEditRtClient extends BaseSDEditClient {
 
-    public final static String newline = System.getProperty("line.separator");
-
-    private Set<Integer> addedClassNames = new HashSet<Integer>();
-
+    @Override
     public void processMethodCall(MethodCall methodCall) {
 
         String host = System.getProperty(InstrumentationProperties.HOST);
@@ -39,19 +32,19 @@ public class SDEditRtClient {
 
             Writer diagramWriter = new OutputStreamWriter(sdEditOutputStream);
 
-            diagramWriter.append("diagram name").append(newline);
-            diagramWriter.append("user:Actor").append(newline);
+            diagramWriter.append("diagram name").append(lineSeparator);
+            diagramWriter.append("user:Actor").append(lineSeparator);
 
             writeObjectNames(methodCall, diagramWriter);
 
-            diagramWriter.append(newline);
+            diagramWriter.append(lineSeparator);
 
             diagramWriter.
                     append("user:").
                     append(methodCall.getRealClassName().replaceAll("\\.","\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
-                    append(newline);
+                    append(lineSeparator);
 
             writeMethodNames(methodCall, diagramWriter);
 
@@ -80,64 +73,6 @@ public class SDEditRtClient {
                     e.printStackTrace();
                 }
             }
-        }
-
-    }
-
-    private void writeObjectNames(MethodCall methodCall, Writer diagramWriter) throws IOException {
-
-        String className = methodCall.getRealClassName();
-
-        int classNameHash = className.hashCode();
-
-        if (!addedClassNames.contains(classNameHash)) {
-            addedClassNames.add(classNameHash);
-            diagramWriter.
-                    append(className).
-                    append(':').
-                    append(className).
-                    append(newline);
-        }
-
-        for (MethodCall callee : methodCall.getCallees()) {
-            writeObjectNames(callee, diagramWriter);
-        }
-
-    }
-
-    private Map<String,Integer> classLevelMap = new HashMap<String,Integer>();
-
-    private void writeMethodNames(MethodCall methodCall, Writer diagramWriter) throws IOException {
-
-        String callerClassName = methodCall.getRealClassName();
-
-        classLevelMap.put(callerClassName,0);
-
-        for (MethodCall callee : methodCall.getCallees()) {
-
-            String calleeClassName = callee.getRealClassName();
-
-            int level = classLevelMap.get(callerClassName);
-
-            diagramWriter.
-                    append(callerClassName).
-                    append('[').
-                    append(Integer.toString(level)).
-                    append(']').
-                    append(':').
-                    append(calleeClassName.replaceAll("\\.","\\\\.")).
-                    append('.').
-                    append(callee.getMethodName()).
-                    append(newline);
-
-            classLevelMap.put(callerClassName,0);
-
-            writeMethodNames(callee, diagramWriter);
-
-            if (callerClassName.equals(calleeClassName)) {
-                classLevelMap.put(callerClassName,1 + classLevelMap.get(callerClassName));
-            }
-
         }
 
     }

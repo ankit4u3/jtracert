@@ -3,14 +3,16 @@ package com.google.code.jtracert.traceBuilder.impl;
 import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
-import com.google.code.jtracert.traceBuilder.impl.graph.ExtendedNormalizeMetodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditRtClient;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SequenceFileClient;
+import com.google.code.jtracert.util.SizeOutputStream;
 
 import java.util.concurrent.*;
 import java.util.Set;
 import java.util.HashSet;
-import java.io.OutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
@@ -31,31 +33,6 @@ class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTrace
     @Override
     protected MethodCallTraceBuilderState initialValue() {
         return new MethodCallTraceBuilderState();
-    }
-
-}
-
-class SizeOutputStream extends OutputStream {
-
-    private long size = 0;
-
-    @Override
-    public void write(int b) throws IOException {
-        size++;
-    }
-
-    @Override
-    public void write(byte b[]) throws IOException {
-        size += b.length;
-    }
-
-    @Override
-    public void write(byte b[], int off, int len) throws IOException {
-        size += len;
-    }
-
-    public long getSize() {
-        return size;
     }
 
 }
@@ -194,7 +171,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             if (verbose) {
                 System.out.println("Normalizing Call Graph <<<");
             }
-            methodCall.accept(new ExtendedNormalizeMetodCallGraphVisitor());
+            methodCall.accept(new NormalizeMetodCallGraphVisitor());
             if (verbose) {
                 System.out.println("Normalizing Call Graph >>>");
                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
@@ -213,8 +190,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 return;
             } else {
                 processedHashCodes.add(hashCode);
-//                new SDEditClient().processMethodCall(methodCall);
-                new SDEditRtClient().processMethodCall(methodCall);
+//                new SDEditRtClient().processMethodCall(methodCall);
+//                new SDEditFileClient().processMethodCall(methodCall);
+                new SequenceFileClient().processMethodCall(methodCall);
             }
 
         }

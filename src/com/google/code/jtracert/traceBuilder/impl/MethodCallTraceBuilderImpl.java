@@ -5,6 +5,7 @@ import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import com.google.code.jtracert.traceBuilder.impl.graph.ExtendedNormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditRtClient;
 
 import java.util.concurrent.*;
 import java.util.Set;
@@ -190,14 +191,14 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             long currentTime = System.nanoTime();
 
-            /*if (verbose) {
+            if (verbose) {
                 System.out.println("Normalizing Call Graph <<<");
             }
             methodCall.accept(new ExtendedNormalizeMetodCallGraphVisitor());
             if (verbose) {
                 System.out.println("Normalizing Call Graph >>>");
                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
-            }*/
+            }
 
             if (verbose) {
                 System.out.println("Calculating Call Graph Hash <<<");
@@ -212,7 +213,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 return;
             } else {
                 processedHashCodes.add(hashCode);
-                new SDEditClient().processMethodCall(methodCall);
+//                new SDEditClient().processMethodCall(methodCall);
+                new SDEditRtClient().processMethodCall(methodCall);
             }
 
         }

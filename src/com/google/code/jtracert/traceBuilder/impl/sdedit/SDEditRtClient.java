@@ -11,6 +11,8 @@ import java.io.Writer;
 import java.io.OutputStreamWriter;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author dmitry.bedrin
@@ -103,24 +105,38 @@ public class SDEditRtClient {
 
     }
 
+    private Map<String,Integer> classLevelMap = new HashMap<String,Integer>();
+
     private void writeMethodNames(MethodCall methodCall, Writer diagramWriter) throws IOException {
 
-        int level = 0;
+        String callerClassName = methodCall.getRealClassName();
+
+        classLevelMap.put(callerClassName,0);
 
         for (MethodCall callee : methodCall.getCallees()) {
 
+            String calleeClassName = callee.getRealClassName();
+
+            int level = classLevelMap.get(callerClassName);
+
             diagramWriter.
-                    append(methodCall.getRealClassName()).
+                    append(callerClassName).
                     append('[').
                     append(Integer.toString(level)).
                     append(']').
                     append(':').
-                    append(callee.getRealClassName().replaceAll("\\.","\\\\.")).
+                    append(calleeClassName.replaceAll("\\.","\\\\.")).
                     append('.').
                     append(callee.getMethodName()).
                     append(newline);
 
+            classLevelMap.put(callerClassName,0);
+
             writeMethodNames(callee, diagramWriter);
+
+            if (callerClassName.equals(calleeClassName)) {
+                classLevelMap.put(callerClassName,1 + classLevelMap.get(callerClassName));
+            }
 
         }
 

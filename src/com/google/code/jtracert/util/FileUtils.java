@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.io.File;
 
 /**
- * @author dmitry.bedrin
+ * @author Dmitry Bedrin
  */
 public class FileUtils {
 
     public final static String LINE_SEPARATOR = System.getProperty("line.separator");
     public final static String FILE_SEPARATOR = System.getProperty("file.separator");
+    public final static String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
     public static void forceMkdir(File directory) throws IOException {
         if (directory.exists()) {

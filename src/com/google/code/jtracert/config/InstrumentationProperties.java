@@ -29,6 +29,8 @@ public class InstrumentationProperties implements Serializable {
         String verboseInstrumentation = System.getProperty(VERBOSE);
         if (null != verboseInstrumentation) {
             instrumentationProperties.setVerbose(Boolean.valueOf(verboseInstrumentation));
+        } else {
+            instrumentationProperties.setVerbose(false);
         }
 
         return instrumentationProperties;

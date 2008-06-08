@@ -1,5 +1,7 @@
 package com.google.code.jtracert.config;
 
+import com.google.code.jtracert.util.FileUtils;
+
 import java.io.Serializable;
 
 /**
@@ -52,16 +54,22 @@ public class AnalyzeProperties implements Serializable {
         String analyzerOutput = System.getProperty(ANALYZER_OUTPUT);
         if (null != analyzerOutput) {
             analyzeProperties.setAnalyzerOutput(AnalyzerOutput.valueOf(analyzerOutput));
+        } else {
+            analyzeProperties.setAnalyzerOutput(AnalyzerOutput.none);
         }
 
         String outputFolder = System.getProperty(OUTPUT_FOLDER);
         if (null != outputFolder) {
             analyzeProperties.setOutputFolder(outputFolder);
+        } else {
+            analyzeProperties.setOutputFolder(FileUtils.TEMP_DIR);
         }
 
         String verboseAnalyze = System.getProperty(VERBOSE);
         if (null != verboseAnalyze) {
             analyzeProperties.setVerbose(Boolean.valueOf(verboseAnalyze));
+        } else {
+            analyzeProperties.setVerbose(false);
         }
 
         return analyzeProperties;

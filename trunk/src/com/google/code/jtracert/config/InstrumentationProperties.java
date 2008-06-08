@@ -10,6 +10,7 @@ public class InstrumentationProperties implements Serializable {
     public final static String TYPE = "type";
     public final static String HOST = "host";
     public final static String PORT = "port";
+    public final static String CLASS_NAME_REGEX = "classNameRegEx";
 
     public InstrumentationProperties() {
 

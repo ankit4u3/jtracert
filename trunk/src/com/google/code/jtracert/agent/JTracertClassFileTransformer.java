@@ -2,6 +2,7 @@ package com.google.code.jtracert.agent;
 
 import com.google.code.jtracert.ProjectInfo;
 import com.google.code.jtracert.filter.ClassFilterProcessor;
+import com.google.code.jtracert.filter.impl.AllowClassByNameRegExFilter;
 import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.instrument.ByteCodeTransformException;
 import com.google.code.jtracert.instrument.ConfigurableTransformer;
@@ -35,6 +36,12 @@ public class JTracertClassFileTransformer implements ClassFileTransformer, Confi
         className = className.replace('/','.');
 
         ClassFilterProcessor classFilterProcessor = new ClassFilterProcessor();
+
+        String classNameRegEx = System.getProperty(InstrumentationProperties.CLASS_NAME_REGEX);
+
+        if (null != classNameRegEx) {
+            classFilterProcessor.addFilter(new AllowClassByNameRegExFilter(classNameRegEx));
+        }
 
         if (!classFilterProcessor.processClass(className, loader)) {
             return null;

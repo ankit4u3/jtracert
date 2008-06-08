@@ -31,7 +31,7 @@ public class SDEditClient {
 
         headers = getObjectNames(methodCall, headers);
 
-        Set<String> methodCallStrings = new LinkedHashSet<String>();
+        List<String> methodCallStrings = new LinkedList<String>();
 
         methodCallStrings = getMethodCallStrings(methodCall, methodCallStrings);
 
@@ -52,7 +52,7 @@ public class SDEditClient {
 
     }
 
-    private void printDiagram(MethodCall methodCall, Set<String> headers, Set<String> methodCallStrings) {
+    private void printDiagram(MethodCall methodCall, Set<String> headers, Collection<String> methodCallStrings) {
         StringBuffer diagrammStringBuffer = new StringBuffer();
 
         diagrammStringBuffer.append("user:Actor").append(newline);
@@ -73,7 +73,7 @@ public class SDEditClient {
 
     }
 
-    private void sendDiagramToRTServer(MethodCall methodCall, Set<String> headers, Set<String> methodCallStrings, String host, int port) {
+    private void sendDiagramToRTServer(MethodCall methodCall, Set<String> headers, Collection<String> methodCallStrings, String host, int port) {
         Socket socket = null;
 
         Writer diagramWriter = null;
@@ -121,7 +121,7 @@ public class SDEditClient {
 
     private Map<String,Integer> objectReturnCountMap = new HashMap<String,Integer>();
 
-    private Set<String> getMethodCallStrings(MethodCall methodCall, Set<String> methodCallStrings) {
+    private List<String> getMethodCallStrings(MethodCall methodCall, List<String> methodCallStrings) {
 
         String callerName = methodCallObjectNames.get(methodCall);
 
@@ -150,6 +150,8 @@ public class SDEditClient {
                 objectReturnCount = objectReturnCountMap.get(callerName);
                 objectReturnCount++;
                 objectReturnCountMap.put(callerName,objectReturnCount);
+            } else {
+                objectReturnCountMap.put(calleeName,0);
             }
 
         }

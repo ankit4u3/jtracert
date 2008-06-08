@@ -1,9 +1,9 @@
-package com.google.code.jtracert.filter;
+package com.google.code.jtracert.classFilter;
 
 /**
  * @author Dmitry Bedrin
  */
-public interface Filterable {
+public interface ClassFilterable {
 
     ClassFilterProcessor getClassFilterProcessor();
 

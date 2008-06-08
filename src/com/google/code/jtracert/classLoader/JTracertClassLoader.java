@@ -6,8 +6,8 @@ import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
 import com.google.code.jtracert.instrument.ConfigurableTransformer;
 import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
 import com.google.code.jtracert.config.InstrumentationProperties;
-import com.google.code.jtracert.filter.Filterable;
-import com.google.code.jtracert.filter.ClassFilterProcessor;
+import com.google.code.jtracert.classFilter.ClassFilterable;
+import com.google.code.jtracert.classFilter.ClassFilterProcessor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ import java.io.InputStream;
  */
 public class JTracertClassLoader
         extends ClassLoader
-        implements ConfigurableTransformer, Filterable {
+        implements ConfigurableTransformer, ClassFilterable {
 
     private InstrumentationProperties instrumentationProperties;
     private ClassFilterProcessor classFilterProcessor;
@@ -58,7 +58,7 @@ public class JTracertClassLoader
     public JTracertClassLoader(ClassLoader parentClassLoader, ClassFilterProcessor classFilterProcessor, InstrumentationProperties instrumentationProperties) {
         super(parentClassLoader);
         this.classFilterProcessor = classFilterProcessor;
-        this.instrumentationProperties =instrumentationProperties;
+        this.instrumentationProperties = instrumentationProperties;
     }
     
     @Override

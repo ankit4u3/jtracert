@@ -5,10 +5,10 @@ import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
-import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditRtClient;
-import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
-import com.google.code.jtracert.traceBuilder.impl.sdedit.SequenceFileClient;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.*;
 import com.google.code.jtracert.util.SizeOutputStream;
+import com.google.code.jtracert.util.FileUtils;
+import com.google.code.jtracert.config.AnalyzeProperties;
 
 import java.util.concurrent.*;
 import java.util.Set;
@@ -39,17 +39,12 @@ class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTrace
 
 public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
-    private final static String newline = System.getProperty("line.separator");
-
     private static MethodCallTraceBuilderStateThreadLocal traceBuilderState = new MethodCallTraceBuilderStateThreadLocal();
 
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
-    private boolean verbose = false;
 
     public MethodCallTraceBuilderImpl() {
-
-        verbose = true;
 
         processedHashCodes = new HashSet<Integer>();
 
@@ -77,8 +72,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             state.buildingTrace = true;
 
-            // Bla
-
             MethodCall currentMethodCall = new MethodCall();
 
             MethodCall contextMethodCall = state.methodCall;
@@ -90,8 +83,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             state.methodCall = currentMethodCall;
             state.level++;
 
-            // Bla
-
             currentMethodCall.setMethodName(methodName);
             currentMethodCall.setMethodSignature(methodDescriptor);
 
@@ -99,9 +90,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             int hashCode = state.graphHashCode;
             hashCode = (37 * (37 * hashCode + methodName.hashCode()) + state.level);
-
-            /*if (null != jTracertObjectCompanion)
-                hashCode = 37 * hashCode + jTracertObjectCompanion.hashCode();*/
 
             if (object == null) {
                 currentMethodCall.setRealClassName(className);
@@ -122,7 +110,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private void graphFinished(final MethodCall methodCall) {
 
-        if (verbose) {
+        if (getAnalyzeProperties().isVerbose()) {
 
             try {
                 SizeOutputStream out = new SizeOutputStream();
@@ -140,59 +128,94 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             }
 
             StringBuffer executorServiceDebugInfo = new StringBuffer();
-            executorServiceDebugInfo.append("ActiveCount").append(executorService.getActiveCount()).append(newline);
-            executorServiceDebugInfo.append("CompletedTaskCount").append(executorService.getCompletedTaskCount()).append(newline);
-            executorServiceDebugInfo.append("CorePoolSize").append(executorService.getCorePoolSize()).append(newline);
-            executorServiceDebugInfo.append("LargestPoolSize").append(executorService.getLargestPoolSize()).append(newline);
-            executorServiceDebugInfo.append("MaximumPoolSize").append(executorService.getMaximumPoolSize()).append(newline);
-            executorServiceDebugInfo.append("PoolSize").append(executorService.getPoolSize()).append(newline);
-            executorServiceDebugInfo.append("TaskCount").append(executorService.getTaskCount()).append(newline);
+            executorServiceDebugInfo.append("ActiveCount").append(executorService.getActiveCount()).append(FileUtils.LINE_SEPARATOR);
+            executorServiceDebugInfo.append("CompletedTaskCount").append(executorService.getCompletedTaskCount()).append(FileUtils.LINE_SEPARATOR);
+            executorServiceDebugInfo.append("CorePoolSize").append(executorService.getCorePoolSize()).append(FileUtils.LINE_SEPARATOR);
+            executorServiceDebugInfo.append("LargestPoolSize").append(executorService.getLargestPoolSize()).append(FileUtils.LINE_SEPARATOR);
+            executorServiceDebugInfo.append("MaximumPoolSize").append(executorService.getMaximumPoolSize()).append(FileUtils.LINE_SEPARATOR);
+            executorServiceDebugInfo.append("PoolSize").append(executorService.getPoolSize()).append(FileUtils.LINE_SEPARATOR);
+            executorServiceDebugInfo.append("TaskCount").append(executorService.getTaskCount()).append(FileUtils.LINE_SEPARATOR);
 
             System.out.println(executorServiceDebugInfo);
 
         }
 
-        executorService.execute(new SDEditClientRunnable(methodCall));
+        executorService.execute(new SDEditClientRunnable(methodCall, getAnalyzeProperties()));
 
+    }
+
+    private AnalyzeProperties analyzeProperties;
+
+    public AnalyzeProperties getAnalyzeProperties() {
+        return analyzeProperties;
+    }
+
+    public void setAnalyzeProperties(AnalyzeProperties analyzeProperties) {
+        this.analyzeProperties = analyzeProperties;
     }
 
     private class SDEditClientRunnable implements Runnable {
 
         private MethodCall methodCall;
+        private AnalyzeProperties analyzeProperties;
 
-        public SDEditClientRunnable(MethodCall methodCall) {
+        public SDEditClientRunnable(MethodCall methodCall, AnalyzeProperties analyzeProperties) {
             this.methodCall = methodCall;
+            this.analyzeProperties = analyzeProperties;
         }
 
         public void run() {
 
             long currentTime = System.nanoTime();
 
-            if (verbose) {
+            if (getAnalyzeProperties().isVerbose()) {
                 System.out.println("Normalizing Call Graph <<<");
             }
             methodCall.accept(new NormalizeMetodCallGraphVisitor());
-            if (verbose) {
+            if (getAnalyzeProperties().isVerbose()) {
                 System.out.println("Normalizing Call Graph >>>");
                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
             }
 
-            if (verbose) {
+            if (getAnalyzeProperties().isVerbose()) {
                 System.out.println("Calculating Call Graph Hash <<<");
             }
             int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
-            if (verbose) {
+            if (getAnalyzeProperties().isVerbose()) {
                 System.out.println("Calculating Call Graph Hash >>>");
                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
             }
 
-            if (processedHashCodes.contains(hashCode)) {
-                return;
-            } else {
+            if (!processedHashCodes.contains(hashCode)) {
                 processedHashCodes.add(hashCode);
-//                new SDEditRtClient().processMethodCall(methodCall);
-//                new SDEditFileClient().processMethodCall(methodCall);
-                new SequenceFileClient().processMethodCall(methodCall);
+
+                MethodCallProcessor methodCallProcessor = null;
+                
+                switch (analyzeProperties.getAnalyzerOutput()) {
+                    case none:
+                        break;
+                    case sdEditOut:
+                        methodCallProcessor = new SDEditOutClient();
+                        break;
+                    case sdEditRtClient:
+                        methodCallProcessor = new SDEditRtClient();
+                        break;
+                    case sdEditFileSystem:
+                        methodCallProcessor = new SDEditFileClient();
+                        break;
+                    case sequenceOut:
+                        methodCallProcessor = new SequenceOutClient();
+                        break;
+                    case sequenceFileSystem:
+                        methodCallProcessor = new SequenceFileClient();
+                        break;
+                }
+
+                if (null != methodCallProcessor) {
+                    methodCallProcessor.setAnalyzeProperties(analyzeProperties);
+                    methodCallProcessor.processMethodCall(methodCall);
+                }
+
             }
 
         }

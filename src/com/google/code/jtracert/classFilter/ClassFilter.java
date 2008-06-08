@@ -1,4 +1,4 @@
-package com.google.code.jtracert.filter;
+package com.google.code.jtracert.classFilter;
 
 /**
  * @author Dmitry Bedrin

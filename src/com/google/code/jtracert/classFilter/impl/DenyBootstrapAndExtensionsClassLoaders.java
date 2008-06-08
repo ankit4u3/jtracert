@@ -1,7 +1,7 @@
-package com.google.code.jtracert.filter.impl;
+package com.google.code.jtracert.classFilter.impl;
 
-import com.google.code.jtracert.filter.FilterAction;
-import static com.google.code.jtracert.filter.FilterAction.ALLOW;
+import com.google.code.jtracert.classFilter.FilterAction;
+import static com.google.code.jtracert.classFilter.FilterAction.ALLOW;
 
 /**
  * @author Dmitry Bedrin

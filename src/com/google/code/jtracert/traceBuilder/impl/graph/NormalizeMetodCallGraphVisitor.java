@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author dmitry.bedrin
+ * @author Dmitry Bedrin
+ * @todo consider using suffix trees or Boyer-Moore algorythm or Knuth–Morris–Pratt algorythm
  */
 public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object> {
 
@@ -57,7 +58,7 @@ public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object>
             callee.accept(this);
         }
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     private Integer getMethodCallHashCode(MethodCall methodCall) {
@@ -69,4 +70,5 @@ public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object>
         return methodCallHashCodeMap.get(methodCall);
 
     }
+
 }

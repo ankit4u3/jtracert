@@ -1,6 +1,8 @@
 package com.google.code.jtracert.traceBuilder.impl.sdedit;
 
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.util.FileUtils;
+import com.google.code.jtracert.traceBuilder.impl.MethodCallProcessor;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -12,10 +14,7 @@ import java.util.HashMap;
 /**
  * @author dmitry.bedrin
  */
-public abstract class BaseSDEditClient implements SDEditClient {
-
-    protected final static String lineSeparator = System.getProperty("line.separator");
-    protected final static String fileSeparator = System.getProperty("file.separator");
+public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
 
     private Set<Integer> addedClassNames = new HashSet<Integer>();
     private Map<String,Integer> classLevelMap = new HashMap<String,Integer>();
@@ -34,7 +33,7 @@ public abstract class BaseSDEditClient implements SDEditClient {
                     append(className).
                     append(':').
                     append(className).
-                    append(lineSeparator);
+                    append(FileUtils.LINE_SEPARATOR);
         }
 
         for (MethodCall callee : methodCall.getCallees()) {
@@ -64,7 +63,7 @@ public abstract class BaseSDEditClient implements SDEditClient {
                     append(calleeClassName.replaceAll("\\.","\\\\.")).
                     append('.').
                     append(callee.getMethodName()).
-                    append(lineSeparator);
+                    append(FileUtils.LINE_SEPARATOR);
 
             classLevelMap.put(callerClassName,0);
 

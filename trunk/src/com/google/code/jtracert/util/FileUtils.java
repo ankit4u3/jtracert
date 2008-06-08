@@ -8,6 +8,9 @@ import java.io.File;
  */
 public class FileUtils {
 
+    public final static String LINE_SEPARATOR = System.getProperty("line.separator");
+    public final static String FILE_SEPARATOR = System.getProperty("file.separator");
+
     public static void forceMkdir(File directory) throws IOException {
         if (directory.exists()) {
             if (directory.isFile()) {

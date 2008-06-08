@@ -1,6 +1,6 @@
 package com.google.code.jtracert.classLoader;
 
-import com.google.code.jtracert.filter.impl.AllowClassByNameFilter;
+import com.google.code.jtracert.classFilter.impl.AllowClassByNameFilter;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.model.JTracertObjectCompanion;

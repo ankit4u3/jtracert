@@ -1,7 +1,7 @@
 package com.google.code.jtracert.traceBuilder.impl.sdedit;
 
 import com.google.code.jtracert.model.MethodCall;
-import com.google.code.jtracert.config.InstrumentationProperties;
+import com.google.code.jtracert.util.FileUtils;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -11,15 +11,15 @@ import java.io.Writer;
 import java.io.OutputStreamWriter;
 
 /**
- * @author dmitry.bedrin
+ * @author Dmitry Bedrin
  */
 public class SDEditRtClient extends BaseSDEditClient {
 
     @Override
     public void processMethodCall(MethodCall methodCall) {
 
-        String host = System.getProperty(InstrumentationProperties.HOST);
-        int port = Integer.parseInt(System.getProperty(InstrumentationProperties.PORT));
+        String host = getAnalyzeProperties().getSdEditHost();
+        int port = getAnalyzeProperties().getSdEditPort();
 
         Socket socket = null;
         OutputStream sdEditOutputStream = null;
@@ -32,19 +32,19 @@ public class SDEditRtClient extends BaseSDEditClient {
 
             Writer diagramWriter = new OutputStreamWriter(sdEditOutputStream);
 
-            diagramWriter.append("diagram name").append(lineSeparator);
-            diagramWriter.append("user:Actor").append(lineSeparator);
+            diagramWriter.append("diagram name").append(FileUtils.LINE_SEPARATOR);
+            diagramWriter.append("user:Actor").append(FileUtils.LINE_SEPARATOR);
 
             writeObjectNames(methodCall, diagramWriter);
 
-            diagramWriter.append(lineSeparator);
+            diagramWriter.append(FileUtils.LINE_SEPARATOR);
 
             diagramWriter.
                     append("user:").
                     append(methodCall.getRealClassName().replaceAll("\\.","\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
-                    append(lineSeparator);
+                    append(FileUtils.LINE_SEPARATOR);
 
             writeMethodNames(methodCall, diagramWriter);
 

@@ -21,18 +21,18 @@ public class SDEditFileClient extends BaseSDEditClient {
 
             diagramWriter = new FileWriter(diagramFile);
 
-            diagramWriter.append("user:Actor").append(lineSeparator);
+            diagramWriter.append("user:Actor").append(FileUtils.LINE_SEPARATOR);
 
             writeObjectNames(methodCall, diagramWriter);
 
-            diagramWriter.append(lineSeparator);
+            diagramWriter.append(FileUtils.LINE_SEPARATOR);
 
             diagramWriter.
                     append("user:").
                     append(methodCall.getRealClassName().replaceAll("\\.","\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
-                    append(lineSeparator);
+                    append(FileUtils.LINE_SEPARATOR);
 
             writeMethodNames(methodCall, diagramWriter);
 
@@ -41,7 +41,7 @@ public class SDEditFileClient extends BaseSDEditClient {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (null != null) {
+            if (null != diagramWriter) {
                 try {
                     diagramWriter.close();
                 } catch (IOException e) {
@@ -54,13 +54,13 @@ public class SDEditFileClient extends BaseSDEditClient {
 
     private File getDiagramFile(MethodCall methodCall) throws IOException {
 
-        String baseDiagramsFolderName = "C:/sdedit";
+        String baseDiagramsFolderName = getAnalyzeProperties().getOutputFolder();
         String fullClassName = methodCall.getRealClassName();
 
         StringBuffer diagramFolderNameStringBuffer = new StringBuffer(baseDiagramsFolderName);
         String[] classNameParts = fullClassName.split("\\.");
         for (int i = 0; i < classNameParts.length - 1; i++) {
-            diagramFolderNameStringBuffer.append(fileSeparator).append(classNameParts[i]);
+            diagramFolderNameStringBuffer.append(FileUtils.FILE_SEPARATOR).append(classNameParts[i]);
         }
 
         File diagramFolder = new File(diagramFolderNameStringBuffer.toString());
@@ -68,7 +68,7 @@ public class SDEditFileClient extends BaseSDEditClient {
         FileUtils.forceMkdir(diagramFolder);
 
         diagramFolderNameStringBuffer.
-                append(fileSeparator).
+                append(FileUtils.FILE_SEPARATOR).
                 append(classNameParts[classNameParts.length - 1]).
                 append('.').
                 append(methodCall.getMethodName());

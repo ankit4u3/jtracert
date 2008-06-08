@@ -1,6 +1,7 @@
 package com.google.code.jtracert.traceBuilder;
 
 import com.google.code.jtracert.traceBuilder.impl.MethodCallTraceBuilderImpl;
+import com.google.code.jtracert.config.AnalyzeProperties;
 
 import java.lang.reflect.Method;
 
@@ -19,6 +20,10 @@ public class MethodCallTraceBuilderFactory {
             methodCallTraceBuilder = new MethodCallTraceBuilderImpl();
         }
         return methodCallTraceBuilder;
+    }
+
+    public static void configureMethodCallTraceBuilder(AnalyzeProperties analyzeProperties) {
+        getMethodCallTraceBuilder().setAnalyzeProperties(analyzeProperties);
     }
 
     public static void setMethodCallTraceBuilder(MethodCallTraceBuilder methodCallTraceBuilder) {

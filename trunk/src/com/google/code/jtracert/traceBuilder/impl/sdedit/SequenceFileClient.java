@@ -6,12 +6,9 @@ import com.google.code.jtracert.util.FileUtils;
 import java.io.*;
 
 /**
- * @author dmitry.bedrin
+ * @author Dmitry Bedrin
  */
-public class SequenceFileClient {
-
-    protected final static String lineSeparator = System.getProperty("line.separator");
-    protected final static String fileSeparator = System.getProperty("file.separator");
+public class SequenceFileClient extends BaseMethodCallProcessor {
 
     public void processMethodCall(MethodCall methodCall) {
 
@@ -58,25 +55,27 @@ public class SequenceFileClient {
         diagramWriter.write('.');
         diagramWriter.write(methodName);
         diagramWriter.write(" {");
-        diagramWriter.write(lineSeparator);
+        diagramWriter.write(FileUtils.LINE_SEPARATOR);
 
         for (MethodCall callee: methodCall.getCallees()) {
             writeSequence(callee, diagramWriter, level + 1);
         }
 
+        diagramWriter.write(tabString);
         diagramWriter.write("}");
+        diagramWriter.write(FileUtils.LINE_SEPARATOR);
 
     }
 
     private File getDiagramFile(MethodCall methodCall) throws IOException {
 
-        String baseDiagramsFolderName = "C:/sequence";
+        String baseDiagramsFolderName = getAnalyzeProperties().getOutputFolder();
         String fullClassName = methodCall.getRealClassName();
 
         StringBuffer diagramFolderNameStringBuffer = new StringBuffer(baseDiagramsFolderName);
         String[] classNameParts = fullClassName.split("\\.");
         for (int i = 0; i < classNameParts.length - 1; i++) {
-            diagramFolderNameStringBuffer.append(fileSeparator).append(classNameParts[i]);
+            diagramFolderNameStringBuffer.append(FileUtils.FILE_SEPARATOR).append(classNameParts[i]);
         }
 
         File diagramFolder = new File(diagramFolderNameStringBuffer.toString());
@@ -84,7 +83,7 @@ public class SequenceFileClient {
         FileUtils.forceMkdir(diagramFolder);
 
         diagramFolderNameStringBuffer.
-                append(fileSeparator).
+                append(FileUtils.FILE_SEPARATOR).
                 append(classNameParts[classNameParts.length - 1]).
                 append('.').
                 append(methodCall.getMethodName());

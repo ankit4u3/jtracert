@@ -1,11 +1,11 @@
-package com.google.code.jtracert.filter;
+package com.google.code.jtracert.classFilter;
 
-import static com.google.code.jtracert.filter.FilterAction.ALLOW;
-import static com.google.code.jtracert.filter.FilterAction.DENY;
-import com.google.code.jtracert.filter.impl.AllowClassFilter;
-import com.google.code.jtracert.filter.impl.DenyBootstrapAndExtensionsClassLoaders;
-import com.google.code.jtracert.filter.impl.DenyJTracertClassesFilter;
-import com.google.code.jtracert.filter.impl.DenyClassByPackageNameFilter;
+import static com.google.code.jtracert.classFilter.FilterAction.ALLOW;
+import static com.google.code.jtracert.classFilter.FilterAction.DENY;
+import com.google.code.jtracert.classFilter.impl.AllowClassFilter;
+import com.google.code.jtracert.classFilter.impl.DenyBootstrapAndExtensionsClassLoaders;
+import com.google.code.jtracert.classFilter.impl.DenyJTracertClassesFilter;
+import com.google.code.jtracert.classFilter.impl.DenyClassByPackageNameFilter;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -13,7 +13,7 @@
     <property name="classes.test.dir" value="${classes.dir}/test"/>
     <property name="deploy.dir" value="deploy"/>
     <property name="release.dir" value="release"/>
-    <property name="release.version" value="0.0.1"/>
+    <property name="release.version" value="0.0.2"/>
     <property name="lib.dir" value="lib"/>
     <property name="lib.build.dir" value="lib/build"/>
     <property name="lib.runtime.dir" value="lib/runtime"/>

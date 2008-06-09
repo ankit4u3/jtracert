@@ -89,7 +89,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             currentMethodCall.setjTracertObjectCompanion(jTracertObjectCompanion);
 
             int hashCode = state.graphHashCode;
-            hashCode = (37 * (37 * hashCode + methodName.hashCode()) + state.level);
+            hashCode = (37 * (37 * hashCode + methodName.hashCode()) + state.level); // todo refactor
 
             if (object == null) {
                 currentMethodCall.setRealClassName(className);
@@ -190,7 +190,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 processedHashCodes.add(hashCode);
 
                 MethodCallProcessor methodCallProcessor = null;
-                
+
                 switch (analyzeProperties.getAnalyzerOutput()) {
                     case none:
                         break;
@@ -213,7 +213,15 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
                 if (null != methodCallProcessor) {
                     methodCallProcessor.setAnalyzeProperties(analyzeProperties);
+
+                    if (getAnalyzeProperties().isVerbose()) {
+                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
+                    }
                     methodCallProcessor.processMethodCall(methodCall);
+                    if (getAnalyzeProperties().isVerbose()) {
+                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
+                    }
+
                 }
 
             }

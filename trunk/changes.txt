@@ -1,0 +1,15 @@
+jTracert Changes List
+
+jTracert 0.0.2
+
+Released on 9 June 2008
+
+  * Removing duplicate method calls from jTracert output
+  * Support of nested self-calls
+  * Support of Zanthan SEQUENCE file format
+  * Numerous bugfixes and performance improvements
+  * CLI interface cleaned and refactored
+
+jTracert 0.0.1
+
+Released on 31 May 2008

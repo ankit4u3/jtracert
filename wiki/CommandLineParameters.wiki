@@ -15,7 +15,7 @@ javaagent option described above would turn on jTracert agent, but it will omit 
 jTracert agent is configurable via system properties (set with -D parameter).
 A typical command line for executing jTracert agent as a SDEdit realtime client is as below:
 
-'_java -DanalyzerOutput=sdEditRtClient -DsdEditHost=127.0.0.1 -DsdEditPort=60001 -javaagent:jTracert.jar -jar yourApplicationJar.jar_'
+'_java -!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar -jar yourApplicationJar.jar_'
 
 == Parameters description ==
 
@@ -24,6 +24,6 @@ A typical command line for executing jTracert agent as a SDEdit realtime client 
 || classNameRegEx || Regular expression for filtering classnames || n/a || net\.sf.{{{*}}} ||
 || verboseInstrumentation || Print debug information while instrumenting classes || false || true ||
 || verboseAnalyze || Print debug information while analyzing method call trace || false || true ||
-|| sdEditHost || host of SDEdit RT server; used if jTracert is run with -DanalyzerOutput=sdEditRtClient || 127.0.0.1 || 127.0.0.1 ||
-|| sdEditPort || port of SDEdit RT server; used if jTracert is run with -DanalyzerOutput=sdEditRtClient || 60001 || 60001 ||
-|| outputFolder || folder where jTracert stores generated sequence diagram files; used if jTracert is run with -DanalyzerOutput=sdEditFileSystem or -DanalyzerOutput=sequenceFileSystem || your temp folder || /tmp/sdeditdiagrams ||
+|| sdEditHost || host of SDEdit RT server; used if jTracert is run with -!DanalyzerOutput=sdEditRtClient || 127.0.0.1 || 127.0.0.1 ||
+|| sdEditPort || port of SDEdit RT server; used if jTracert is run with -!DanalyzerOutput=sdEditRtClient || 60001 || 60001 ||
+|| outputFolder || folder where jTracert stores generated sequence diagram files; used if jTracert is run with -!DanalyzerOutput=sdEditFileSystem or -!DanalyzerOutput=sequenceFileSystem || your temp folder || /tmp/sdeditdiagrams ||

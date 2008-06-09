@@ -71,7 +71,7 @@ public class SDEditFileClient extends BaseSDEditClient {
                 append(FileUtils.FILE_SEPARATOR).
                 append(classNameParts[classNameParts.length - 1]).
                 append('.').
-                append(methodCall.getMethodName());
+                append(methodCall.getMethodName().replaceAll("\\<","").replaceAll("\\>","")); // todo refactor
 
         File diagramFile = new File(diagramFolderNameStringBuffer.toString() + ".sdx");
 

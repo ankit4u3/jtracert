@@ -1,12 +1,13 @@
 package com.google.code.jtracert.classLoader;
 
 import com.google.code.jtracert.classFilter.impl.AllowClassByNameFilter;
+import com.google.code.jtracert.config.AnalyzeProperties;
+import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
-import com.google.code.jtracert.model.JTracertObjectCompanion;
 import junit.framework.TestCase;
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -300,12 +301,23 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
-    private static class MethodCallTraceBuilderInvokeCounter implements MethodCallTraceBuilder {
+    private static class MethodCallTraceBuilderInvokeCounter
+            implements MethodCallTraceBuilder {
 
         private int enterMethodCount = 0;
         private int leaveOnReturnVoidCount = 0;
         private int leaveOnReturnValueCount = 0;
         private int leaveOnThrowExceptionValueCount = 0;
+
+        private AnalyzeProperties analyzeProperties;
+
+        public AnalyzeProperties getAnalyzeProperties() {
+            return analyzeProperties;
+        }
+
+        public void setAnalyzeProperties(AnalyzeProperties analyzeProperties) {
+            this.analyzeProperties = analyzeProperties;
+        }
 
         public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion) {
             enterMethodCount = getEnterMethodCount() + 1;

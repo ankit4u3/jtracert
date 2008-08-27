@@ -234,6 +234,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
 
+        if (null == state) return;
+
         if (state.buildingTrace) return;
 
         try {

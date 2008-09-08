@@ -4,7 +4,7 @@
 
 Released on 9 September 2008
 
-  * New experimental support of http://www.websequencediagrams.com/
+  * New experimental support of http://www.websequencediagrams.com/ See WebSequenceDiagrams
   * Issue 1 fixed
   * Unit tests fixed
   * Various refactorings 

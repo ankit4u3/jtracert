@@ -1,5 +1,14 @@
 #summary jTracert Changes List
 
+=0.0.3=
+
+Released on 9 September 2008
+
+  * New experimental support of http://www.websequencediagrams.com/
+  * Issue 1 fixed
+  * Unit tests fixed
+  * Various refactorings 
+
 =0.0.2=
 
 Released on 9 June 2008

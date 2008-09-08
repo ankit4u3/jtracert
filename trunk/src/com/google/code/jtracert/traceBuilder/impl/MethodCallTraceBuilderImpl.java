@@ -110,7 +110,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private void graphFinished(final MethodCall methodCall) {
 
-        if (getAnalyzeProperties().isVerbose()) {
+        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
 
             try {
                 SizeOutputStream out = new SizeOutputStream();
@@ -208,6 +208,12 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                         break;
                     case sequenceFileSystem:
                         methodCallProcessor = new SequenceFileClient();
+                        break;
+                    case webSequenceDiagramsOut:
+                        methodCallProcessor = new WebSequenceDiagramsOutClient();
+                        break;
+                    case webSequenceDiagramsFileSystem:
+                        methodCallProcessor = new WebSequenceDiagramsFileClient();
                         break;
                 }
 

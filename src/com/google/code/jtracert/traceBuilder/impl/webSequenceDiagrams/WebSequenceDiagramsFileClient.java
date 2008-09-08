@@ -1,6 +1,8 @@
-package com.google.code.jtracert.traceBuilder.impl.sdedit;
+package com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams;
 
+import com.google.code.jtracert.traceBuilder.impl.sdedit.*;
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;
 import com.google.code.jtracert.util.FileUtils;
 
 import java.io.*;
@@ -76,7 +78,7 @@ public class WebSequenceDiagramsFileClient extends BaseMethodCallProcessor {
                 append('.').
                 append(methodCall.getMethodName().replaceAll("\\<","").replaceAll("\\>","")); // todo refactor
 
-        File diagramFile = new File(diagramFolderNameStringBuffer.toString() + ".sq");
+        File diagramFile = new File(diagramFolderNameStringBuffer.toString() + ".wsd");
 
         int i = 0;
         while (diagramFile.exists()) {

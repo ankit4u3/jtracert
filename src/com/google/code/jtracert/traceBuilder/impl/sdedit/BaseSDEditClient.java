@@ -1,5 +1,6 @@
 package com.google.code.jtracert.traceBuilder.impl.sdedit;
 
+import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.util.FileUtils;
 import com.google.code.jtracert.traceBuilder.impl.MethodCallProcessor;

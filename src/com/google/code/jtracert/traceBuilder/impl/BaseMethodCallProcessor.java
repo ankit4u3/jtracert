@@ -1,4 +1,4 @@
-package com.google.code.jtracert.traceBuilder.impl.sdedit;
+package com.google.code.jtracert.traceBuilder.impl;
 
 import com.google.code.jtracert.traceBuilder.impl.MethodCallProcessor;
 import com.google.code.jtracert.config.AnalyzeProperties;

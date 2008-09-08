@@ -1,5 +1,9 @@
 package com.google.code.jtracert.traceBuilder.impl;
 
+import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
+import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsFileClient;
+import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceOutClient;
+import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceFileClient;
 import com.google.code.jtracert.model.JTracertObjectCompanion;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;

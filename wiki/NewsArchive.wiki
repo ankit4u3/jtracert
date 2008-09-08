@@ -11,7 +11,7 @@ Based on the received feedback, following two features are top priority:
 I believe that these two features are mandatory for the first beta version release.
 
 New features in jTracert 0.0.3:
-  * New experimental support of http://www.websequencediagrams.com/
+  * New experimental support of http://www.websequencediagrams.com/ See WebSequenceDiagrams
   * Issue 1 fixed
   * Unit tests fixed
   * Various refactorings

@@ -1,5 +1,21 @@
 #summary Archive of jTracert related news and updated
 
+== 9 September 2008 - big thanks for your feedback; jTracert 0.0.3 released ==
+
+First of all, I'd like to thank the jTracert users for the feedback. This project is very young, but anyway we already have a couple hundreds of downloads and thousands visitors from the entire world. A first defect ( Issue 1 ) was opened in bug tracking system and was successfully closed.
+
+Based on the received feedback, following two features are top priority:
+  * A separate specific GUI for jTracert
+  * Better perfomance and ability to work on big enterprise applications
+
+I believe that these two features are mandatory for the first beta version release.
+
+New features in jTracert 0.0.3:
+  * New experimental support of http://www.websequencediagrams.com/
+  * Issue 1 fixed
+  * Unit tests fixed
+  * Various refactorings
+
 == 9 June 2008 - jTracert 0.0.2 released ==
 
 New features:

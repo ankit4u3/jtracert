@@ -15,7 +15,9 @@ public class AnalyzeProperties implements Serializable {
         sdEditRtClient,
         sdEditFileSystem,
         sequenceOut,
-        sequenceFileSystem
+        sequenceFileSystem,
+        webSequenceDiagramsOut,
+        webSequenceDiagramsFileSystem
     }
 
     public final static String SDEDIT_HOST = "sdEditHost";

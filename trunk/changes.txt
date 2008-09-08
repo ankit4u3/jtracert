@@ -1,5 +1,18 @@
 jTracert Changes List
 
+========================================
+
+jTracert 0.0.3
+
+Released on 9 September 2008
+
+    * New experimental support of http://www.websequencediagrams.com/
+    * Issue 1 fixed
+    * Unit tests fixed
+    * Various refactorings 
+
+========================================
+
 jTracert 0.0.2
 
 Released on 9 June 2008
@@ -9,6 +22,8 @@ Released on 9 June 2008
   * Support of Zanthan SEQUENCE file format
   * Numerous bugfixes and performance improvements
   * CLI interface cleaned and refactored
+
+========================================
 
 jTracert 0.0.1
 

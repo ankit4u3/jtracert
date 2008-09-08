@@ -172,20 +172,20 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             long currentTime = System.nanoTime();
 
-            if (getAnalyzeProperties().isVerbose()) {
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                 System.out.println("Normalizing Call Graph <<<");
             }
             methodCall.accept(new NormalizeMetodCallGraphVisitor());
-            if (getAnalyzeProperties().isVerbose()) {
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                 System.out.println("Normalizing Call Graph >>>");
                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
             }
 
-            if (getAnalyzeProperties().isVerbose()) {
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                 System.out.println("Calculating Call Graph Hash <<<");
             }
             int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
-            if (getAnalyzeProperties().isVerbose()) {
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                 System.out.println("Calculating Call Graph Hash >>>");
                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
             }
@@ -195,40 +195,42 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
                 MethodCallProcessor methodCallProcessor = null;
 
-                switch (analyzeProperties.getAnalyzerOutput()) {
-                    case none:
-                        break;
-                    case sdEditOut:
-                        methodCallProcessor = new SDEditOutClient();
-                        break;
-                    case sdEditRtClient:
-                        methodCallProcessor = new SDEditRtClient();
-                        break;
-                    case sdEditFileSystem:
-                        methodCallProcessor = new SDEditFileClient();
-                        break;
-                    case sequenceOut:
-                        methodCallProcessor = new SequenceOutClient();
-                        break;
-                    case sequenceFileSystem:
-                        methodCallProcessor = new SequenceFileClient();
-                        break;
-                    case webSequenceDiagramsOut:
-                        methodCallProcessor = new WebSequenceDiagramsOutClient();
-                        break;
-                    case webSequenceDiagramsFileSystem:
-                        methodCallProcessor = new WebSequenceDiagramsFileClient();
-                        break;
+                if (null != analyzeProperties) {
+                    switch (analyzeProperties.getAnalyzerOutput()) {
+                        case none:
+                            break;
+                        case sdEditOut:
+                            methodCallProcessor = new SDEditOutClient();
+                            break;
+                        case sdEditRtClient:
+                            methodCallProcessor = new SDEditRtClient();
+                            break;
+                        case sdEditFileSystem:
+                            methodCallProcessor = new SDEditFileClient();
+                            break;
+                        case sequenceOut:
+                            methodCallProcessor = new SequenceOutClient();
+                            break;
+                        case sequenceFileSystem:
+                            methodCallProcessor = new SequenceFileClient();
+                            break;
+                        case webSequenceDiagramsOut:
+                            methodCallProcessor = new WebSequenceDiagramsOutClient();
+                            break;
+                        case webSequenceDiagramsFileSystem:
+                            methodCallProcessor = new WebSequenceDiagramsFileClient();
+                            break;
+                    }
                 }
 
                 if (null != methodCallProcessor) {
                     methodCallProcessor.setAnalyzeProperties(analyzeProperties);
 
-                    if (getAnalyzeProperties().isVerbose()) {
+                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                         System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
                     }
                     methodCallProcessor.processMethodCall(methodCall);
-                    if (getAnalyzeProperties().isVerbose()) {
+                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                         System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
                     }
 

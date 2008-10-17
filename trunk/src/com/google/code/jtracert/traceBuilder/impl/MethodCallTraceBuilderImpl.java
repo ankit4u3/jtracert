@@ -29,6 +29,7 @@ class MethodCallTraceBuilderState {
     public boolean buildingTrace = false;
     public int graphHashCode = 17;
     public int level = 1;
+    public int count = 1;
 
 }
 
@@ -75,17 +76,22 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         try {
 
             state.buildingTrace = true;
+            state.level++;
+            state.count++;
+
+            if (state.count > 1000) return;
 
             MethodCall currentMethodCall = new MethodCall();
 
             MethodCall contextMethodCall = state.methodCall;
 
-            if (null != contextMethodCall) {
+            if (null == contextMethodCall) {
+                // first enter
+            } else {
                 contextMethodCall.addCallee(currentMethodCall);
             }
 
             state.methodCall = currentMethodCall;
-            state.level++;
 
             currentMethodCall.setMethodName(methodName);
             currentMethodCall.setMethodSignature(methodDescriptor);
@@ -253,20 +259,30 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         try {
 
             state.buildingTrace = true;
+            state.level--;
 
             MethodCall contextMethodCall = state.methodCall;
 
-            MethodCall callerMethodCall = contextMethodCall.getCalleer();
-            if (null == callerMethodCall) {
-                if (!processedHashCodes.contains(state.graphHashCode)) {
-                    graphFinished(contextMethodCall);
-                    processedHashCodes.add(state.graphHashCode);
+//            MethodCall callerMethodCall = contextMethodCall.getCalleer();
+//            if (null == callerMethodCall) {
+            if (1 == state.level) {
+
+                if (state.count > 1000) {
+
+                } else {
+                    if (!processedHashCodes.contains(state.graphHashCode)) {
+                        graphFinished(contextMethodCall);
+                        processedHashCodes.add(state.graphHashCode);
+                    }
                 }
                 //graphFinished(contextMethodCall);
                 traceBuilderState.remove();
             } else {
+
+                if (state.count > 1000) return;
+
+                MethodCall callerMethodCall = contextMethodCall.getCalleer();
                 state.methodCall = callerMethodCall;
-                state.level--;
             }
 
         } catch (Throwable e) {

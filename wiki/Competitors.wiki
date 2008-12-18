@@ -10,6 +10,7 @@ I didn't manage to find an opensource dynamic-analysis tool for generating seque
 
  # MaintainJ http://www.maintainj.com/ Proprietary
  # Eclipse TPTP http://www.eclipse.org/tptp/home/documents/tutorials/profilingtool/profilingexample_32.html#3_4 Free
+ # Amida http://sel.ist.osaka-u.ac.jp/~ishio/amida/
 
 == Static Analysis ==
 

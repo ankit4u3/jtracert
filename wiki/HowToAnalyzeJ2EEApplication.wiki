@@ -1,4 +1,5 @@
 #summary A short tutorial for using jTracert for analyzing J2EE applications
+#labels Featured
 
 = Introduction =
 

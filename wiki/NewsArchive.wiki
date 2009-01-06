@@ -10,6 +10,10 @@ In spite of a break in releases (last release was in September), I'm still worki
 You can the latest version of jTracert from SVN and build it yourself.
 See [http://code.google.com/p/jtracert/wiki/BuildingJTracertFromSVN BuildingJTracertFromSVN] page for details.
 
+jTracert is now presented on ohloh.net: https://www.ohloh.net/p/jTracert
+
+Join our [http://groups.google.com/group/jtracert new discussion group] and watch the project using [http://code.google.com/p/jtracert/feeds feeds].
+
 If you want to contribute to this project, do not hesitate to contact me!
 
 == 9 September 2008 - big thanks for your feedback; jTracert 0.0.3 released ==

@@ -1,5 +1,5 @@
 #summary A short tutorial for using jTracert for analyzing J2EE applications
-#labels Featured
+#labels Featured,Phase-Deploy
 
 = Introduction =
 

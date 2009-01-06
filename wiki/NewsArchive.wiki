@@ -1,4 +1,5 @@
 #summary Archive of jTracert related news and updated
+#labels Deprecated
 
 == 9 September 2008 - big thanks for your feedback; jTracert 0.0.3 released ==
 

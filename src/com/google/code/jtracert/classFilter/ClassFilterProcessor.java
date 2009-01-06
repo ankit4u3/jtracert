@@ -2,10 +2,7 @@ package com.google.code.jtracert.classFilter;
 
 import static com.google.code.jtracert.classFilter.FilterAction.ALLOW;
 import static com.google.code.jtracert.classFilter.FilterAction.DENY;
-import com.google.code.jtracert.classFilter.impl.AllowClassFilter;
-import com.google.code.jtracert.classFilter.impl.DenyBootstrapAndExtensionsClassLoaders;
-import com.google.code.jtracert.classFilter.impl.DenyJTracertClassesFilter;
-import com.google.code.jtracert.classFilter.impl.DenyClassByPackageNameFilter;
+import com.google.code.jtracert.classFilter.impl.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +20,9 @@ public class ClassFilterProcessor {
         addFilter(new DenyJTracertClassesFilter());
         addFilter(new DenyBootstrapAndExtensionsClassLoaders());
         addFilter(new DenyClassByPackageNameFilter("sun.reflect"));
+
+        // temporary workaround for issue 3
+        addFilter(new DenyClassByPackageNameFilter("com.sun.crypto.provider.SunJCE")); // todo - fix issue  
     }
 
     public ClassFilterProcessor(Collection<ClassFilter> classFilters) {

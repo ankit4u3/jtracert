@@ -1,6 +1,17 @@
 #summary Archive of jTracert related news and updated
 #labels Deprecated
 
+== 6 January 2009 - happy New Year and Merry Christmas; some news about jTracert ==
+
+Dear jTracert users, happy New Year and Merry Christmas!
+I hope that jTracert will become more useful and gain new users in 2009 year.
+
+In spite of a break in releases (last release was in September), I'm still working on this project.
+You can the latest version of jTracert from SVN and build it yourself.
+See [http://code.google.com/p/jtracert/wiki/BuildingJTracertFromSVN BuildingJTracertFromSVN] page for details.
+
+If you want to contribute to this project, do not hesitate to contact me!
+
 == 9 September 2008 - big thanks for your feedback; jTracert 0.0.3 released ==
 
 First of all, I'd like to thank the jTracert users for the feedback. This project is very young, but anyway we already have a couple hundreds of downloads and thousands visitors from the entire world. A first defect ( Issue 1 ) was opened in bug tracking system and was successfully closed.

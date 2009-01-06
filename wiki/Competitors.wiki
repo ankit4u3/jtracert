@@ -4,7 +4,7 @@
 
 I didn't manage to find an opensource dynamic-analysis tool for generating sequence diagrams from execution trace, though there're a few tools making static analysis.
 
-It looks like Amida can do the same that jTracert does. I didn't manager to examine that tool yet.
+It looks like Amida can do the same that jTracert does. I didn't manage to examine that tool yet.
 
 = List of similar tools =
 

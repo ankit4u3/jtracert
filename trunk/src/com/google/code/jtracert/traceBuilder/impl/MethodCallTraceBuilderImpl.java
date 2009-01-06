@@ -56,7 +56,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         executorService = new ThreadPoolExecutor(
                 0,
                 1,
-                60L,
+                5L,
                 TimeUnit.SECONDS,
                 new ArrayBlockingQueue<Runnable>(20,true),
                 new ThreadPoolExecutor.CallerRunsPolicy()

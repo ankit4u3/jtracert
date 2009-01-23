@@ -17,7 +17,8 @@ public class AnalyzeProperties implements Serializable {
         sequenceOut,
         sequenceFileSystem,
         webSequenceDiagramsOut,
-        webSequenceDiagramsFileSystem
+        webSequenceDiagramsFileSystem,
+        serializableTcpClient
     }
 
     public final static String SDEDIT_HOST = "sdEditHost";
@@ -25,12 +26,17 @@ public class AnalyzeProperties implements Serializable {
     public final static String ANALYZER_OUTPUT = "analyzerOutput";
     public final static String OUTPUT_FOLDER = "outputFolder";
     public final static String VERBOSE = "verboseAnalyze";
+    public final static String SERIALIZABLE_TCP_SERVER_HOST = "serializableTcpServerHost";
+    public final static String SERIALIZABLE_TCP_SERVER_PORT = "serializableTcpServerPort";
 
     private String sdEditHost;
     private int sdEditPort;
     private AnalyzerOutput analyzerOutput;
     private String outputFolder;
     private boolean verbose;
+
+    private String serializableTcpServerHost;
+    private int serializableTcpServerPort;
 
     public AnalyzeProperties() {
 
@@ -51,6 +57,20 @@ public class AnalyzeProperties implements Serializable {
             analyzeProperties.setSdEditPort(Integer.parseInt(port));
         } else {
             analyzeProperties.setSdEditPort(60001);
+        }
+
+        String serializableTcpServerHost = System.getProperty(SERIALIZABLE_TCP_SERVER_HOST);
+        if (null != serializableTcpServerHost) {
+            analyzeProperties.setSerializableTcpServerHost(serializableTcpServerHost);
+        } else {
+            analyzeProperties.setSerializableTcpServerHost("127.0.0.1");
+        }
+
+        String serializableTcpServerPort = System.getProperty(SERIALIZABLE_TCP_SERVER_PORT);
+        if (null != serializableTcpServerPort) {
+            analyzeProperties.setSerializableTcpServerPort(Integer.parseInt(serializableTcpServerPort));
+        } else {
+            analyzeProperties.setSerializableTcpServerPort(60002);
         }
 
         String analyzerOutput = System.getProperty(ANALYZER_OUTPUT);
@@ -115,6 +135,22 @@ public class AnalyzeProperties implements Serializable {
 
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+    }
+
+    public String getSerializableTcpServerHost() {
+        return serializableTcpServerHost;
+    }
+
+    public void setSerializableTcpServerHost(String serializableTcpServerHost) {
+        this.serializableTcpServerHost = serializableTcpServerHost;
+    }
+
+    public int getSerializableTcpServerPort() {
+        return serializableTcpServerPort;
+    }
+
+    public void setSerializableTcpServerPort(int serializableTcpServerPort) {
+        this.serializableTcpServerPort = serializableTcpServerPort;
     }
 
 }

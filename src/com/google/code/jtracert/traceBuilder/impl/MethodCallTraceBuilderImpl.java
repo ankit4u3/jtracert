@@ -10,6 +10,7 @@ import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.*;
+import com.google.code.jtracert.traceBuilder.impl.serializableTcpClient.SerializableTcpClient;
 import com.google.code.jtracert.util.SizeOutputStream;
 import com.google.code.jtracert.util.FileUtils;
 import com.google.code.jtracert.config.AnalyzeProperties;
@@ -225,6 +226,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                             break;
                         case webSequenceDiagramsFileSystem:
                             methodCallProcessor = new WebSequenceDiagramsFileClient();
+                            break;
+                        case serializableTcpClient:
+                            methodCallProcessor = new SerializableTcpClient();
                             break;
                     }
                 }

@@ -4,50 +4,69 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import com.google.code.jtracert.model.MethodCall;
 
 public class SimpleApp1Test extends TestCase {
+
+    private static class SerializableTcpServer implements Runnable {
+
+        private Queue<MethodCall> methodCallsQueue = new ArrayBlockingQueue<MethodCall>(1);
+
+        public void run() {
+            try {
+                ServerSocket serverSocket = new ServerSocket(60002);
+                Socket socket = serverSocket.accept();
+
+                InputStream inputStream = socket.getInputStream();
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                Object object = objectInputStream.readObject();
+
+                MethodCall methodCall = (MethodCall) object;
+
+                methodCallsQueue.offer(methodCall);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public MethodCall getMethodCall() {
+            return methodCallsQueue.remove();
+        }
+
+    }
 
     @Test
     public void testSimpleApp1() throws Exception {
 
+        SerializableTcpServer tcpServer = new SerializableTcpServer();
+        Thread t = new Thread(tcpServer);
+        t.start();
+
         String[] commands = new String[]{
                 "java",
-                "-DanalyzerOutput=sdEditRtClient",
-                "-DsdEditHost=127.0.0.1",
-                "-DsdEditPort=60001",
-                /*"-DverboseInstrumentation=true",
-                "-DverboseAnalyze=true",*/
-                "-javaagent:deploy/jTracert.jar",
+                "-DanalyzerOutput=serializableTcpClient",
+                "-javaagent:../../deploy/jTracert.jar",
                 "-jar","deploy/simpleApp1.jar"
         };
-
-        System.out.println(Arrays.toString(commands));
 
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
         processBuilder.redirectErrorStream(true);
         processBuilder.directory(new File(".").getAbsoluteFile());
 
-        System.out.println("Starting process... ");
-
         Process process = processBuilder.start();
-
-        System.out.println("Process: " + process);
-        
-        InputStream is = process.getInputStream();
-
-        int ch;
-        while( (ch=is.read()) != -1 )
-            System.out.write((char)ch);
-
-
-        System.out.println("Waiting for process to finish");
 
         int exitCode = process.waitFor();
 
-        System.out.println("Process finished with exit code " + exitCode);
-
         assertEquals(0, exitCode);
+
+        MethodCall methodCall = tcpServer.getMethodCall();
+
+        assertNotNull(methodCall);
 
     }
 

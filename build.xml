@@ -89,6 +89,10 @@
         <zip
             destfile="${release.dir}/jTracert-${release.version}-src.zip"
             basedir="."
+            excludes="samples/**, classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}-samples-src.zip"
+            basedir="."
             excludes="classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
     </target>
 

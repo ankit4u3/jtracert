@@ -1,0 +1,11 @@
+#summary Common problems ant their resolution
+
+= Introduction =
+
+Some common problems reported by jTracert users and resolution for these problems.
+
+= Troubles =
+
+== jTracert show no errors, but at the same time no data is generated ==
+
+The most probable reason is that you're using too old JVM. One of jTracert users has faced this problem on 1.5.0_01 JVM. Update to a newer version has solved the issue

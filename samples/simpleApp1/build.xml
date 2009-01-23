@@ -5,6 +5,7 @@
         <fileset dir="../../lib">
             <include name="**/*.jar"/>
         </fileset>
+        <pathelement location="../../deploy/jTracert.jar"/>
     </path>
 
     <target name="clean">
@@ -35,7 +36,6 @@
     </target>
 
     <target name="test" depends="jar,compile.test">
-        <copyfile src="../../deploy/jTracert.jar" dest="deploy/jTracert.jar"/>
         <junit printsummary="yes" haltonerror="yes" showoutput="yes">
             <classpath path="classes/project"/>
             <classpath path="classes/test"/>

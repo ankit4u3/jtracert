@@ -37,7 +37,7 @@
     </target>
 
     <target name="test" depends="jar,compile.test">
-        <junit printsummary="yes" haltonerror="yes" showoutput="yes">
+        <junit printsummary="yes" haltonerror="yes" showoutput="yes" dir="." fork="true">
             <classpath path="classes/project"/>
             <classpath path="classes/test"/>
             <classpath refid="build.classpath"/>
@@ -47,7 +47,6 @@
                     <include name="**/*Test.java"/>
                 </fileset>
             </batchtest>
-
         </junit>
     </target>
 

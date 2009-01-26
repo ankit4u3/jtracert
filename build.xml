@@ -82,6 +82,11 @@
         </jarjar>
     </target>
 
+    <target name="integration.test" depends="jar">
+        <ant dir="samples/jTracertTestCase"/>
+        <ant dir="samples/simpleApp1"/>
+    </target>
+
     <target name="all" depends="jar"/>
 
     <target name="release" depends="all">

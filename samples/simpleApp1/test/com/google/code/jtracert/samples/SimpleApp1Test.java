@@ -38,9 +38,19 @@ public class SimpleApp1Test extends TestCase {
 
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
         processBuilder.redirectErrorStream(true);
-        processBuilder.directory(new File(".").getAbsoluteFile());
+        File directory = new File(".").getAbsoluteFile();
+        processBuilder.directory(directory);
 
-        return processBuilder.start();
+        Process process = processBuilder.start();
+
+        InputStream is = process.getInputStream();
+        for(int i = is.read(); i != -1; i = is.read())
+        {
+            System.out.print((char)i);
+        }
+
+        return process;
+        
     }
 
 }

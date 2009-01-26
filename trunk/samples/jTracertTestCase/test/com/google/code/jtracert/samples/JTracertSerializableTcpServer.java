@@ -64,5 +64,4 @@ public class JTracertSerializableTcpServer implements Runnable {
         return methodCallsQueue.remove();
     }
 
-
 }

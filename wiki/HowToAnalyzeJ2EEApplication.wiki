@@ -14,7 +14,8 @@ In a few words:
 
 The place where you should specify these parameters depends on your application server.
 
-A few examples are stated below. Please note that you should replace jTracert.jar with real jar name, like jTracert-0.0.3.jar!
+A few examples are stated below. 
+*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.0.3.jar
 
 = !WebLogic 9+ =
 

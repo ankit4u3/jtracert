@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @author Dmitry Bedrin
- * @todo consider using suffix trees or Boyer-Moore algorythm or Knuth–Morris–Pratt algorythm
+ * @todo consider using suffix trees or Boyer-Moore algorythm or Knuth-Morris-Pratt algorythm
  */
 public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object> {
 

@@ -6,6 +6,7 @@
             <include name="**/*.jar"/>
         </fileset>
         <pathelement location="../../deploy/jTracert.jar"/>
+        <pathelement location="../jTracertTestCase/deploy/jTracertTestCase.jar"/>
     </path>
 
     <target name="clean">

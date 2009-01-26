@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jTracertTestCase" default="all">
+
+    <path id="build.classpath">
+        <fileset dir="../../lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="../../deploy/jTracert.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="classes/test"/>
+        <delete dir="classes"/>
+        <delete dir="deploy"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="classes"/>
+        <mkdir dir="classes/test"/>
+        <mkdir dir="deploy"/>
+    </target>
+
+    <target name="compile.test" depends="init">
+        <javac destdir="classes/test" target="1.5">
+            <src path="test"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar.test" depends="compile.test">
+        <jar destfile="deploy/jTracertTestCase.jar">
+            <fileset dir="classes/test"/>
+        </jar>
+    </target>
+
+    <target name="all" depends="clean,jar.test"/>
+
+</project>

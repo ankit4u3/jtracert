@@ -17,3 +17,5 @@ You may face thw following problem when starting your application together with 
 
 In this case, please check jTracert actuall file name.
 For example it can be jTracert-0.0.3.jar, but not just jTracert.jar
+
+See also Issue 2

@@ -1,5 +1,13 @@
 #summary jTracert Changes List
 
+=0.0.4=
+
+Released on 27 January 2009
+
+  * Numerous defects fixed
+  * Large projects support improved
+  * Implemented small framework for integration tests - users are now welcomed to send their applications in case of having any problems
+
 =0.0.3=
 
 Released on 9 September 2008

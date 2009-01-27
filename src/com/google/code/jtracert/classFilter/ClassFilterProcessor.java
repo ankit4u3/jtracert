@@ -22,7 +22,7 @@ public class ClassFilterProcessor {
         addFilter(new DenyClassByPackageNameFilter("sun.reflect"));
 
         // temporary workaround for issue 3
-        addFilter(new DenyClassByPackageNameFilter("com.sun.crypto.provider.SunJCE")); // todo - fix issue  
+//        addFilter(new DenyClassByPackageNameFilter("com.sun.crypto.provider.SunJCE")); // todo - fix issue
     }
 
     public ClassFilterProcessor(Collection<ClassFilter> classFilters) {

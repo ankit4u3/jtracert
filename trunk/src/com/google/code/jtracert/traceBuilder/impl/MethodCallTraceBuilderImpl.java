@@ -66,9 +66,13 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
 
-    public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion) {
+    public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
 
-        jTracertObjectCompanion = null;
+        JTracertObjectCompanion jTracertObjectCompanion =
+                null == object ? null :
+                new JTracertObjectCompanion(System.identityHashCode(object));
+
+        jTracertObjectCompanion = null; // todo: refactoring
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
 

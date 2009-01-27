@@ -21,6 +21,8 @@ public class SimpleApp1Test extends JTracertTestCase {
 
         assertNotNull(methodCall);
 
+        assertEquals("main",methodCall.getMethodName());
+
     }
 
 }

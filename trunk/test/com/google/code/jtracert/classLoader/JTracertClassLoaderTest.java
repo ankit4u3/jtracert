@@ -319,7 +319,7 @@ public class JTracertClassLoaderTest extends TestCase {
             this.analyzeProperties = analyzeProperties;
         }
 
-        public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion) {
+        public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
             enterMethodCount = getEnterMethodCount() + 1;
         }
 

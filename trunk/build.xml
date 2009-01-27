@@ -84,8 +84,10 @@
 
     <target name="integration.test" depends="jar">
         <ant dir="samples/jTracertTestCase"/>
+        
         <ant dir="samples/simpleApp1"/>
         <ant dir="samples/simpleApp2"/>
+        <ant dir="samples/jaxbApplication"/>
     </target>
 
     <target name="all" depends="jar"/>

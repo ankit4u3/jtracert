@@ -16,6 +16,6 @@ You may face thw following problem when starting your application together with 
 "Error occurred during initialization of VM agent library failed to init: instrument Error opening zip file: jTracert.jar"
 
 In this case, please check jTracert actuall file name.
-For example it can be jTracert-0.0.3.jar, but not just jTracert.jar
+For example it can be jTracert-0.0.4.jar, but not just jTracert.jar
 
 See also Issue 2

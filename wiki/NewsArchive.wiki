@@ -9,6 +9,8 @@ Changes:
   * Large projects support improved
   * Implemented small framework for integration tests - users are now welcomed to send their applications in case of having any problems
 
+I've also updated sdedit hosted in this site to version 3.0.5
+
 == 6 January 2009 - happy New Year and Merry Christmas; some news about jTracert ==
 
 Dear jTracert users, happy New Year and Merry Christmas!

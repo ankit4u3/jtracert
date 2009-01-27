@@ -3,6 +3,8 @@ package com.google.code.jtracert.samples;
 import org.junit.Test;
 import com.google.code.jtracert.model.MethodCall;
 
+import java.io.FileWriter;
+
 public class SimpleApp2Test extends JTracertTestCase {
 
     @Test
@@ -19,6 +21,9 @@ public class SimpleApp2Test extends JTracertTestCase {
         MethodCall methodCall = tcpServer.getMethodCall();
 
         assertNotNull(methodCall);
+
+        String className = methodCall.getCallees().get(1).getRealClassName();
+        assertEquals("com.google.code.jtracert.samples.SimpleApp2$SimpleApp2InnerClass1", className);
 
     }
 

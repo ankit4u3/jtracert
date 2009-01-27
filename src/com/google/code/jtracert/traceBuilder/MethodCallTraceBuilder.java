@@ -7,7 +7,7 @@ import com.google.code.jtracert.model.JTracertObjectCompanion;
  */
 public interface MethodCallTraceBuilder extends ConfigurableAnalyzer {
 
-    void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments, JTracertObjectCompanion jTracertObjectCompanion);
+    void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/);
 
     void leave();
     void leave(Object returnValue);

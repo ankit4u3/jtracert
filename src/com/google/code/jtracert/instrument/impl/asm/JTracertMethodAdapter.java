@@ -134,7 +134,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
             if ((ACC_STATIC & methodAccess) == 0) {
 
                 if (isConstructor) {
-                    super.visitVarInsn(ALOAD, 0);
+                    /*super.visitVarInsn(ALOAD, 0);
                     super.visitTypeInsn(NEW,"com/google/code/jtracert/model/JTracertObjectCompanion");
                     super.visitInsn(DUP);
                     super.visitMethodInsn(
@@ -148,7 +148,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                             className.replace('.','/'),
                             "jTracertObjectCompanion",
                             "Lcom/google/code/jtracert/model/JTracertObjectCompanion;"
-                    );
+                    );*/
                 }
 
 
@@ -167,19 +167,19 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                 super.visitVarInsn(ALOAD, 0);
                 super.visitVarInsn(ALOAD, argIndex);
 
-                super.visitVarInsn(ALOAD, 0);
+                /*super.visitVarInsn(ALOAD, 0);
                 super.visitFieldInsn(
                         GETFIELD,
                         className.replace('.','/'),
                         "jTracertObjectCompanion",
                         "Lcom/google/code/jtracert/model/JTracertObjectCompanion;"
-                );
+                );*/
 
                 super.visitMethodInsn(
                         INVOKEINTERFACE,
                         "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
                         "enter",
-                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;Lcom/google/code/jtracert/model/JTracertObjectCompanion;)V"
+                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)V"
                 );
 
 
@@ -200,13 +200,13 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                 super.visitLdcInsn(getMethodDescriptor());
                 super.visitInsn(ACONST_NULL);
                 super.visitVarInsn(ALOAD, argIndex);
-                super.visitInsn(ACONST_NULL);
+                /*super.visitInsn(ACONST_NULL);*/
 
                 super.visitMethodInsn(
                         INVOKEINTERFACE,
                         "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
                         "enter",
-                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;Lcom/google/code/jtracert/model/JTracertObjectCompanion;)V"
+                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)V"
                 );
             }
         } catch (Throwable e) {

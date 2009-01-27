@@ -53,12 +53,12 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                   String superName,
                   String[] interfaces) {
         if (0 == (access & Opcodes.ACC_INTERFACE)) {
-            this.jTracertObjectCompanion = new FieldNode(
+            /*this.jTracertObjectCompanion = new FieldNode(
                     Opcodes.ACC_PUBLIC,
                     "jTracertObjectCompanion",
                     "Lcom/google/code/jtracert/model/JTracertObjectCompanion;",
                     null,
-                    null);
+                    null);*/
             isInterface = false;
         } else {
             isInterface = true;
@@ -91,9 +91,9 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
     @Override
     public void visitEnd() {
-        if (!isInterface) {
+        /*if (!isInterface) {
             jTracertObjectCompanion.accept(cv);
-        }
+        }*/
         super.visitEnd();
     }
 

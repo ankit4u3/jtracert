@@ -4,7 +4,7 @@
 
 Released on 27 January 2009
 
-  * Numerous defects fixed
+  * Numerous defects fixed ( Issue 2, Issue 3, Issue 4, Issue 5, Issue 6 )
   * Large projects support improved
   * Implemented small framework for integration tests - users are now welcomed to send their applications in case of having any problems
 

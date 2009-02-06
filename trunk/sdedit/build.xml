@@ -64,7 +64,7 @@
         <include name="**/*.conf"/>
       </fileset>
     </copy>
-    <javac debug="off" 
+    <javac debug="on" 
     	   nowarn="on"
     	   encoding="ISO-8859-1"
     	   failonerror="false"

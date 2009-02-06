@@ -3,13 +3,18 @@ package com.google.code.jtracert.gui;
 import net.sf.sdedit.Main;
 import net.sf.sdedit.editor.Editor;
 import net.sf.sdedit.ui.UserInterface;
+import net.sf.sdedit.ui.components.buttons.Activator;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
 import java.io.File;
+import java.beans.PropertyChangeListener;
+import java.util.Map;
+import java.util.HashMap;
 
 public class MainApp {
 
@@ -23,6 +28,50 @@ public class MainApp {
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
+
+                Editor.getEditor().getUI().addAction("Extras", new Action() {
+
+                    private Map<String,Object> values = new HashMap<String,Object>();
+
+                    {
+                        values.put(Action.NAME,"Bla");
+                    }
+                    
+                    public Object getValue(String key) {
+                        return values.get(key);
+                    }
+
+                    public void putValue(String key, Object value) {
+                        values.put(key, value);
+                    }
+
+                    public void setEnabled(boolean b) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    public boolean isEnabled() {
+                        return true;
+                    }
+
+                    public void addPropertyChangeListener(PropertyChangeListener listener) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    public void removePropertyChangeListener(PropertyChangeListener listener) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog((JFrame) Editor.getEditor().getUI(),"Selected");
+                    }
+
+                }, new Activator() {
+
+                    public boolean isEnabled() {
+                        return true;
+                    }
+                });
+
                 UserInterface ui = Editor.getEditor().getUI();
 
                 JFrame uiFrame = (JFrame) ui;
@@ -74,10 +123,12 @@ public class MainApp {
 
                                 String fileName = selectedNode.getDiagramFileName();
 
-                                try {
-                                    Editor.getEditor().loadCode(new File(fileName));
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
+                                if (null != fileName) {
+                                    try {
+                                        Editor.getEditor().loadCode(new File(fileName));
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
+                                    }
                                 }
 
                             }

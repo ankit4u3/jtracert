@@ -22,7 +22,7 @@ public class JTracertASMByteCodeTransformer extends BaseJTracertByteCodeTransfor
 
             ClassVisitor classVisitor = new JTracertClassAdapter(classWriter);
 
-            classReader.accept(classVisitor,0);
+            classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES);
 
             return classWriter.toByteArray();
 

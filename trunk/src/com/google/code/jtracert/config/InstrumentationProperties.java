@@ -9,9 +9,11 @@ public class InstrumentationProperties implements Serializable {
 
     public final static String CLASS_NAME_REGEX = "classNameRegEx";
     public final static String VERBOSE = "verboseInstrumentation";
+    public final static String DUMP_TRANSFORMED_CLASSES = "dumpTransformedClasses";
 
     private String classNameRegEx;
     private boolean verbose;
+    private boolean dumpTransformedClasses;
 
     public InstrumentationProperties() {
 
@@ -33,6 +35,13 @@ public class InstrumentationProperties implements Serializable {
             instrumentationProperties.setVerbose(false);
         }
 
+        String dumpTransformedClasses = System.getProperty(DUMP_TRANSFORMED_CLASSES);
+        if (null != dumpTransformedClasses) {
+            instrumentationProperties.setDumpTransformedClasses(Boolean.valueOf(dumpTransformedClasses));
+        } else {
+            instrumentationProperties.setDumpTransformedClasses(false);
+        }
+
         return instrumentationProperties;
     }
 
@@ -52,4 +61,11 @@ public class InstrumentationProperties implements Serializable {
         this.verbose = verbose;
     }
 
+    public boolean isDumpTransformedClasses() {
+        return dumpTransformedClasses;
+    }
+
+    public void setDumpTransformedClasses(boolean dumpTransformedClasses) {
+        this.dumpTransformedClasses = dumpTransformedClasses;
+    }
 }

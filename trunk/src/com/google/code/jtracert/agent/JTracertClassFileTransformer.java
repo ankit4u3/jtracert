@@ -14,6 +14,10 @@ import com.google.code.jtracert.util.ClassUtils;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.io.File;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author Dmitry Bedrin
@@ -70,11 +74,32 @@ public class JTracertClassFileTransformer
 
         try {
             byte[] transformedData = jTracertByteCodeTransformerAdapter.transform(classfileBuffer);
+            if (getInstrumentationProperties().isDumpTransformedClasses()) {
+                dumpTransformedClass(className, transformedData);
+            }
             return transformedData;
         } catch (ByteCodeTransformException e) {
+            e.printStackTrace();
             throw new IllegalClassFormatException(e.getMessage());
         }
 
+    }
+
+    /**
+     * @todo refactor this method in order to make path for classes configurable
+     * @todo refactor this method and build folder structure when dumping classes
+     * @param className
+     * @param transformedData
+     */
+    private void dumpTransformedClass(String className, byte[] transformedData) {
+        try {
+            File debugFile = new File("/tmp/" + className + ".class");
+            OutputStream outputStream = new FileOutputStream(debugFile);
+            outputStream.write(transformedData);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public InstrumentationProperties getInstrumentationProperties() {

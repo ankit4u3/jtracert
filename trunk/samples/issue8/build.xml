@@ -24,7 +24,7 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac destdir="classes/project" target="1.5">
+        <javac destdir="classes/project" target="1.6">
             <src path="src"/>
         </javac>
     </target>

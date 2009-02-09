@@ -35,17 +35,35 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     @Override
     public void visitCode() {
         super.visitCode();
-        super.visitLabel(startFinallyLabel);
+        mv.visitLabel(startFinallyLabel);
     }
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
         Label endFinallyLabel = new Label();
-        super.visitTryCatchBlock(startFinallyLabel, endFinallyLabel, endFinallyLabel, null);
-        super.visitLabel(endFinallyLabel);
+        mv.visitTryCatchBlock(startFinallyLabel, endFinallyLabel, endFinallyLabel, null);
+        mv.visitLabel(endFinallyLabel);
         onFinally(ATHROW);
-        super.visitInsn(ATHROW);
-        super.visitMaxs(maxStack, maxLocals);
+        mv.visitInsn(ATHROW);
+        mv.visitMaxs(maxStack, maxLocals);
+    }
+
+    private void onFinally(int opcode) {
+
+        mv.visitMethodInsn(
+                INVOKESTATIC,
+                "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                "getMethodCallTraceBuilder",
+                "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+        );
+
+        mv.visitMethodInsn(
+                INVOKEINTERFACE,
+                "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                "leave",
+                "()V"
+        );
+
     }
 
     @Override
@@ -55,7 +73,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         }
     }
 
-    private void onFinally(int opcode) {
+    /*private void onFinally(int opcode) {
         if (opcode == ATHROW) {
 
             super.visitInsn(DUP);
@@ -125,7 +143,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
         }
 
-    }
+    }*/
 
     @Override
     protected void onMethodEnter() {

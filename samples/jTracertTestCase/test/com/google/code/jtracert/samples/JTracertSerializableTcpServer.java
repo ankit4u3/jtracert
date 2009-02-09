@@ -3,6 +3,7 @@ package com.google.code.jtracert.samples;
 import com.google.code.jtracert.model.MethodCall;
 
 import java.util.Queue;
+import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +12,7 @@ import java.io.ObjectInputStream;
 
 public class JTracertSerializableTcpServer implements Runnable {
 
-    private Queue<MethodCall> methodCallsQueue = new ArrayBlockingQueue<MethodCall>(1);
+    private Queue<MethodCall> methodCallsQueue = new LinkedList<MethodCall>();
 
     private int port;
     private Thread serverThread;
@@ -34,15 +35,21 @@ public class JTracertSerializableTcpServer implements Runnable {
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(getPort());
-            Socket socket = serverSocket.accept();
 
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            Object object = objectInputStream.readObject();
+            while (true) {
 
-            MethodCall methodCall = (MethodCall) object;
+                Socket socket = serverSocket.accept();
 
-            methodCallsQueue.offer(methodCall);
+                InputStream inputStream = socket.getInputStream();
+
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                Object object = objectInputStream.readObject();
+
+                MethodCall methodCall = (MethodCall) object;
+
+                methodCallsQueue.offer(methodCall);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

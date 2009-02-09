@@ -89,6 +89,7 @@
         <ant dir="samples/simpleApp2"/>
         <ant dir="samples/jaxbApplication"/>
         <ant dir="samples/issue8"/>
+        <ant dir="samples/xerces"/>
     </target>
 
     <target name="all" depends="jar"/>

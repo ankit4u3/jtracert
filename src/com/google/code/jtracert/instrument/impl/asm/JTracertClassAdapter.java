@@ -47,11 +47,11 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
     @Override
     public void visit(int version,
-                  int access,
-                  String name,
-                  String signature,
-                  String superName,
-                  String[] interfaces) {
+                      int access,
+                      String name,
+                      String signature,
+                      String superName,
+                      String[] interfaces) {
         if (0 == (access & Opcodes.ACC_INTERFACE)) {
             /*this.jTracertObjectCompanion = new FieldNode(
                     Opcodes.ACC_PUBLIC,
@@ -70,22 +70,48 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
-        MethodVisitor parentMethodVisitor = super.visitMethod(
-                access,
-                name,
-                desc,
-                signature,
-                exceptions
-        );
+        /*if (name.equals("<init>")) {
+            return super.visitMethod(
+                    access,
+                    name,
+                    desc,
+                    signature,
+                    exceptions
+            );
+        }*/
 
-        return new JTracertMethodAdapter(
-                parentMethodVisitor,
-                access,
-                name,
-                desc,
-                getClassName(),
-                getInstrumentationProperties()
-        );
+        if (0 == (access & Opcodes.ACC_SYNTHETIC)) {
+
+            MethodVisitor parentMethodVisitor = super.visitMethod(
+                    access,
+                    name,
+                    desc,
+                    signature,
+                    exceptions
+            );
+
+            return new JTracertMethodAdapter(
+                    parentMethodVisitor,
+                    access,
+                    name,
+                    desc,
+                    getClassName(),
+                    getInstrumentationProperties()
+            );
+
+        } else {
+
+            System.out.println("Skiping syntetic method " + name);
+
+            return super.visitMethod(
+                    access,
+                    name,
+                    desc,
+                    signature,
+                    exceptions
+            );
+
+        }
 
     }
 

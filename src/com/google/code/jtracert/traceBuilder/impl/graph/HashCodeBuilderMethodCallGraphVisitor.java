@@ -27,8 +27,9 @@ public class HashCodeBuilderMethodCallGraphVisitor implements MethodCallVisitor<
         if (null != methodCall.getMethodSignature()) {
             hashCode += 37 * methodCall.getMethodSignature().hashCode();
         }
+        //hashCode += 37 * methodCall.getObjectHashCode();
 
-        JTracertObjectCompanion jTracertObjectCompanion = methodCall.getjTracertObjectCompanion();
+        /*JTracertObjectCompanion jTracertObjectCompanion = methodCall.getjTracertObjectCompanion();
         if (null != jTracertObjectCompanion) {
 
             int relativeInstanceNumber;
@@ -50,7 +51,7 @@ public class HashCodeBuilderMethodCallGraphVisitor implements MethodCallVisitor<
 
             hashCode += 37 * relativeInstanceNumber;
 
-        }
+        }*/
 
         for (MethodCall callee : methodCall.getCallees()) {
             hashCode += 37 * callee.accept(this);

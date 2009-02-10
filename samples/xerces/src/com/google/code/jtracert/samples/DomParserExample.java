@@ -31,11 +31,11 @@ public class DomParserExample {
 		//parse the xml file and get the dom object
 		parseXmlFile();
 
-		//get each employee element and create a Employee object
+		/*//get each employee element and create a Employee object
 		parseDocument();
 
 		//Iterate through the list and print the data
-		printData();
+		printData();*/
 
 	}
 

@@ -20,6 +20,8 @@ public class SimpleApp2 {
         innerClassObjects.add(new SimpleApp2InnerClass1());
         innerClassObjects.add(new SimpleApp2InnerClass1());
         innerClassObjects.add(new SimpleApp2InnerClass1());
+        innerClassObjects.add(new SimpleApp2InnerClass1());
+        innerClassObjects.add(new SimpleApp2InnerClass1());
     }
 
     public static void main(String[] arguments) throws Exception {

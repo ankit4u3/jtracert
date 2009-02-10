@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="createSampleApp" default="all">
+
+    <property environment="env"/>
+
+    <property name="applicationName" value="${env.applicationName}"/>
+    <property name="applicationMainClass" value="${env.applicationMainClass}"/>
+    <property name="applicationJarName" value="${applicationName}.jar"/>
+
+    <target name="clean">
+        <delete dir="${applicationName}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${applicationName}"/>
+    </target>
+
+    <target name="copy" depends="init">
+        <copy todir="${applicationName}">
+            <fileset dir="template">
+                <exclude name=".svn"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="replace" depends="copy">
+        <replace
+                file="${applicationName}/config/manifest.mf"
+                token="%%MAIN_CLASS%%"
+                value="${applicationMainClass}"/>
+        <replace
+                file="${applicationName}/src/com/google/code/jtracert/samples/TemplateApp.java"
+                token="%%MAIN_CLASS%%"
+                value="${applicationMainClass}"/>
+        <move
+                file="${applicationName}/src/com/google/code/jtracert/samples/TemplateApp.java"
+                tofile="${applicationName}/src/com/google/code/jtracert/samples/${applicationMainClass}.java"/>
+        <replace
+                file="${applicationName}/test/com/google/code/jtracert/samples/TemplateAppTest.java"
+                token="%%MAIN_CLASS%%"
+                value="${applicationMainClass}"/>
+        <replace
+                file="${applicationName}/test/com/google/code/jtracert/samples/TemplateAppTest.java"
+                token="%%JAR_NAME%%"
+                value="${applicationJarName}"/>
+        <move
+                file="${applicationName}/test/com/google/code/jtracert/samples/TemplateAppTest.java"
+                tofile="${applicationName}/test/com/google/code/jtracert/samples/${applicationMainClass}Test.java"/>
+        <replace
+                file="${applicationName}/build.xml"
+                token="%%JAR_NAME%%"
+                value="${applicationJarName}"/>
+    </target>
+    
+    <target name="all" depends="clean,replace"/>
+
+</project>

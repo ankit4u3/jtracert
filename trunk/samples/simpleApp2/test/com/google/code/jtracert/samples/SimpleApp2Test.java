@@ -10,20 +10,26 @@ public class SimpleApp2Test extends JTracertTestCase {
     @Test
     public void testSimpleApp2() throws Exception {
 
-        JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
+        try {
+            JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
 
-        Process process = startJavaProcessWithJTracert("deploy/simpleApp2.jar");
+            Process process = startJavaProcessWithJTracert("deploy/simpleApp2.jar");
 
-        int exitCode = process.waitFor();
+            int exitCode = process.waitFor();
 
-        assertEquals(0, exitCode);
+            assertEquals(0, exitCode);
 
-        MethodCall methodCall = tcpServer.getMethodCall();
+            MethodCall methodCall = tcpServer.getMethodCall();
 
-        assertNotNull(methodCall);
+            assertNotNull(methodCall);
 
-        String className = methodCall.getCallees().get(1).getRealClassName();
-        assertEquals("com.google.code.jtracert.samples.SimpleApp2$SimpleApp2InnerClass1", className);
+            dumpMethodCall(methodCall);
+            String className = methodCall.getCallees().get(0).getRealClassName();
+            assertEquals("com.google.code.jtracert.samples.SimpleApp2$SimpleApp2InnerClass1", className);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 

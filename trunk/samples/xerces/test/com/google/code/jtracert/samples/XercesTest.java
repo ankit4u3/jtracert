@@ -35,6 +35,8 @@ public class XercesTest extends JTracertTestCase {
             String[] commands = new String[]{
                     "java",
                     "-DanalyzerOutput=serializableTcpClient",
+                    "-DverboseInstrumentation=true",
+                    "-DverboseAnalyze=true",
                     "-javaagent:../../deploy/jTracert.jar",
                     className
             };
@@ -65,6 +67,8 @@ public class XercesTest extends JTracertTestCase {
             String[] commands = new String[]{
                     "java",
                     "-DanalyzerOutput=serializableTcpClient",
+                    "-DverboseInstrumentation=true",
+                    "-DverboseAnalyze=true",
                     "-javaagent:../../deploy/jTracert.jar",
                     "-jar",jarFileName
             };
@@ -91,17 +95,21 @@ public class XercesTest extends JTracertTestCase {
     @Test
     public void testXerces() throws Exception {
 
-        JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
+        try {
+            JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
 
-        Process process = startJavaProcessWithJTracert("deploy/xerces.jar", Arrays.asList("lib/xercesImpl-2.4.0.jar"));
+            Process process = startJavaProcessWithJTracert("deploy/xerces.jar", Arrays.asList("lib/xercesImpl-2.4.0.jar"));
 
-        int exitCode = process.waitFor();
+            int exitCode = process.waitFor();
 
-        assertEquals(0, exitCode);
+            assertEquals(0, exitCode);
 
-        MethodCall methodCall = tcpServer.getMethodCall();
+            MethodCall methodCall = tcpServer.getMethodCall();
 
-        assertNotNull(methodCall);
+            assertNotNull(methodCall);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

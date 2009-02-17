@@ -22,6 +22,7 @@ public class MethodCall implements Serializable  {
     private MethodCall calleer;
 
     private int callCount;
+    private int objectHashCode;
 
     public MethodCall() {
         this.setCallees(new LinkedList<MethodCall>());
@@ -99,6 +100,14 @@ public class MethodCall implements Serializable  {
 
     public void incrementCallCount() {
         this.callCount++;
+    }
+
+    public int getObjectHashCode() {
+        return objectHashCode;
+    }
+
+    public void setObjectHashCode(int objectHashCode) {
+        this.objectHashCode = objectHashCode;
     }
 
     public <T> T accept(MethodCallVisitor<T> visitor) {

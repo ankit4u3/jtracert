@@ -19,3 +19,16 @@ In this case, please check jTracert actuall file name.
 For example it can be jTracert-0.0.4.jar, but not just jTracert.jar
 
 See also Issue 2
+
+== I'm getting strange !NullPointerException from class !MethodCallTraceBuilderImpl ==
+
+Sometimes you may face following exception:
+{{{
+ java.lang.NullPointerException
+ 	at com.google.code.jtracert.traceBuilder.impl.MethodCallTraceBuilderImpl.leave(MethodCallTraceBuilderImpl.java:323)
+}}}
+This is caused by JVM bytecode limitations - we cannot insert new code before parent constructor call.
+
+A partial fix was dilevered in Issue 9 fix.
+
+If you're still getting this exception, try to expand the set of instrumented classes (or just remove classNameRegEx parameter) - see CommandLineParameters page.

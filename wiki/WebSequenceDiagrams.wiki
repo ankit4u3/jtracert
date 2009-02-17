@@ -13,3 +13,5 @@ http://lh4.ggpht.com/Dmitry.Bedrin/SMWFzkIEqZI/AAAAAAAAAqk/sRh34kW92Vk/s800/Scre
 An example command line for using jTracert together with websequencediagrams is like below:
 
 _java -!DanalyzerOutput=*webSequenceDiagramsFileSystem* -!DoutputFolder=/home/dmitrybedrin/bla -!DclassNameRegEx=net\.sf.{{{*}}} -javaagent:jTracert.jar -jar sdedit-3.0.3.jar_
+
+*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.0.5.jar

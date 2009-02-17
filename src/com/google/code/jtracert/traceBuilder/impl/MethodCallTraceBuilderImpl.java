@@ -63,6 +63,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
+    private static final int MAX_COUNT = 10000;
 
     public MethodCallTraceBuilderImpl() {
 
@@ -112,7 +113,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             }
 
-            if (state.count > 1000) return;
+            if (state.count > MAX_COUNT) return;
 
             MethodCall currentMethodCall = new MethodCall();
 
@@ -301,7 +302,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             if (1 == state.level) {
 
-                if (state.count > 1000) {
+                if (state.count > MAX_COUNT) {
                     if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                         System.out.println("Too large trace detected - will not be processed");
                     }
@@ -311,7 +312,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 traceBuilderState.remove();
             } else {
 
-                if (state.count > 1000) return;
+                if (state.count > MAX_COUNT) return;
 
                 MethodCall callerMethodCall = contextMethodCall.getCalleer();
                 state.methodCall = callerMethodCall;
@@ -349,20 +350,24 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
         MethodCall currentMethodCall = state.methodCall;
 
-        List<MethodCall> siblingCallees = currentMethodCall.getCalleer().getCallees();
+        MethodCall parentMethodCall = currentMethodCall.getCalleer();
 
-        if (siblingCallees.size() > 1) {
-            MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
+        if (null != parentMethodCall) {
+            List<MethodCall> siblingCallees = parentMethodCall.getCallees();
 
-            if ((previousSiblingMethodCall.getMethodName().equals("<init>")) &&
-                (previousSiblingMethodCall.getObjectHashCode() == currentMethodCall.getObjectHashCode())) {
-                currentMethodCall.addCallee(previousSiblingMethodCall);
-                siblingCallees.remove(previousSiblingMethodCall);
+            if (siblingCallees.size() > 1) {
+                MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
 
-                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                    System.out.println("Swapping constructors!!!!");
+                if ((previousSiblingMethodCall.getMethodName().equals("<init>")) &&
+                    (previousSiblingMethodCall.getObjectHashCode() == currentMethodCall.getObjectHashCode())) {
+                    currentMethodCall.addCallee(previousSiblingMethodCall);
+                    siblingCallees.remove(previousSiblingMethodCall);
+
+                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                        System.out.println("Swapping constructors!!!!");
+                    }
+
                 }
-
             }
         }
     }
@@ -373,7 +378,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         System.out.println(System.identityHashCode(exception));
         System.out.println();
 
-//        System.out.println("Leaving constructor on exception with desriptor " + methodDescriptor);
+        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+            System.out.println("Leaving constructor on exception with desriptor " + methodDescriptor);
+        }
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
 
@@ -394,12 +401,16 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         int enterConstructorLevel = state.enterConstructorLevel.get(className);
         int leaveConstructorLevel = state.leaveConstructorLevel.get(className);
 
-//        System.out.println("enterConstructorLevel=" + enterConstructorLevel);
-//        System.out.println("leaveConstructorLevel=" + leaveConstructorLevel);
+        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+            System.out.println("enterConstructorLevel=" + enterConstructorLevel);
+            System.out.println("leaveConstructorLevel=" + leaveConstructorLevel);
+        }
 
         if (enterConstructorLevel < leaveConstructorLevel) {
 
-//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println("enterConstructorLevel < leaveConstructorLevel");
+            }
 
             enter(
                     className,
@@ -407,6 +418,25 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                     methodDescriptor,
                     null,
                     null);
+
+
+            // Assign hash code from previous sibling constructor
+
+            MethodCall currentMethodCall = state.methodCall;
+
+            List<MethodCall> siblingCallees = currentMethodCall.getCalleer().getCallees();
+
+            if (siblingCallees.size() > 1) {
+                MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
+
+                if (previousSiblingMethodCall.getMethodName().equals("<init>")) {
+                    currentMethodCall.setObjectHashCode(previousSiblingMethodCall.getObjectHashCode());
+                }
+                
+            }
+
+            // EO assign hash code
+
             swapConstructors();
             leave();
 

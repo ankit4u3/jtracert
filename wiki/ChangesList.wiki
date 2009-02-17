@@ -1,5 +1,11 @@
 #summary jTracert Changes List
 
+=0.0.5=
+
+Released on 17 February 2009
+  * Bugfixing (Issue 8 and Issue 9)
+  * License switched to [http://www.gnu.org/licenses/gpl-3.0.txt GNU GPL version 3]
+
 =0.0.4=
 
 Released on 27 January 2009

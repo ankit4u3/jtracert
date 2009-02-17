@@ -10,6 +10,8 @@ You can download it from following page: http://www.zanthan.com/itymbi/archives/
 Start jTracert with following command line parameters:
 _java *-!DanalyzerOutput=sequenceFileSystem -!DoutputFolder=/tmp/sq -javaagent:jTracert.jar* -jar yourApplication.jar_
 
+*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.0.5.jar
+
 jTracert will generate SEQUENCE diagrams to the specified folder /tmp
 
 Example file content is like below:

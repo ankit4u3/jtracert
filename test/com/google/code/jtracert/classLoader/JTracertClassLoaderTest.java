@@ -335,6 +335,14 @@ public class JTracertClassLoaderTest extends TestCase {
             leaveOnThrowExceptionValueCount = getLeaveOnThrowExceptionValueCount() + 1;
         }
 
+        public void leaveConstructor(String methodDescriptor) {
+            leaveOnReturnVoidCount = getLeaveOnReturnVoidCount() + 1;
+        }
+
+        public void leaveConstructor(String className, String methodName, String methodDescriptor, Throwable exception) {
+            leaveOnThrowExceptionValueCount = getLeaveOnThrowExceptionValueCount() + 1;
+        }
+
         public int getEnterMethodCount() {
             return enterMethodCount;
         }
@@ -351,6 +359,15 @@ public class JTracertClassLoaderTest extends TestCase {
             return leaveOnThrowExceptionValueCount;
         }
 
+        @Override
+        public String toString() {
+            return "MethodCallTraceBuilderInvokeCounter{" +
+                    "enterMethodCount=" + enterMethodCount +
+                    ", leaveOnReturnVoidCount=" + leaveOnReturnVoidCount +
+                    ", leaveOnReturnValueCount=" + leaveOnReturnValueCount +
+                    ", leaveOnThrowExceptionValueCount=" + leaveOnThrowExceptionValueCount +
+                    '}';
+        }
     }
 
 }

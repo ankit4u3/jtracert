@@ -28,6 +28,7 @@
         <delete dir="${classes.dir}"/>
         <delete dir="${deploy.dir}"/>
         <delete dir="${release.dir}"/>
+        <delete dir="junit"/>
     </target>
 
     <target name="init">
@@ -47,16 +48,22 @@
     </target>
 
     <target name="test" depends="compile.test">
+
+        <mkdir dir="junit"/>
+
         <junit printsummary="yes" haltonerror="yes" showoutput="yes">
+
             <classpath path="${classes.project.dir}"/>
             <classpath path="${classes.test.dir}"/>
             <classpath refid="build.classpath"/>
             
-            <batchtest >
+            <batchtest todir="junit">
                 <fileset dir="${src.test.dir}">
                     <include name="**/*Test.java"/>
                 </fileset>
             </batchtest>
+
+            <formatter type="plain" />
 
         </junit>
     </target>
@@ -90,6 +97,7 @@
         <ant dir="samples/jaxbApplication"/>
         <ant dir="samples/issue8"/>
         <ant dir="samples/xerces"/>
+        <ant dir="samples/issue9"/>
     </target>
 
     <target name="all" depends="jar"/>

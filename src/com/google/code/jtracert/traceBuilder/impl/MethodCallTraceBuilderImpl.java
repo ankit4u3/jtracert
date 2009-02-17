@@ -16,10 +16,10 @@ import com.google.code.jtracert.util.FileUtils;
 import com.google.code.jtracert.config.AnalyzeProperties;
 
 import java.util.concurrent.*;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 
 /**
  * @author Dmitry Bedrin
@@ -28,10 +28,24 @@ class MethodCallTraceBuilderState {
 
     public MethodCall methodCall = null;
     public boolean buildingTrace = false;
-    public int graphHashCode = 17;
+//    public int graphHashCode = 17;
     public int level = 1;
     public int count = 1;
 
+    public Map<String,Integer> enterConstructorLevel = new HashMap<String,Integer>();
+    public Map<String,Integer> leaveConstructorLevel = new HashMap<String,Integer>();
+
+    @Override
+    public String toString() {
+        return "MethodCallTraceBuilderState{" +
+                "methodCall=" + methodCall +
+                ", buildingTrace=" + buildingTrace +
+//                ", graphHashCode=" + graphHashCode +
+                ", level=" + level +
+                ", count=" + count +
+                '}';
+    }
+    
 }
 
 class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTraceBuilderState> {
@@ -49,6 +63,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
+    private static final int MAX_COUNT = 10000;
 
     public MethodCallTraceBuilderImpl() {
 
@@ -59,21 +74,17 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 1,
                 5L,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<Runnable>(20,true),
+                new ArrayBlockingQueue<Runnable>(5,true),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
 
     }
 
+    private Set<String> jarURLs = new HashSet<String>();
 
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
 
-        JTracertObjectCompanion jTracertObjectCompanion =
-                null == object ? null :
-                new JTracertObjectCompanion(System.identityHashCode(object));
-
-        jTracertObjectCompanion = null; // todo: refactoring
-
+        //watchJar(object);
         MethodCallTraceBuilderState state = traceBuilderState.get();
 
         if (state.buildingTrace) return;
@@ -84,7 +95,25 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             state.level++;
             state.count++;
 
-            if (state.count > 1000) return;
+            if (methodName.equals("<init>")) {
+
+                Integer constructorLevelFromState;
+                int constructorLevel;
+
+                constructorLevelFromState = state.enterConstructorLevel.get(className);
+                if (null == constructorLevelFromState) {
+                    constructorLevel = 0;
+                } else {
+                    constructorLevel = constructorLevelFromState;
+                }
+
+                constructorLevel++;
+
+                state.enterConstructorLevel.put(className, constructorLevel);
+
+            }
+
+            if (state.count > MAX_COUNT) return;
 
             MethodCall currentMethodCall = new MethodCall();
 
@@ -101,10 +130,17 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             currentMethodCall.setMethodName(methodName);
             currentMethodCall.setMethodSignature(methodDescriptor);
 
-            currentMethodCall.setjTracertObjectCompanion(jTracertObjectCompanion);
+            //currentMethodCall.setjTracertObjectCompanion(jTracertObjectCompanion);
 
-            int hashCode = state.graphHashCode;
-            hashCode = (37 * (37 * hashCode + methodName.hashCode()) + state.level); // todo refactor
+            if (object == null) {
+                currentMethodCall.setObjectHashCode(className.hashCode()); // Use Class object instead of String
+            } else {
+                currentMethodCall.setObjectHashCode(System.identityHashCode(object));
+            }
+
+
+            //int hashCode = state.graphHashCode;
+            //hashCode = (37 * (37 * hashCode + methodName.hashCode()) + state.level); // todo refactor
 
             if (object == null) {
                 currentMethodCall.setRealClassName(className);
@@ -112,8 +148,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 currentMethodCall.setRealClassName(object.getClass().getName());
             }
 
-            state.graphHashCode = hashCode;
+            //state.graphHashCode = hashCode;
 
+            System.out.println(className + "." + methodName + methodDescriptor +  " <<<");
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -121,6 +158,19 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             state.buildingTrace = false;
         }
 
+    }
+
+    private void watchJar(Object object) {
+        if (null != object) {
+            URL codeLocationURL = object.getClass().getProtectionDomain().getCodeSource().getLocation();
+            if (null != codeLocationURL) {
+                String jarURL = codeLocationURL.toString();
+                if (!jarURLs.contains(jarURL)) {
+                    System.out.println("Dependency from JAR: " + jarURL);
+                    jarURLs.add(jarURL);
+                }
+            }
+        }
     }
 
     private void graphFinished(final MethodCall methodCall) {
@@ -181,73 +231,48 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
         public void run() {
 
-            long currentTime = System.nanoTime();
+            MethodCallProcessor methodCallProcessor = null;
 
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Normalizing Call Graph <<<");
-            }
-            methodCall.accept(new NormalizeMetodCallGraphVisitor());
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Normalizing Call Graph >>>");
-                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
-            }
-
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Calculating Call Graph Hash <<<");
-            }
-            int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Calculating Call Graph Hash >>>");
-                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
-            }
-
-            if (!processedHashCodes.contains(hashCode)) {
-                processedHashCodes.add(hashCode);
-
-                MethodCallProcessor methodCallProcessor = null;
-
-                if (null != analyzeProperties) {
-                    switch (analyzeProperties.getAnalyzerOutput()) {
-                        case none:
-                            break;
-                        case sdEditOut:
-                            methodCallProcessor = new SDEditOutClient();
-                            break;
-                        case sdEditRtClient:
-                            methodCallProcessor = new SDEditRtClient();
-                            break;
-                        case sdEditFileSystem:
-                            methodCallProcessor = new SDEditFileClient();
-                            break;
-                        case sequenceOut:
-                            methodCallProcessor = new SequenceOutClient();
-                            break;
-                        case sequenceFileSystem:
-                            methodCallProcessor = new SequenceFileClient();
-                            break;
-                        case webSequenceDiagramsOut:
-                            methodCallProcessor = new WebSequenceDiagramsOutClient();
-                            break;
-                        case webSequenceDiagramsFileSystem:
-                            methodCallProcessor = new WebSequenceDiagramsFileClient();
-                            break;
-                        case serializableTcpClient:
-                            methodCallProcessor = new SerializableTcpClient();
-                            break;
-                    }
+            if (null != analyzeProperties) {
+                switch (analyzeProperties.getAnalyzerOutput()) {
+                    case none:
+                        break;
+                    case sdEditOut:
+                        methodCallProcessor = new SDEditOutClient();
+                        break;
+                    case sdEditRtClient:
+                        methodCallProcessor = new SDEditRtClient();
+                        break;
+                    case sdEditFileSystem:
+                        methodCallProcessor = new SDEditFileClient();
+                        break;
+                    case sequenceOut:
+                        methodCallProcessor = new SequenceOutClient();
+                        break;
+                    case sequenceFileSystem:
+                        methodCallProcessor = new SequenceFileClient();
+                        break;
+                    case webSequenceDiagramsOut:
+                        methodCallProcessor = new WebSequenceDiagramsOutClient();
+                        break;
+                    case webSequenceDiagramsFileSystem:
+                        methodCallProcessor = new WebSequenceDiagramsFileClient();
+                        break;
+                    case serializableTcpClient:
+                        methodCallProcessor = new SerializableTcpClient();
+                        break;
                 }
+            }
 
-                if (null != methodCallProcessor) {
-                    methodCallProcessor.setAnalyzeProperties(analyzeProperties);
+            if (null != methodCallProcessor) {
+                methodCallProcessor.setAnalyzeProperties(analyzeProperties);
 
-                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
-                    }
-                    methodCallProcessor.processMethodCall(methodCall);
-                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
-                    }
-
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
+                }
+                methodCallProcessor.processMethodCall(methodCall);
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
                 }
 
             }
@@ -271,23 +296,23 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             MethodCall contextMethodCall = state.methodCall;
 
-//            MethodCall callerMethodCall = contextMethodCall.getCalleer();
-//            if (null == callerMethodCall) {
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println(contextMethodCall.getRealClassName() + "." + contextMethodCall.getMethodName() + contextMethodCall.getMethodSignature() + " >>>");
+            }
+
             if (1 == state.level) {
 
-                if (state.count > 1000) {
-
-                } else {
-                    if (!processedHashCodes.contains(state.graphHashCode)) {
-                        graphFinished(contextMethodCall);
-                        processedHashCodes.add(state.graphHashCode);
+                if (state.count > MAX_COUNT) {
+                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                        System.out.println("Too large trace detected - will not be processed");
                     }
+                } else {
+                    graphFinished(contextMethodCall);
                 }
-                //graphFinished(contextMethodCall);
                 traceBuilderState.remove();
             } else {
 
-                if (state.count > 1000) return;
+                if (state.count > MAX_COUNT) return;
 
                 MethodCall callerMethodCall = contextMethodCall.getCalleer();
                 state.methodCall = callerMethodCall;
@@ -309,4 +334,115 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         leave();
     }
 
+    public void leaveConstructor(String methodDescriptor) {
+
+        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+            System.out.println("Leaving constructor with desriptor " + methodDescriptor);
+        }
+
+        swapConstructors();
+
+        leave();
+    }
+
+    private void swapConstructors() {
+        MethodCallTraceBuilderState state = traceBuilderState.get();
+
+        MethodCall currentMethodCall = state.methodCall;
+
+        MethodCall parentMethodCall = currentMethodCall.getCalleer();
+
+        if (null != parentMethodCall) {
+            List<MethodCall> siblingCallees = parentMethodCall.getCallees();
+
+            if (siblingCallees.size() > 1) {
+                MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
+
+                if ((previousSiblingMethodCall.getMethodName().equals("<init>")) &&
+                    (previousSiblingMethodCall.getObjectHashCode() == currentMethodCall.getObjectHashCode())) {
+                    currentMethodCall.addCallee(previousSiblingMethodCall);
+                    siblingCallees.remove(previousSiblingMethodCall);
+
+                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                        System.out.println("Swapping constructors!!!!");
+                    }
+
+                }
+            }
+        }
+    }
+
+    public void leaveConstructor(String className, String methodName, String methodDescriptor, Throwable exception) {
+
+        System.out.println();
+        System.out.println(System.identityHashCode(exception));
+        System.out.println();
+
+        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+            System.out.println("Leaving constructor on exception with desriptor " + methodDescriptor);
+        }
+
+        MethodCallTraceBuilderState state = traceBuilderState.get();
+
+        Integer constructorLevelFromState;
+        int constructorLevel;
+
+        constructorLevelFromState = state.leaveConstructorLevel.get(className);
+        if (null == constructorLevelFromState) {
+            constructorLevel = 0;
+        } else {
+            constructorLevel = constructorLevelFromState;
+        }
+
+        constructorLevel++;
+
+        state.leaveConstructorLevel.put(className, constructorLevel);
+
+        int enterConstructorLevel = state.enterConstructorLevel.get(className);
+        int leaveConstructorLevel = state.leaveConstructorLevel.get(className);
+
+        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+            System.out.println("enterConstructorLevel=" + enterConstructorLevel);
+            System.out.println("leaveConstructorLevel=" + leaveConstructorLevel);
+        }
+
+        if (enterConstructorLevel < leaveConstructorLevel) {
+
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println("enterConstructorLevel < leaveConstructorLevel");
+            }
+
+            enter(
+                    className,
+                    methodName,
+                    methodDescriptor,
+                    null,
+                    null);
+
+
+            // Assign hash code from previous sibling constructor
+
+            MethodCall currentMethodCall = state.methodCall;
+
+            List<MethodCall> siblingCallees = currentMethodCall.getCalleer().getCallees();
+
+            if (siblingCallees.size() > 1) {
+                MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
+
+                if (previousSiblingMethodCall.getMethodName().equals("<init>")) {
+                    currentMethodCall.setObjectHashCode(previousSiblingMethodCall.getObjectHashCode());
+                }
+                
+            }
+
+            // EO assign hash code
+
+            swapConstructors();
+            leave();
+
+        } else {
+            leave();
+        }
+
+    }
 }

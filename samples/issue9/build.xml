@@ -30,7 +30,7 @@
     </target>
 
     <target name="compile.test" depends="init">
-        <javac destdir="classes/test" target="1.5" debug="on">
+        <javac destdir="classes/test" target="1.5">
             <src path="test"/>
             <classpath refid="build.classpath"/>
         </javac>
@@ -51,7 +51,7 @@
     </target>
 
     <target name="jar" depends="compile">
-        <jar destfile="deploy/simpleApp2.jar" manifest="config/manifest.mf">
+        <jar destfile="deploy/issue9.jar" manifest="config/manifest.mf">
             <fileset dir="classes/project"/>
         </jar>
     </target>

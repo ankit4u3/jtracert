@@ -26,8 +26,20 @@ public class Issue9 {
         try {
             Issue9 issue9 = new Issue9();
         } catch (Exception e) {
+            // do nothing
         }
-        //Issue9 issue9 = new Issue9(1);
+
+        Thread thread = new Thread(
+            new Runnable() {
+                public void run() {
+                    Issue9 issue9 = new Issue9(1);
+                }
+            }
+        );
+
+        thread.start();
+        thread.join();
+
     }
     
 }

@@ -99,20 +99,92 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
             }
 
         } else {
+            /*if (opcode == RETURN) {
+                mv.visitMethodInsn(
+                        INVOKESTATIC,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                        "getMethodCallTraceBuilder",
+                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+                );
 
-            mv.visitMethodInsn(
-                    INVOKESTATIC,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
-                    "getMethodCallTraceBuilder",
-                    "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
-            );
+                mv.visitMethodInsn(
+                        INVOKEINTERFACE,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                        "leave",
+                        "()V"
+                );
 
-            mv.visitMethodInsn(
-                    INVOKEINTERFACE,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
-                    "leave",
-                    "()V"
-            );
+            }*/
+
+            if (opcode == ATHROW) {
+
+                super.visitInsn(DUP);
+
+                int exceptionVar = newLocal(Type.getType(Throwable.class));
+                super.visitVarInsn(ASTORE,exceptionVar);
+
+                super.visitMethodInsn(
+                        INVOKESTATIC,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                        "getMethodCallTraceBuilder",
+                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+                );
+
+                super.visitVarInsn(ALOAD,exceptionVar);
+
+                super.visitMethodInsn(
+                        INVOKEINTERFACE,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                        "exception",
+                        "(Ljava/lang/Throwable;)V"
+                );
+
+            } else if (opcode == RETURN) {
+
+                super.visitMethodInsn(
+                        INVOKESTATIC,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                        "getMethodCallTraceBuilder",
+                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+                );
+
+                super.visitMethodInsn(
+                        INVOKEINTERFACE,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                        "leave",
+                        "()V"
+                );
+
+            } else {
+
+                if(opcode==LRETURN || opcode==DRETURN) {
+                    super.visitInsn(DUP2);
+                } else {
+                    super.visitInsn(DUP);
+                }
+                box(Type.getReturnType(this.methodDesc));
+
+                int returnVar = newLocal(Type.getType(Throwable.class));
+                super.visitVarInsn(ASTORE,returnVar);
+
+                super.visitMethodInsn(
+                        INVOKESTATIC,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                        "getMethodCallTraceBuilder",
+                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+                );
+
+                super.visitVarInsn(ALOAD,returnVar);
+
+                super.visitMethodInsn(
+                        INVOKEINTERFACE,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                        "leave",
+                        "(Ljava/lang/Object;)V"
+                );
+
+            }
+
 
         }
 

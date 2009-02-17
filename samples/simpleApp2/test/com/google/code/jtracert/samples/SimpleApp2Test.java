@@ -1,9 +1,7 @@
 package com.google.code.jtracert.samples;
 
-import org.junit.Test;
 import com.google.code.jtracert.model.MethodCall;
-
-import java.io.FileWriter;
+import org.junit.Test;
 
 public class SimpleApp2Test extends JTracertTestCase {
 

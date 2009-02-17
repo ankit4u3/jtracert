@@ -21,13 +21,13 @@ public class AnalyzeProperties implements Serializable {
         serializableTcpClient
     }
 
-    public final static String SDEDIT_HOST = "sdEditHost";
-    public final static String SDEDIT_PORT = "sdEditPort";
-    public final static String ANALYZER_OUTPUT = "analyzerOutput";
-    public final static String OUTPUT_FOLDER = "outputFolder";
-    public final static String VERBOSE = "verboseAnalyze";
-    public final static String SERIALIZABLE_TCP_SERVER_HOST = "serializableTcpServerHost";
-    public final static String SERIALIZABLE_TCP_SERVER_PORT = "serializableTcpServerPort";
+    private final static String SDEDIT_HOST = "sdEditHost";
+    private final static String SDEDIT_PORT = "sdEditPort";
+    private final static String ANALYZER_OUTPUT = "analyzerOutput";
+    private final static String OUTPUT_FOLDER = "outputFolder";
+    private final static String VERBOSE = "verboseAnalyze";
+    private final static String SERIALIZABLE_TCP_SERVER_HOST = "serializableTcpServerHost";
+    private final static String SERIALIZABLE_TCP_SERVER_PORT = "serializableTcpServerPort";
 
     private String sdEditHost;
     private int sdEditPort;
@@ -38,7 +38,7 @@ public class AnalyzeProperties implements Serializable {
     private String serializableTcpServerHost;
     private int serializableTcpServerPort;
 
-    public AnalyzeProperties() {
+    private AnalyzeProperties() {
 
     }
 

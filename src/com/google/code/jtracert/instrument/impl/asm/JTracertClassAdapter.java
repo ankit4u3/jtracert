@@ -7,7 +7,6 @@ import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.FieldNode;
 
 /**
  * @author Dmitry Bedrin
@@ -17,7 +16,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     private String className;
     private InstrumentationProperties instrumentationProperties;
 
-    private FieldNode jTracertObjectCompanion;
     private boolean isInterface;
 
     public String getClassName() {
@@ -52,33 +50,17 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                       String signature,
                       String superName,
                       String[] interfaces) {
-        if (0 == (access & Opcodes.ACC_INTERFACE)) {
-            /*this.jTracertObjectCompanion = new FieldNode(
-                    Opcodes.ACC_PUBLIC,
-                    "jTracertObjectCompanion",
-                    "Lcom/google/code/jtracert/model/JTracertObjectCompanion;",
-                    null,
-                    null);*/
-            isInterface = false;
-        } else {
-            isInterface = true;
-        }
+
+        isInterface = 0 != (access & Opcodes.ACC_INTERFACE);
+
         setClassName(ClassUtils.getFullyQualifiedName(name));
+
         super.visit(version, access, name, signature, superName, interfaces);
+        
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-
-        /*if (name.equals("<init>")) {
-            return super.visitMethod(
-                    access,
-                    name,
-                    desc,
-                    signature,
-                    exceptions
-            );
-        }*/
 
         if (0 == (access & Opcodes.ACC_SYNTHETIC)) {
 
@@ -101,7 +83,9 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
         } else {
 
-            System.out.println("Skiping syntetic method " + name);
+            if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
+                System.out.println("Skiping syntetic method " + name);
+            }
 
             return super.visitMethod(
                     access,
@@ -117,9 +101,11 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
     @Override
     public void visitEnd() {
-        /*if (!isInterface) {
-            jTracertObjectCompanion.accept(cv);
-        }*/
+
+        if (!isInterface) {
+            // Apply class transformations
+        }
+
         super.visitEnd();
     }
 

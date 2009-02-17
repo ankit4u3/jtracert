@@ -1,7 +1,5 @@
 package com.google.code.jtracert.traceBuilder;
 
-import com.google.code.jtracert.model.JTracertObjectCompanion;
-
 /**
  * @author Dmitry Bedrin
  */

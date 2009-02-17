@@ -2,11 +2,6 @@ package com.google.code.jtracert.gui;
 
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeModelEvent;
-import java.io.File;
-import java.util.Iterator;
-import java.util.Vector;
 
 public class JTracertTreeModel extends TreeModelSupport implements TreeModel {
 

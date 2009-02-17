@@ -2,7 +2,10 @@ package com.google.code.jtracert.classFilter;
 
 import static com.google.code.jtracert.classFilter.FilterAction.ALLOW;
 import static com.google.code.jtracert.classFilter.FilterAction.DENY;
-import com.google.code.jtracert.classFilter.impl.*;
+import com.google.code.jtracert.classFilter.impl.AllowClassFilter;
+import com.google.code.jtracert.classFilter.impl.DenyBootstrapAndExtensionsClassLoaders;
+import com.google.code.jtracert.classFilter.impl.DenyClassByPackageNameFilter;
+import com.google.code.jtracert.classFilter.impl.DenyJTracertClassesFilter;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -53,11 +56,7 @@ public class ClassFilterProcessor {
                     classLoaderFilterAction.apply(classFilter.filterClassLoader(classLoader));
         }
 
-        if ((DENY == classNameFilterAction) || (DENY == classLoaderFilterAction)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !((DENY == classNameFilterAction) || (DENY == classLoaderFilterAction));
 
     }
 

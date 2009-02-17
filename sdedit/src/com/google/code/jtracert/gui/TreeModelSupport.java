@@ -1,7 +1,7 @@
 package com.google.code.jtracert.gui;
 
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import java.util.Enumeration;
 import java.util.Vector;
 

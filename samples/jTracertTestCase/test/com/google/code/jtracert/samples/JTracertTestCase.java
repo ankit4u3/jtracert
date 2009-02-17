@@ -1,12 +1,11 @@
 package com.google.code.jtracert.samples;
 
+import com.google.code.jtracert.model.MethodCall;
 import junit.framework.TestCase;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-
-import com.google.code.jtracert.model.MethodCall;
 
 public abstract class JTracertTestCase extends TestCase {
 

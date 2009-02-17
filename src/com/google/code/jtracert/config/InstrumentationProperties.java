@@ -7,15 +7,15 @@ import java.io.Serializable;
  */
 public class InstrumentationProperties implements Serializable {
 
-    public final static String CLASS_NAME_REGEX = "classNameRegEx";
-    public final static String VERBOSE = "verboseInstrumentation";
-    public final static String DUMP_TRANSFORMED_CLASSES = "dumpTransformedClasses";
+    private final static String CLASS_NAME_REGEX = "classNameRegEx";
+    private final static String VERBOSE = "verboseInstrumentation";
+    private final static String DUMP_TRANSFORMED_CLASSES = "dumpTransformedClasses";
 
     private String classNameRegEx;
     private boolean verbose;
     private boolean dumpTransformedClasses;
 
-    public InstrumentationProperties() {
+    private InstrumentationProperties() {
 
     }
 

@@ -1,7 +1,7 @@
 package com.google.code.jtracert.traceBuilder;
 
-import com.google.code.jtracert.traceBuilder.impl.MethodCallTraceBuilderImpl;
 import com.google.code.jtracert.config.AnalyzeProperties;
+import com.google.code.jtracert.traceBuilder.impl.MethodCallTraceBuilderImpl;
 
 import java.lang.reflect.Method;
 

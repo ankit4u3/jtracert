@@ -1,15 +1,14 @@
 package com.google.code.jtracert.samples;
 
-import org.junit.Test;
 import com.google.code.jtracert.model.MethodCall;
+import org.junit.Test;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Collections;
-import java.util.Arrays;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 

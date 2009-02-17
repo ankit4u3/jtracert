@@ -18,7 +18,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
     private InstrumentationProperties instrumentationProperties;
 
-    private Label startFinallyLabel = new Label();
+    private final Label startFinallyLabel = new Label();
 
     public JTracertMethodAdapter(MethodVisitor mv, int access, String name, String desc, String className) {
         super(mv, access, name, desc);

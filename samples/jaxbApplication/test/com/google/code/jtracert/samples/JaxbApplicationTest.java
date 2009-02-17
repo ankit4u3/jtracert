@@ -1,7 +1,7 @@
 package com.google.code.jtracert.samples;
 
-import org.junit.Test;
 import com.google.code.jtracert.model.MethodCall;
+import org.junit.Test;
 
 public class JaxbApplicationTest extends JTracertTestCase {
 

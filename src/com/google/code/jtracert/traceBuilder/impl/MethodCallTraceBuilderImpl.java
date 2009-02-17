@@ -1,25 +1,26 @@
 package com.google.code.jtracert.traceBuilder.impl;
 
-import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
-import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsFileClient;
-import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceOutClient;
-import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceFileClient;
-import com.google.code.jtracert.model.JTracertObjectCompanion;
+import com.google.code.jtracert.config.AnalyzeProperties;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
-import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
-import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
-import com.google.code.jtracert.traceBuilder.impl.sdedit.*;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditOutClient;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditRtClient;
+import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceFileClient;
+import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceOutClient;
 import com.google.code.jtracert.traceBuilder.impl.serializableTcpClient.SerializableTcpClient;
-import com.google.code.jtracert.util.SizeOutputStream;
+import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsFileClient;
+import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
 import com.google.code.jtracert.util.FileUtils;
-import com.google.code.jtracert.config.AnalyzeProperties;
+import com.google.code.jtracert.util.SizeOutputStream;
 
-import java.util.concurrent.*;
-import java.util.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Dmitry Bedrin
@@ -84,7 +85,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
 
-        //watchJar(object);
+        //watchJar(object); // uncomment this line in order to track JAR dependencies
+
         MethodCallTraceBuilderState state = traceBuilderState.get();
 
         if (state.buildingTrace) return;
@@ -130,14 +132,11 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             currentMethodCall.setMethodName(methodName);
             currentMethodCall.setMethodSignature(methodDescriptor);
 
-            //currentMethodCall.setjTracertObjectCompanion(jTracertObjectCompanion);
-
             if (object == null) {
                 currentMethodCall.setObjectHashCode(className.hashCode()); // Use Class object instead of String
             } else {
                 currentMethodCall.setObjectHashCode(System.identityHashCode(object));
             }
-
 
             //int hashCode = state.graphHashCode;
             //hashCode = (37 * (37 * hashCode + methodName.hashCode()) + state.level); // todo refactor
@@ -150,7 +149,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             //state.graphHashCode = hashCode;
 
-            System.out.println(className + "." + methodName + methodDescriptor +  " <<<");
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println(className + "." + methodName + methodDescriptor +  " <<<");
+            }
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -160,6 +161,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     }
 
+    /**
+     * @todo refactor this method in order to store dependency information in some storage
+     */
     private void watchJar(Object object) {
         if (null != object) {
             URL codeLocationURL = object.getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -314,8 +318,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
                 if (state.count > MAX_COUNT) return;
 
-                MethodCall callerMethodCall = contextMethodCall.getCalleer();
-                state.methodCall = callerMethodCall;
+                state.methodCall = contextMethodCall.getCalleer();
             }
 
         } catch (Throwable e) {
@@ -374,11 +377,10 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     public void leaveConstructor(String className, String methodName, String methodDescriptor, Throwable exception) {
 
-        System.out.println();
-        System.out.println(System.identityHashCode(exception));
-        System.out.println();
-
         if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+            System.out.println();
+            System.out.println(System.identityHashCode(exception));
+            System.out.println();
             System.out.println("Leaving constructor on exception with desriptor " + methodDescriptor);
         }
 

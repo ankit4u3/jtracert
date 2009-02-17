@@ -1,24 +1,23 @@
 package com.google.code.jtracert.traceBuilder.impl.sdedit;
 
-import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;
 import com.google.code.jtracert.util.FileUtils;
-import com.google.code.jtracert.traceBuilder.impl.MethodCallProcessor;
 
-import java.io.Writer;
 import java.io.IOException;
-import java.util.Set;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Set;
 
 /**
  * @author dmitry.bedrin
  */
 public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
 
-    private Set<Integer> addedClassNames = new HashSet<Integer>();
-    private Map<String,Integer> classLevelMap = new HashMap<String,Integer>();
+    private final Set<Integer> addedClassNames = new HashSet<Integer>();
+    private final Map<String,Integer> classLevelMap = new HashMap<String,Integer>();
 
     public abstract void processMethodCall(MethodCall methodCall);
 

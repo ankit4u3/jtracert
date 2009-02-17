@@ -3,12 +3,12 @@ package com.google.code.jtracert.traceBuilder.impl.sdedit;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.util.FileUtils;
 
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * @author Dmitry Bedrin

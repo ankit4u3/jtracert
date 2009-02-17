@@ -8,13 +8,13 @@ import net.sf.sdedit.ui.components.buttons.Activator;
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionEvent;
-import java.io.File;
 import java.beans.PropertyChangeListener;
-import java.util.Map;
+import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainApp {
 

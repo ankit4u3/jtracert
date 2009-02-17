@@ -1,7 +1,7 @@
 package com.google.code.jtracert.util;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Dmitry Bedrin

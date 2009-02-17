@@ -2,10 +2,9 @@ package com.google.code.jtracert.model;
 
 import com.google.code.jtracert.traceBuilder.impl.graph.MethodCallVisitor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Dmitry Bedrin

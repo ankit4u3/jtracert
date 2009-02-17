@@ -11,13 +11,12 @@ import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
 import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
 import com.google.code.jtracert.util.ClassUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * @author Dmitry Bedrin
@@ -88,8 +87,8 @@ public class JTracertClassFileTransformer
     /**
      * @todo refactor this method in order to make path for classes configurable
      * @todo refactor this method and build folder structure when dumping classes
-     * @param className
-     * @param transformedData
+     * @param className class name
+     * @param transformedData bytecode of the class
      */
     private void dumpTransformedClass(String className, byte[] transformedData) {
         try {

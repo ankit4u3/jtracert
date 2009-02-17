@@ -4,8 +4,8 @@ import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.util.FileUtils;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 /**
  * @author dmitry.bedrin

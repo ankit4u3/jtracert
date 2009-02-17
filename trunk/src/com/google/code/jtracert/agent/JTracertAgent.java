@@ -1,7 +1,7 @@
 package com.google.code.jtracert.agent;
 
-import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.config.AnalyzeProperties;
+import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 
 import java.lang.instrument.Instrumentation;

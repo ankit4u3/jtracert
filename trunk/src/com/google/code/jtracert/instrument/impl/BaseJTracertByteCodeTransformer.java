@@ -11,7 +11,7 @@ public abstract class BaseJTracertByteCodeTransformer implements JTracertByteCod
 
     private InstrumentationProperties instrumentationProperties;
 
-    public BaseJTracertByteCodeTransformer() {
+    protected BaseJTracertByteCodeTransformer() {
         super();
     }
 

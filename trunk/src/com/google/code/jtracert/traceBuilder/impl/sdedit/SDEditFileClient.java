@@ -3,7 +3,10 @@ package com.google.code.jtracert.traceBuilder.impl.sdedit;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.util.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author dmitry.bedrin

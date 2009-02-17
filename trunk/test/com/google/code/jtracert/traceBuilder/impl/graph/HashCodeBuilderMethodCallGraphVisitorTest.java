@@ -1,12 +1,9 @@
 package com.google.code.jtracert.traceBuilder.impl.graph;
 
+import com.google.code.jtracert.model.MethodCall;
+import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import com.google.code.jtracert.model.MethodCall;
-import com.google.code.jtracert.model.JTracertObjectCompanion;
-import junit.framework.TestCase;
-
-import java.util.Random;
 
 /**
  * @author dmitry.bedrin

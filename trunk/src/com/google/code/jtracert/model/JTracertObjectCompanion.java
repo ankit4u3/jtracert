@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class JTracertObjectCompanion implements Serializable {
 
-    private int hashCode;
+    private final int hashCode;
 
     public JTracertObjectCompanion(int hashCode) {
         this.hashCode = hashCode;
@@ -20,9 +20,8 @@ public class JTracertObjectCompanion implements Serializable {
 
         JTracertObjectCompanion that = (JTracertObjectCompanion) o;
 
-        if (hashCode != that.hashCode) return false;
+        return hashCode == that.hashCode;
 
-        return true;
     }
 
     @Override

@@ -2,13 +2,12 @@ package com.google.code.jtracert.samples;
 
 import com.google.code.jtracert.model.MethodCall;
 
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class JTracertSerializableTcpServer implements Runnable {
 

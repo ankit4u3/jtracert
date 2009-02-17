@@ -19,7 +19,6 @@ public class Issue9 {
     }
 
     public Issue9(int i, int j, int k) {
-        System.out.println(i + j + k);
     }
 
     public static void main(String[] arguments) throws Exception {

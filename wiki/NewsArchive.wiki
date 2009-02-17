@@ -1,6 +1,13 @@
 #summary Archive of jTracert related news and updated
 #labels Deprecated
 
+== 17 February 2009 - jTracert 0.0.5 released ==
+
+We're glad to announce a new version of jTracert - 0.0.5
+Changes since previous version:
+  * Bugfixing (Issue 8 and Issue 9)
+  * License switched to [http://www.gnu.org/licenses/gpl-3.0.txt GNU GPL version 3]
+
 == 27 January 2009 - jTracert 0.0.4 released ==
 
 New version of jTracert is now released.

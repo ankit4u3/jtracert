@@ -1,4 +1,4 @@
-package com.google.code.jtracert.traceBuilder.impl.serializableTcpClient;
+package com.google.code.jtracert.traceBuilder.impl.serializable;
 
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;

@@ -23,7 +23,18 @@ public class MainApp {
 
     public static void main(String[] arguments) throws Exception {
 
-        Main.main(arguments);
+        AgentConnectionDialog agentConnectionDialog = new AgentConnectionDialog();
+        agentConnectionDialog.setVisible(true);
+
+        AgentConnectionSettings agentConnectionSettings =
+                agentConnectionDialog.getAgentConnectionSettings();
+
+        System.out.println(agentConnectionSettings);
+
+        AgentConnection agentConnection = new AgentConnection(agentConnectionSettings);
+        agentConnection.connect();
+
+        /*Main.main(arguments);
 
         SwingUtilities.invokeLater(new Runnable() {
 
@@ -143,16 +154,23 @@ public class MainApp {
                 scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
                 scrollPane.setViewportView(jtree);
 
-                JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-                tabbedPane.addTab("jTracert", scrollPane);
+                JTabbedPane jTracertTabbedPane = new JTabbedPane(JTabbedPane.TOP);
+                jTracertTabbedPane.addTab("jTracert", scrollPane);
 
-                uiFrame.getContentPane().add(tabbedPane, BorderLayout.WEST);
+                Component sdEditTabbedPane = uiFrame.getContentPane().getComponent(0);
+
+                JSplitPane jTracertSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jTracertTabbedPane, sdEditTabbedPane);
+
+                uiFrame.getContentPane().remove(sdEditTabbedPane);
+                uiFrame.getContentPane().add(jTracertSplitter, BorderLayout.CENTER);
+                //uiFrame.getContentPane().add(jTracertTabbedPane, BorderLayout.WEST);
+
                 uiFrame.repaint();
 
 
             }
             
-        });
+        });*/
 
     }
 

@@ -8,7 +8,8 @@ import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditOutClient;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditRtClient;
 import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceFileClient;
 import com.google.code.jtracert.traceBuilder.impl.sequence.SequenceOutClient;
-import com.google.code.jtracert.traceBuilder.impl.serializableTcpClient.SerializableTcpClient;
+import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpClient;
+import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsFileClient;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
 import com.google.code.jtracert.util.FileUtils;
@@ -264,6 +265,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                         break;
                     case serializableTcpClient:
                         methodCallProcessor = new SerializableTcpClient();
+                        break;
+                    case serializableTcpServer:
+                        methodCallProcessor = SerializableTcpServer.getIstance();
                         break;
                 }
             }

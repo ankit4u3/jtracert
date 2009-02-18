@@ -18,7 +18,8 @@ public class AnalyzeProperties implements Serializable {
         sequenceFileSystem,
         webSequenceDiagramsOut,
         webSequenceDiagramsFileSystem,
-        serializableTcpClient
+        serializableTcpClient,
+        serializableTcpServer
     }
 
     private final static String SDEDIT_HOST = "sdEditHost";

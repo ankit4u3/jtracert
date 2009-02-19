@@ -16,6 +16,7 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
 
     private int port;
     private volatile boolean running;
+    public volatile boolean connected;
 
     private BlockingQueue<MethodCall> methodCallQueue = new ArrayBlockingQueue<MethodCall>(5);
     private static SerializableTcpServer instance;
@@ -48,7 +49,13 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
         try {
             ServerSocket serverSocket = new ServerSocket(port);
 
-            Socket socket = serverSocket.accept();
+            Socket socket;
+            synchronized (this) {
+                socket = serverSocket.accept();
+                connected = true;
+                notifyAll();
+            }
+
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             while (running) {

@@ -1,6 +1,7 @@
 package com.google.code.jtracert.traceBuilder.impl.graph;
 
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.model.MethodCallVisitor;
 
 import java.util.HashMap;
 import java.util.List;

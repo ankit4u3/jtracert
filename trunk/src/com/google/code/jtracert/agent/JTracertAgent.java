@@ -15,6 +15,10 @@ public class JTracertAgent {
 
     public static void premain(final String arg, Instrumentation instrumentation) {
 
+        System.out.println();
+        System.out.println("jTracert agent");
+        System.out.println();
+
         InstrumentationProperties instrumentationProperties =
                 InstrumentationProperties.loadFromSystemProperties();
 
@@ -30,7 +34,8 @@ public class JTracertAgent {
                 int port = Integer.parseInt(arg);
                 analyzeProperties.setAnalyzerOutput(serializableTcpServer);
                 analyzeProperties.setSerializableTcpServerPort(port);
-                SerializableTcpServer.getIstance(port);
+                SerializableTcpServer serializableTcpServer =
+                        SerializableTcpServer.getIstance(port);
 
                 Runtime.getRuntime().addShutdownHook(new Thread(
                     new Runnable() {
@@ -40,7 +45,13 @@ public class JTracertAgent {
                     }
                 ));
 
-            } catch (NumberFormatException e) {
+                synchronized (serializableTcpServer) {
+                    while (!serializableTcpServer.connected) {
+                        serializableTcpServer.wait();
+                    }
+                }
+
+            } catch (Exception e) {
                 e.printStackTrace(System.err);
             }
         }

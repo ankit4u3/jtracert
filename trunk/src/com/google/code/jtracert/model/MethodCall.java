@@ -1,6 +1,6 @@
 package com.google.code.jtracert.model;
 
-import com.google.code.jtracert.traceBuilder.impl.graph.MethodCallVisitor;
+import com.google.code.jtracert.model.MethodCallVisitor;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -10,6 +10,8 @@ import java.util.List;
  * @author Dmitry Bedrin
  */
 public class MethodCall implements Serializable  {
+
+    static final long serialVersionUID = -1692513983094960602L;
 
     private String methodName;
     private String methodSignature;

@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class JTracertObjectCompanion implements Serializable {
 
+    static final long serialVersionUID = -8438577240614871138L;
+
     private final int hashCode;
 
     public JTracertObjectCompanion(int hashCode) {

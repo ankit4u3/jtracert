@@ -1,6 +1,4 @@
-package com.google.code.jtracert.traceBuilder.impl.graph;
-
-import com.google.code.jtracert.model.MethodCall;
+package com.google.code.jtracert.model;
 
 /**
  * @author dmitry.bedrin

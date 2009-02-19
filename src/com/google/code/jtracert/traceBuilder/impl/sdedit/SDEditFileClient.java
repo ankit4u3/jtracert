@@ -55,6 +55,49 @@ public class SDEditFileClient extends BaseSDEditClient {
 
     }
 
+    public File saveMethodCall(MethodCall methodCall) {
+
+        Writer diagramWriter = null;
+
+        try {
+
+            File diagramFile = getDiagramFile(methodCall);
+
+            diagramWriter = new FileWriter(diagramFile);
+
+            diagramWriter.append("user:Actor").append(FileUtils.LINE_SEPARATOR);
+
+            writeObjectNames(methodCall, diagramWriter);
+
+            diagramWriter.append(FileUtils.LINE_SEPARATOR);
+
+            diagramWriter.
+                    append("user:").
+                    append(methodCall.getRealClassName().replaceAll("\\.","\\\\.")).
+                    append(".").
+                    append(methodCall.getMethodName()).
+                    append(FileUtils.LINE_SEPARATOR);
+
+            writeMethodNames(methodCall, diagramWriter);
+
+            diagramWriter.flush();
+
+            return diagramFile;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (null != diagramWriter) {
+                try {
+                    diagramWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
     private File getDiagramFile(MethodCall methodCall) throws IOException {
 
         String baseDiagramsFolderName = getAnalyzeProperties().getOutputFolder();

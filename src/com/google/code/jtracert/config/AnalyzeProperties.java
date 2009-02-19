@@ -39,7 +39,7 @@ public class AnalyzeProperties implements Serializable {
     private String serializableTcpServerHost;
     private int serializableTcpServerPort;
 
-    private AnalyzeProperties() {
+    public AnalyzeProperties() {
 
     }
 

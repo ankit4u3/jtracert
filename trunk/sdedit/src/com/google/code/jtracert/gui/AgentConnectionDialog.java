@@ -21,6 +21,10 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     private AgentConnectionSettings agentConnectionSettings;
 
+    public String getFolder() {
+        return folderTextField.getText();
+    }
+
     public void actionPerformed(ActionEvent e) {
 
         String folder = folderTextField.getText();
@@ -219,7 +223,7 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     private JTextField createAgentPortTextField() {
         JTextField agentPortTextField = new JTextField();
-        agentPortTextField.setText("70001");
+        agentPortTextField.setText("7007");
         return agentPortTextField;
     }
 

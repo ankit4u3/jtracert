@@ -3,44 +3,129 @@ package com.google.code.jtracert.gui;
 import net.sf.sdedit.Main;
 import net.sf.sdedit.editor.Editor;
 import net.sf.sdedit.ui.UserInterface;
-import net.sf.sdedit.ui.components.buttons.Activator;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Enumeration;
 
+import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
+import com.google.code.jtracert.config.AnalyzeProperties;
+
+/**
+ * This class provides a GUI frontend for jTracert agent
+ *
+ * First of all you should execute your application with jTracert javaagent
+ * Just add following parameter to java command:
+ *   -javaagent:<PATH_TO_J_TRACERT_JAR>/<J_TRACERT_AGENT_JAR>=<J_TRACERT_AGENT_PORT>
+ * Where:
+ *  <PATH_TO_J_TRACERT_JAR> is a path to jTracert agent jar, like C:/jTracert
+ *  <J_TRACERT_AGENT_JAR is a jTracert agent jar name, like jTracer-0.0.6.jar
+ *  <J_TRACERT_AGENT_PORT> is port number you want to use for agent-GUI negotiation, like 7007
+ *
+ * An example may look like below:
+ *  -javaagent:../../../deploy/jTracert.jar=7007
+ *
+ * Now, execute the GUI and fill in some simple properties in agent connection dialog
+ *
+ * That's it!
+ *
+ *
+ * @todo consider serious refactoring; this is just proof of concept implementation!
+ */
 public class MainApp {
 
-    @Deprecated
-    private static final String BASE_PATH = "/home/dmitrybedrin/Documents/VeroRace/VeroRaceDiagrams/";
+    private static JTree jtree;
+    private static JTracertTreeModel jTracertTreeModel;
 
     public static void main(String[] arguments) throws Exception {
 
-        AgentConnectionDialog agentConnectionDialog = new AgentConnectionDialog();
+        final AgentConnectionDialog agentConnectionDialog = new AgentConnectionDialog();
         agentConnectionDialog.setVisible(true);
 
-        AgentConnectionSettings agentConnectionSettings =
+        final AgentConnectionSettings agentConnectionSettings =
                 agentConnectionDialog.getAgentConnectionSettings();
 
         System.out.println(agentConnectionSettings);
 
-        AgentConnection agentConnection = new AgentConnection(agentConnectionSettings);
+        final AgentConnection agentConnection = new AgentConnection(agentConnectionSettings);
         agentConnection.connect();
 
-        /*Main.main(arguments);
+        agentConnection.addMethodCallListener(new MethodCallListener() {
+
+            public void onMethodCall(MethodCallEvent methodCallEvent) {
+
+                try {
+                    MethodCall methodCall = methodCallEvent.getMethodCall();
+
+                    SDEditFileClient methodCallProcessor = new SDEditFileClient();
+
+                    AnalyzeProperties analyzeProperties = new AnalyzeProperties();
+                    analyzeProperties.setOutputFolder(agentConnectionDialog.getFolder());
+
+                    methodCallProcessor.setAnalyzeProperties(analyzeProperties);
+
+                    File diagramFile = methodCallProcessor.saveMethodCall(methodCall);
+                    String diagramFileName = diagramFile.getAbsolutePath();
+
+                    Node rootNode = (Node) jTracertTreeModel.getRoot();
+
+                    String className = methodCall.getRealClassName();
+                    String[] packages = className.split("\\.");
+
+                    Node contextNode = rootNode;
+
+                    for (int i = 0; i < packages.length - 1; i++) {
+
+                        String packageName = packages[i];
+
+                        boolean nodeFound = false;
+
+                        Enumeration children = contextNode.children();
+                        while (children.hasMoreElements()) {
+                            Node node = (Node) children.nextElement();
+
+                            if (node.getAllowsChildren() && (node.getValue().equals(packageName))) {
+                                contextNode = node;
+                                nodeFound = true;
+                                break;
+                            }
+
+                        }
+
+                        if (!nodeFound) {
+                            Node node = new Node(packageName);
+                            node.setAllowsChildren(true);
+                            jTracertTreeModel.insertNodeInto(node, contextNode, contextNode.getChildCount());
+                            contextNode = node;
+                        }
+
+                    }
+
+                    Node node = new Node(diagramFile.getName().substring(0, diagramFile.getName().length() - 4) ,diagramFileName);
+                    node.setAllowsChildren(false);
+
+                    jTracertTreeModel.insertNodeInto(node, contextNode, contextNode.getChildCount());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+
+        Main.main(arguments);
 
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
 
-                Editor.getEditor().getUI().addAction("Extras", new Action() {
+                /*Editor.getEditor().getUI().addAction("Extras", new Action() {
 
                     private Map<String,Object> values = new HashMap<String,Object>();
 
@@ -81,40 +166,17 @@ public class MainApp {
                     public boolean isEnabled() {
                         return true;
                     }
-                });
+                });*/
 
                 UserInterface ui = Editor.getEditor().getUI();
 
                 JFrame uiFrame = (JFrame) ui;
 
-                Node root = new Node();
-                root.setValue("Root");
+                Node root = new Node("Packages");
 
-                Node child1 = new Node();
-                child1.setParent(root);
-                child1.setValue("Child1");
-                child1.setDiagramFileName(BASE_PATH + "actionRepository.sdx");
-                root.getChildren().add(child1);
-
-                Node child2 = new Node();
-                child2.setParent(root);
-                child2.setValue("Child2");
-                root.getChildren().add(child2);
-
-                Node child21 = new Node();
-                child21.setParent(child2);
-                child21.setValue("Child21");
-                child21.setDiagramFileName(BASE_PATH + "gisPanel.sdx");
-                child2.getChildren().add(child21);
-
-                Node child22 = new Node();
-                child22.setParent(child2);
-                child22.setValue("Child22");
-                child22.setDiagramFileName(BASE_PATH + "networkTreeSelect.sdx");
-                child2.getChildren().add(child22);
-
-                final JTree jtree = new JTree();
-                jtree.setModel(new JTracertTreeModel(root));
+                jtree = new JTree();
+                jTracertTreeModel = new JTracertTreeModel(root);
+                jtree.setModel(jTracertTreeModel);
 
                 jtree.addMouseListener(new MouseAdapter() {
 
@@ -128,18 +190,19 @@ public class MainApp {
 
                             if (null != treePath) {
                                 Node selectedNode = (Node) treePath.getLastPathComponent();
-                                if (jtree.getModel().isLeaf(selectedNode)) {
-                                    System.out.println(selectedNode);
-                                }
 
-                                String fileName = selectedNode.getDiagramFileName();
+                                if (selectedNode.isLeaf() && !selectedNode.getAllowsChildren()) {
 
-                                if (null != fileName) {
-                                    try {
-                                        Editor.getEditor().loadCode(new File(fileName));
-                                    } catch (Exception ex) {
-                                        ex.printStackTrace();
+                                    String fileName = selectedNode.getFileName();
+
+                                    if (null != fileName) {
+                                        try {
+                                            Editor.getEditor().loadCode(new File(fileName));
+                                        } catch (Exception ex) {
+                                            ex.printStackTrace();
+                                        }
                                     }
+
                                 }
 
                             }
@@ -163,14 +226,14 @@ public class MainApp {
 
                 uiFrame.getContentPane().remove(sdEditTabbedPane);
                 uiFrame.getContentPane().add(jTracertSplitter, BorderLayout.CENTER);
-                //uiFrame.getContentPane().add(jTracertTabbedPane, BorderLayout.WEST);
 
                 uiFrame.repaint();
 
+                agentConnection.start();
 
             }
             
-        });*/
+        });
 
     }
 

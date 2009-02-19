@@ -4,9 +4,9 @@ import java.net.InetAddress;
 
 public class AgentConnectionSettings {
 
-    InetAddress inetAddress;
-    int port;
-    String classNamePattern;
+    private InetAddress inetAddress;
+    private int port;
+    private String classNamePattern;
 
     public AgentConnectionSettings(InetAddress inetAddress, int port, String classNamePattern) {
         this.inetAddress = inetAddress;

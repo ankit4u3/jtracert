@@ -2,6 +2,7 @@ package com.google.code.jtracert.traceBuilder.impl.serializable;
 
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;
+import com.google.code.jtracert.config.InstrumentationProperties;
 
 import java.io.*;
 import java.net.Socket;
@@ -17,6 +18,8 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     private int port;
     private volatile boolean running;
     public volatile boolean connected;
+
+    private InstrumentationProperties instrumentationProperties;
 
     private BlockingQueue<MethodCall> methodCallQueue = new ArrayBlockingQueue<MethodCall>(5);
     private static SerializableTcpServer instance;
@@ -52,7 +55,17 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
             Socket socket;
             synchronized (this) {
                 socket = serverSocket.accept();
+
+                InputStream inputStream = socket.getInputStream();
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+                InstrumentationProperties instrumentationProperties =
+                        (InstrumentationProperties) objectInputStream.readObject();
+
+                setInstrumentationProperties(instrumentationProperties);
+
                 connected = true;
+
                 notifyAll();
             }
 
@@ -84,5 +97,13 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
             e.printStackTrace();
         }
     }
-    
+
+    public InstrumentationProperties getInstrumentationProperties() {
+        return instrumentationProperties;
+    }
+
+    public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
+        this.instrumentationProperties = instrumentationProperties;
+    }
+
 }

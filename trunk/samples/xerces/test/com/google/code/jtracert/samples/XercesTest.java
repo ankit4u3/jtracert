@@ -14,6 +14,10 @@ import java.util.jar.Manifest;
 
 public class XercesTest extends JTracertTestCase {
 
+    /**
+     * @todo refactor: pull method up
+     */
+    @Deprecated
     protected Process startJavaProcessWithJTracert(String jarFileName, Collection<String> classpath) throws IOException {
 
         boolean classpathSpecified = false;

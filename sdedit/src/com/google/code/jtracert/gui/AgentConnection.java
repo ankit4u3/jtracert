@@ -1,12 +1,11 @@
 package com.google.code.jtracert.gui;
 
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.config.InstrumentationProperties;
 
 import javax.swing.event.EventListenerList;
 import java.net.Socket;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class AgentConnection implements Runnable {
 
@@ -37,6 +36,18 @@ public class AgentConnection implements Runnable {
 
     public void run() {
         try {
+
+            OutputStream socketOutputStream = socket.getOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(socketOutputStream);
+
+            InstrumentationProperties instrumentationProperties =
+                    new InstrumentationProperties();
+
+            instrumentationProperties.setClassNameRegEx(settings.getClassNamePattern());
+
+            oos.writeObject(instrumentationProperties);
+
+            oos.flush();
 
             InputStream socketInputStream = socket.getInputStream();
             ObjectInputStream ois = new ObjectInputStream(socketInputStream);

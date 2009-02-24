@@ -30,29 +30,7 @@ public class JTracertAgent {
         if ((null != arg) && (!"".equals(arg))) {
 
             try {
-                int port = Integer.parseInt(arg);
-                analyzeProperties.setAnalyzerOutput(serializableTcpServer);
-                analyzeProperties.setSerializableTcpServerPort(port);
-
-                System.out.println("Waiting for a connection from jTracert GUI on port " + port);
-
-                SerializableTcpServer serializableTcpServer =
-                        SerializableTcpServer.getIstance(port);
-
-                Runtime.getRuntime().addShutdownHook(new Thread(
-                    new Runnable() {
-                        public void run() {
-                            SerializableTcpServer.stop();
-                        }
-                    }
-                ));
-
-                synchronized (serializableTcpServer) {
-                    while (!serializableTcpServer.connected) {
-                        serializableTcpServer.wait();
-                    }
-                }
-
+                processJTracertGuiConnection(arg, instrumentationProperties, analyzeProperties);
             } catch (Exception e) {
                 e.printStackTrace(System.err);
             }
@@ -65,6 +43,43 @@ public class JTracertAgent {
                 addTransformer(jTracertClassFileTransformer);
 
         System.out.println();
+
+    }
+
+    private static void processJTracertGuiConnection(String arg, InstrumentationProperties instrumentationProperties, AnalyzeProperties analyzeProperties) throws InterruptedException {
+
+        int port = Integer.parseInt(arg);
+
+        analyzeProperties.setAnalyzerOutput(serializableTcpServer);
+        analyzeProperties.setSerializableTcpServerPort(port);
+
+        System.out.println("Waiting for a connection from jTracert GUI on port " + port);
+
+        SerializableTcpServer serializableTcpServer =
+                SerializableTcpServer.getIstance(port);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(
+            new Runnable() {
+                public void run() {
+                    SerializableTcpServer.stop();
+                }
+            }
+        ));
+
+        synchronized (serializableTcpServer) {
+            while (!serializableTcpServer.connected) {
+                serializableTcpServer.wait();
+            }
+        }
+
+        InstrumentationProperties guiInstrumentationProperties =
+                serializableTcpServer.getInstrumentationProperties();
+
+        String guiClassNameRegEx = guiInstrumentationProperties.getClassNameRegEx();
+
+        if ((null != guiClassNameRegEx) && (!"".equals(guiClassNameRegEx.trim()))) {
+            instrumentationProperties.setClassNameRegEx(guiClassNameRegEx);
+        }
 
     }
 

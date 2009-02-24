@@ -14,6 +14,7 @@
         <delete dir="classes/test"/>
         <delete dir="classes"/>
         <delete dir="deploy"/>
+        <delete dir="junit"/>
     </target>
 
     <target name="init">
@@ -21,6 +22,7 @@
         <mkdir dir="classes/project"/>
         <mkdir dir="classes/test"/>
         <mkdir dir="deploy"/>
+        <mkdir dir="junit"/>
     </target>
 
     <target name="compile" depends="init">
@@ -42,11 +44,14 @@
             <classpath path="classes/test"/>
             <classpath refid="build.classpath"/>
 
-            <batchtest >
+            <batchtest todir="junit">
                 <fileset dir="test">
                     <include name="**/*Test.java"/>
                 </fileset>
             </batchtest>
+
+            <formatter type="plain" />
+
         </junit>
     </target>
 

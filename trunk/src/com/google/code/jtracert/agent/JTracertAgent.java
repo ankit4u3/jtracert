@@ -16,8 +16,7 @@ public class JTracertAgent {
     public static void premain(final String arg, Instrumentation instrumentation) {
 
         System.out.println();
-        System.out.println("jTracert agent");
-        System.out.println();
+        System.out.println("jTracert agent started");
 
         InstrumentationProperties instrumentationProperties =
                 InstrumentationProperties.loadFromSystemProperties();
@@ -34,6 +33,9 @@ public class JTracertAgent {
                 int port = Integer.parseInt(arg);
                 analyzeProperties.setAnalyzerOutput(serializableTcpServer);
                 analyzeProperties.setSerializableTcpServerPort(port);
+
+                System.out.println("Waiting for a connection from jTracert GUI on port " + port);
+
                 SerializableTcpServer serializableTcpServer =
                         SerializableTcpServer.getIstance(port);
 
@@ -61,6 +63,8 @@ public class JTracertAgent {
         
         instrumentation.
                 addTransformer(jTracertClassFileTransformer);
+
+        System.out.println();
 
     }
 

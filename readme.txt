@@ -20,7 +20,10 @@ Other command line parameters are described on project wiki page: http://code.go
 
 Any feedback much appreciated!
 
+You can find the jTracert license in license.txt file
+Third party library licenses can be found in 3pplicense folder
+
 http://jtracert.googlecode.com/
 Dmitry.Bedrin@gmail.com
 
-27 January 2009
+24 February 2009

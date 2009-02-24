@@ -24,6 +24,8 @@ import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Dmitry Bedrin
@@ -61,6 +63,36 @@ class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTrace
 
 }
 
+/**
+ * The default thread factory
+ */
+class JTracertThreadFactory implements ThreadFactory {
+
+    static final AtomicInteger poolNumber = new AtomicInteger(1);
+    final ThreadGroup group;
+    final AtomicInteger threadNumber = new AtomicInteger(1);
+    final String namePrefix;
+
+    JTracertThreadFactory() {
+        SecurityManager s = System.getSecurityManager();
+        group = (s != null)? s.getThreadGroup() :
+                             Thread.currentThread().getThreadGroup();
+        namePrefix = "jTracert-" +
+                      poolNumber.getAndIncrement() +
+                     "-thread-";
+    }
+
+    public Thread newThread(Runnable r) {
+        Thread t = new Thread(group, r,
+                              namePrefix + threadNumber.getAndIncrement(),
+                              0);
+        t.setDaemon(true);
+        if (t.getPriority() != Thread.NORM_PRIORITY)
+            t.setPriority(Thread.NORM_PRIORITY);
+        return t;
+    }
+}
+
 public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private static MethodCallTraceBuilderStateThreadLocal traceBuilderState = new MethodCallTraceBuilderStateThreadLocal();
@@ -74,13 +106,27 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         processedHashCodes = new HashSet<Integer>();
 
         executorService = new ThreadPoolExecutor(
-                0,
                 1,
-                5L,
+                1,
+                1L,
                 TimeUnit.SECONDS,
                 new ArrayBlockingQueue<Runnable>(5,true),
+                new JTracertThreadFactory(),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
+
+        Runtime.getRuntime().addShutdownHook(new Thread(
+                new Runnable() {
+                    public void run() {
+                        executorService.shutdown();
+                        try {
+                            executorService.awaitTermination(5L, TimeUnit.SECONDS);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                }
+        ));
 
     }
 

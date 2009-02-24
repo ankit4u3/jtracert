@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="simpleApp1" default="all">
 
+    <condition property="java.1.6.higher">
+        <not>
+            <matches pattern="^1\.[2-5]$" string="${ant.java.version}"/>
+        </not>
+    </condition>
+
     <path id="build.classpath">
         <fileset dir="../../lib">
             <include name="**/*.jar"/>
@@ -14,6 +20,7 @@
         <delete dir="classes/test"/>
         <delete dir="classes"/>
         <delete dir="deploy"/>
+        <delete dir="junit"/>
     </target>
 
     <target name="init">
@@ -21,6 +28,7 @@
         <mkdir dir="classes/project"/>
         <mkdir dir="classes/test"/>
         <mkdir dir="deploy"/>
+        <mkdir dir="junit"/>
     </target>
 
     <target name="compile" depends="init">
@@ -42,11 +50,14 @@
             <classpath path="classes/test"/>
             <classpath refid="build.classpath"/>
 
-            <batchtest >
+            <batchtest todir="junit" >
                 <fileset dir="test">
                     <include name="**/*Test.java"/>
                 </fileset>
             </batchtest>
+
+            <formatter type="plain" />
+            
         </junit>
     </target>
 
@@ -56,6 +67,11 @@
         </jar>
     </target>
 
-    <target name="all" depends="clean,test"/>
+    <target name="check.java.version" if="java.1.6.higher">
+        <antcall target="clean"/>
+        <antcall target="test"/>
+    </target>
+
+    <target name="all" depends="check.java.version"/>
 
 </project>

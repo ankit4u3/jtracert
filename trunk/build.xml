@@ -120,6 +120,7 @@
         <ant dir="samples/issue8"/>
         <ant dir="samples/xerces"/>
         <ant dir="samples/issue9"/>
+        <ant dir="samples/bootStrapClassConstructor"/>
     </target>
 
     <target name="all" depends="jar,gui.jar"/>

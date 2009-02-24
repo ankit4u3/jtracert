@@ -10,14 +10,30 @@ import java.io.InputStream;
 public abstract class JTracertTestCase extends TestCase {
 
     protected Process startJavaProcessWithJTracert(String jarFileName) throws IOException {
+        return startJavaProcessWithJTracert(jarFileName, false);
+    }
 
-        String[] commands = new String[]{
-                "java",
-                "-DanalyzerOutput=serializableTcpClient",
-                "-DdumpTransformedClasses",
-                "-javaagent:../../deploy/jTracert.jar",
-                "-jar",jarFileName
-        };
+    protected Process startJavaProcessWithJTracert(String jarFileName, boolean verbose) throws IOException {
+
+        String[] commands =
+                verbose ?
+                        new String[]{
+                                "java",
+                                "-DanalyzerOutput=serializableTcpClient",
+                                "-DdumpTransformedClasses",
+                                "-DverboseInstrumentation=true",
+                                "-DverboseAnalyze=true",
+                                "-javaagent:../../deploy/jTracert.jar",
+                                "-jar",jarFileName
+                        }
+                        :
+                        new String[]{
+                                "java",
+                                "-DanalyzerOutput=serializableTcpClient",
+                                "-DdumpTransformedClasses",
+                                "-javaagent:../../deploy/jTracert.jar",
+                                "-jar",jarFileName
+                        };
 
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
         processBuilder.redirectErrorStream(true);
@@ -53,5 +69,5 @@ public abstract class JTracertTestCase extends TestCase {
             dumpMethodCall(callee, pad + 1);
         }
     }
-    
+
 }

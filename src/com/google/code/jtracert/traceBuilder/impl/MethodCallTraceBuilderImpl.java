@@ -12,6 +12,8 @@ import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpCl
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsFileClient;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
+import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
 import com.google.code.jtracert.util.FileUtils;
 import com.google.code.jtracert.util.SizeOutputStream;
 
@@ -30,7 +32,7 @@ class MethodCallTraceBuilderState {
 
     public MethodCall methodCall = null;
     public boolean buildingTrace = false;
-//    public int graphHashCode = 17;
+    //    public int graphHashCode = 17;
     public int level = 1;
     public int count = 1;
 
@@ -47,7 +49,7 @@ class MethodCallTraceBuilderState {
                 ", count=" + count +
                 '}';
     }
-    
+
 }
 
 class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTraceBuilderState> {
@@ -86,7 +88,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
 
-        //watchJar(object); // uncomment this line in order to track JAR dependencies
+        //watchJar(object); // todo uncomment this line in order to track JAR dependencies
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
 
@@ -236,55 +238,78 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
         public void run() {
 
-            MethodCallProcessor methodCallProcessor = null;
+            long currentTime = System.nanoTime();
 
-            if (null != analyzeProperties) {
-                switch (analyzeProperties.getAnalyzerOutput()) {
-                    case none:
-                        break;
-                    case sdEditOut:
-                        methodCallProcessor = new SDEditOutClient();
-                        break;
-                    case sdEditRtClient:
-                        methodCallProcessor = new SDEditRtClient();
-                        break;
-                    case sdEditFileSystem:
-                        methodCallProcessor = new SDEditFileClient();
-                        break;
-                    case sequenceOut:
-                        methodCallProcessor = new SequenceOutClient();
-                        break;
-                    case sequenceFileSystem:
-                        methodCallProcessor = new SequenceFileClient();
-                        break;
-                    case webSequenceDiagramsOut:
-                        methodCallProcessor = new WebSequenceDiagramsOutClient();
-                        break;
-                    case webSequenceDiagramsFileSystem:
-                        methodCallProcessor = new WebSequenceDiagramsFileClient();
-                        break;
-                    case serializableTcpClient:
-                        methodCallProcessor = new SerializableTcpClient();
-                        break;
-                    case serializableTcpServer:
-                        methodCallProcessor = SerializableTcpServer.getIstance();
-                        break;
-                }
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println("Normalizing Call Graph <<<");
+            }
+            methodCall.accept(new NormalizeMetodCallGraphVisitor());
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println("Normalizing Call Graph >>>");
+                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
             }
 
-            if (null != methodCallProcessor) {
-                methodCallProcessor.setAnalyzeProperties(analyzeProperties);
-
-                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                    System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
-                }
-                methodCallProcessor.processMethodCall(methodCall);
-                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                    System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
-                }
-
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println("Calculating Call Graph Hash <<<");
+            }
+            int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println("Calculating Call Graph Hash >>>");
+                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
             }
 
+            if (!processedHashCodes.contains(hashCode)) {
+                processedHashCodes.add(hashCode);
+
+                MethodCallProcessor methodCallProcessor = null;
+
+                if (null != analyzeProperties) {
+                    switch (analyzeProperties.getAnalyzerOutput()) {
+                        case none:
+                            break;
+                        case sdEditOut:
+                            methodCallProcessor = new SDEditOutClient();
+                            break;
+                        case sdEditRtClient:
+                            methodCallProcessor = new SDEditRtClient();
+                            break;
+                        case sdEditFileSystem:
+                            methodCallProcessor = new SDEditFileClient();
+                            break;
+                        case sequenceOut:
+                            methodCallProcessor = new SequenceOutClient();
+                            break;
+                        case sequenceFileSystem:
+                            methodCallProcessor = new SequenceFileClient();
+                            break;
+                        case webSequenceDiagramsOut:
+                            methodCallProcessor = new WebSequenceDiagramsOutClient();
+                            break;
+                        case webSequenceDiagramsFileSystem:
+                            methodCallProcessor = new WebSequenceDiagramsFileClient();
+                            break;
+                        case serializableTcpClient:
+                            methodCallProcessor = new SerializableTcpClient();
+                            break;
+                        case serializableTcpServer:
+                            methodCallProcessor = SerializableTcpServer.getIstance();
+                            break;
+                    }
+                }
+
+                if (null != methodCallProcessor) {
+                    methodCallProcessor.setAnalyzeProperties(analyzeProperties);
+
+                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
+                    }
+                    methodCallProcessor.processMethodCall(methodCall);
+                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
+                    }
+
+                }
+            }
         }
 
     }
@@ -366,7 +391,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
 
                 if ((previousSiblingMethodCall.getMethodName().equals("<init>")) &&
-                    (previousSiblingMethodCall.getObjectHashCode() == currentMethodCall.getObjectHashCode())) {
+                        (previousSiblingMethodCall.getObjectHashCode() == currentMethodCall.getObjectHashCode())) {
                     currentMethodCall.addCallee(previousSiblingMethodCall);
                     siblingCallees.remove(previousSiblingMethodCall);
 
@@ -438,7 +463,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 if (previousSiblingMethodCall.getMethodName().equals("<init>")) {
                     currentMethodCall.setObjectHashCode(previousSiblingMethodCall.getObjectHashCode());
                 }
-                
+
             }
 
             // EO assign hash code

@@ -64,13 +64,11 @@ public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object>
 
     private Integer getMethodCallHashCode(MethodCall methodCall) {
 
-        return methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
-
-        /*if (!methodCallHashCodeMap.containsKey(methodCall)) {
+        if (!methodCallHashCodeMap.containsKey(methodCall)) {
             methodCallHashCodeMap.put(methodCall,methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor()));
         }
 
-        return methodCallHashCodeMap.get(methodCall);*/
+        return methodCallHashCodeMap.get(methodCall);
 
     }
 

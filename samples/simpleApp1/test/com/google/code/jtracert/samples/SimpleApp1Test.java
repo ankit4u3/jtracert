@@ -10,7 +10,7 @@ public class SimpleApp1Test extends JTracertTestCase {
 
         JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
 
-        Process process = startJavaProcessWithJTracert("deploy/simpleApp1.jar");
+        Process process = startJavaProcessWithJTracert("deploy/simpleApp1.jar", true);
 
         int exitCode = process.waitFor();
 

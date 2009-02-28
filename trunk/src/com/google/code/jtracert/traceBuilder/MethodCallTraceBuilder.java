@@ -16,4 +16,7 @@ public interface MethodCallTraceBuilder extends ConfigurableAnalyzer {
 //    void leaveConstructor(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/);
     void leaveConstructor(String className, String methodName, String methodDescriptor, Throwable exception);
 
+    Object wrap(Object o);
+    void wrap();
+
 }

@@ -48,6 +48,58 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         mv.visitMaxs(maxStack, maxLocals);
     }
 
+    /**
+     * @todo this approach can be used for handling parent constructor calls
+     * See also issue 11: http://code.google.com/p/jtracert/issues/detail?id=11
+     */
+    public void visitMethodInsn(int i, String s, String s1, String s2) {
+
+        if (isConstructor && s1.equals("<init>") ) {
+
+            if (!s2.equals("()V")) {
+
+                super.visitInsn(POP);
+
+                super.visitMethodInsn(
+                        INVOKESTATIC,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                        "getMethodCallTraceBuilder",
+                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+                );
+
+                super.visitVarInsn(ALOAD,1);
+
+                super.visitMethodInsn(
+                        INVOKEINTERFACE,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                        "wrap",
+                        "(Ljava/lang/Object;)Ljava/lang/Object;"
+                );
+
+            } else {
+
+                super.visitMethodInsn(
+                        INVOKESTATIC,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                        "getMethodCallTraceBuilder",
+                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+                );
+
+                super.visitMethodInsn(
+                        INVOKEINTERFACE,
+                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                        "wrap",
+                        "()V"
+                );
+
+
+            }
+        }
+
+        super.visitMethodInsn(i, s, s1, s2);
+
+    }
+
     private void onFinally(int opcode) {
 
         if (isConstructor) {

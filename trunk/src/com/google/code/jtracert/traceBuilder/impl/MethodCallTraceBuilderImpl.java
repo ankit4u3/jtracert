@@ -522,4 +522,23 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         }
 
     }
+
+    public Object wrap(Object o) {
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("wrapping " + o);
+        return o;
+    }
+
+    public void wrap() {
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("wrapping void");
+    }
+
+
 }

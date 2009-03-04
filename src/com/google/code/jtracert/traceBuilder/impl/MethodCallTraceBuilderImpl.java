@@ -123,7 +123,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                             Thread.yield();
 
                         try {
-                            executorService.awaitTermination(1L, TimeUnit.SECONDS);
+                            executorService.awaitTermination(500L, TimeUnit.MILLISECONDS);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }

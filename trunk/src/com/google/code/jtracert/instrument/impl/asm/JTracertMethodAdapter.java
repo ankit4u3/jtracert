@@ -2,6 +2,7 @@ package com.google.code.jtracert.instrument.impl.asm;
 
 import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.instrument.ConfigurableTransformer;
+import com.google.code.jtracert.util.ClassUtils;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -13,6 +14,7 @@ import org.objectweb.asm.commons.AdviceAdapter;
 public class JTracertMethodAdapter extends AdviceAdapter implements ConfigurableTransformer {
 
     private final String className;
+    private String parentClassName;
     private final String methodName;
     private final boolean isConstructor;
 
@@ -27,9 +29,17 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         this.isConstructor = name.equals("<init>");
     }
 
-    public JTracertMethodAdapter(MethodVisitor mv, int access, String name, String desc, String className, InstrumentationProperties instrumentationProperties) {
+    public JTracertMethodAdapter(
+            MethodVisitor mv,
+            int access,
+            String name,
+            String desc,
+            String className,
+            InstrumentationProperties instrumentationProperties,
+            String parentClassName) {
         this(mv, access, name, desc, className);
         this.instrumentationProperties = instrumentationProperties;
+        this.parentClassName = parentClassName;
     }
 
     @Override
@@ -48,14 +58,14 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         mv.visitMaxs(maxStack, maxLocals);
     }
 
-    /**
-     * @todo this approach can be used for handling parent constructor calls
-     * See also issue 11: http://code.google.com/p/jtracert/issues/detail?id=11
-     */
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc) {
 
-        if (isConstructor && name.equals("<init>") ) {
+        if (isConstructor && name.equals("<init>") && (owner.equals(parentClassName) || ClassUtils.getFullyQualifiedName(owner).equals(getClassName()))) {
+
+            if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
+                System.out.println("Instrumenting constructor " + getClassName() + ".<init>" + getMethodDescriptor());
+            }
 
             super.visitMethodInsn(
                     INVOKESTATIC,
@@ -64,8 +74,8 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                     "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
             );
 
-            super.visitLdcInsn(owner);
-            super.visitLdcInsn(desc);
+            super.visitLdcInsn(getClassName());
+            super.visitLdcInsn(getMethodDescriptor());
 
             super.visitMethodInsn(
                     INVOKEINTERFACE,
@@ -73,49 +83,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                     "preEnterConstructor",
                     "(Ljava/lang/String;Ljava/lang/String;)V"
             );
-
-            /*if (!desc.equals("()V")) {
-
-                Type[] argumentTypes = Type.getArgumentTypes(desc);
-                Type lastArgumentType = argumentTypes[argumentTypes.length - 1];
-
-                if (lastArgumentType.getSort() == Type.INT) {
-
-                    super.visitMethodInsn(
-                            INVOKESTATIC,
-                            "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
-                            "getMethodCallTraceBuilder",
-                            "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
-                    );
-
-                    super.visitVarInsn(ILOAD, argumentTypes.length);
-
-                    super.visitMethodInsn(
-                            INVOKEINTERFACE,
-                            "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
-                            "preEnterConstructor",
-                            "(I)V"
-                    );
-
-                }
-
-            } else {
-
-                super.visitMethodInsn(
-                        INVOKESTATIC,
-                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
-                        "getMethodCallTraceBuilder",
-                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
-                );
-
-                super.visitMethodInsn(
-                        INVOKEINTERFACE,
-                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
-                        "preEnterConstructor",
-                        "()V"
-                );
-
-            }*/
 
         }
 
@@ -271,78 +238,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
             onFinally(opcode);
         }
     }
-
-    /*private void onFinally(int opcode) {
-        if (opcode == ATHROW) {
-
-            super.visitInsn(DUP);
-
-            int exceptionVar = newLocal(Type.getType(Throwable.class));
-            super.visitVarInsn(ASTORE,exceptionVar);
-
-            super.visitMethodInsn(
-                    INVOKESTATIC,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
-                    "getMethodCallTraceBuilder",
-                    "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
-            );
-
-            super.visitVarInsn(ALOAD,exceptionVar);
-
-            super.visitMethodInsn(
-                    INVOKEINTERFACE,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
-                    "exception",
-                    "(Ljava/lang/Throwable;)V"
-            );
-
-        } else if (opcode == RETURN) {
-
-            super.visitMethodInsn(
-                    INVOKESTATIC,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
-                    "getMethodCallTraceBuilder",
-                    "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
-            );
-
-            super.visitMethodInsn(
-                    INVOKEINTERFACE,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
-                    "leave",
-                    "()V"
-            );
-
-        } else {
-
-            if(opcode==LRETURN || opcode==DRETURN) {
-                super.visitInsn(DUP2);
-            } else {
-                super.visitInsn(DUP);
-            }
-            box(Type.getReturnType(this.methodDesc));
-
-            int returnVar = newLocal(Type.getType(Throwable.class));
-            super.visitVarInsn(ASTORE,returnVar);
-
-            super.visitMethodInsn(
-                    INVOKESTATIC,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
-                    "getMethodCallTraceBuilder",
-                    "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
-            );
-
-            super.visitVarInsn(ALOAD,returnVar);
-
-            super.visitMethodInsn(
-                    INVOKEINTERFACE,
-                    "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
-                    "leave",
-                    "(Ljava/lang/Object;)V"
-            );
-
-        }
-
-    }*/
 
     @Override
     protected void onMethodEnter() {

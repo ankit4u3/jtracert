@@ -18,6 +18,7 @@ public class MethodCall implements Serializable  {
 
     private JTracertObjectCompanion jTracertObjectCompanion;
     private String realClassName;
+    private String className;
 
     private List<MethodCall> callees;
     private MethodCall calleer;
@@ -109,6 +110,14 @@ public class MethodCall implements Serializable  {
 
     public void setObjectHashCode(int objectHashCode) {
         this.objectHashCode = objectHashCode;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public <T> T accept(MethodCallVisitor<T> visitor) {

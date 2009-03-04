@@ -2,6 +2,7 @@ package com.google.code.jtracert.traceBuilder.impl;
 
 import com.google.code.jtracert.config.AnalyzeProperties;
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.model.MethodCallVisitor;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditOutClient;
@@ -14,6 +15,7 @@ import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenc
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
 import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.graph.ClassNameResolverMethodCallGraphVisitor;
 import com.google.code.jtracert.util.FileUtils;
 import com.google.code.jtracert.util.SizeOutputStream;
 
@@ -323,6 +325,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
             }
 
+            currentTime = System.nanoTime();
+
             if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                 System.out.println("Calculating Call Graph Hash <<<");
             }
@@ -373,6 +377,25 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
                 if (null != methodCallProcessor) {
                     methodCallProcessor.setAnalyzeProperties(analyzeProperties);
+
+                    if (analyzeProperties.isShortenClassNames()) {
+                        currentTime = System.nanoTime();
+
+                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            System.out.println("Normalize class names <<<");
+                        }
+
+                        ClassNameResolverMethodCallGraphVisitor classNameResolver =
+                                new ClassNameResolverMethodCallGraphVisitor();
+                        methodCall.accept(classNameResolver);
+                        classNameResolver.setRenaming();
+                        methodCall.accept(classNameResolver);
+
+                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            System.out.println("Normalize class names >>>");
+                            System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
+                        }
+                    }
 
                     if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                         System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");

@@ -6,12 +6,12 @@ import static com.google.code.jtracert.classFilter.FilterAction.DENY;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class DenyJTracertClassesFilter extends InheritClassFilter {
 
     /**
-     * 
      * @param className
      * @return
      */
@@ -27,5 +27,5 @@ public class DenyJTracertClassesFilter extends InheritClassFilter {
             return super.filterClassName(className);
         }
     }
-    
+
 }

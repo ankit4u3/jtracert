@@ -15,6 +15,7 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SerializableTcpServer extends BaseMethodCallProcessor implements Runnable {
@@ -29,7 +30,6 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     private static SerializableTcpServer instance;
 
     /**
-     *
      * @param port
      */
     private SerializableTcpServer(int port) {
@@ -41,7 +41,6 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     }
 
     /**
-     *
      * @param port
      * @return
      */
@@ -53,7 +52,6 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     }
 
     /**
-     *
      * @return
      */
     public static SerializableTcpServer getIstance() {
@@ -114,7 +112,6 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     }
 
     /**
-     *
      * @param methodCall
      */
     public void processMethodCall(MethodCall methodCall) {
@@ -129,7 +126,6 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     }
 
     /**
-     *
      * @return
      */
     public InstrumentationProperties getInstrumentationProperties() {
@@ -137,7 +133,6 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     }
 
     /**
-     *
      * @param instrumentationProperties
      */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {

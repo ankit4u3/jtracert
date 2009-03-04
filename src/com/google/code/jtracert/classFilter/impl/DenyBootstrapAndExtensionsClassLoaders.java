@@ -5,12 +5,12 @@ import static com.google.code.jtracert.classFilter.FilterAction.DENY;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class DenyBootstrapAndExtensionsClassLoaders extends InheritClassFilter {
 
     /**
-     * 
      * @param classLoader
      * @return
      */

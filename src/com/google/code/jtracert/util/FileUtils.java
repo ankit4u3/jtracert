@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class FileUtils {
@@ -14,7 +15,6 @@ public class FileUtils {
     public final static String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
     /**
-     * 
      * @param directory
      * @throws IOException
      */

@@ -13,21 +13,20 @@ import java.util.Set;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
 
     private final Set<Integer> addedClassNames = new HashSet<Integer>();
-    private final Map<String,Integer> classLevelMap = new HashMap<String,Integer>();
+    private final Map<String, Integer> classLevelMap = new HashMap<String, Integer>();
 
     /**
-     *
      * @param methodCall
      */
     public abstract void processMethodCall(MethodCall methodCall);
 
     /**
-     *
      * @param methodCall
      * @param diagramWriter
      * @throws IOException
@@ -54,7 +53,6 @@ public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
     }
 
     /**
-     *
      * @param methodCall
      * @param diagramWriter
      * @throws IOException
@@ -63,7 +61,7 @@ public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
 
         String callerClassName = methodCall.getClassName();
 
-        classLevelMap.put(callerClassName,0);
+        classLevelMap.put(callerClassName, 0);
 
         for (MethodCall callee : methodCall.getCallees()) {
 
@@ -77,17 +75,17 @@ public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
                     append(Integer.toString(level)).
                     append(']').
                     append(':').
-                    append(calleeClassName.replaceAll("\\.","\\\\.")).
+                    append(calleeClassName.replaceAll("\\.", "\\\\.")).
                     append('.').
                     append(callee.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);
 
-            classLevelMap.put(callerClassName,0);
+            classLevelMap.put(callerClassName, 0);
 
             writeMethodNames(callee, diagramWriter);
 
             if (callerClassName.equals(calleeClassName)) {
-                classLevelMap.put(callerClassName,1 + classLevelMap.get(callerClassName));
+                classLevelMap.put(callerClassName, 1 + classLevelMap.get(callerClassName));
             }
 
         }

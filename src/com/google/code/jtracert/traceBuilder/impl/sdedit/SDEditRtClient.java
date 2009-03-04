@@ -12,12 +12,12 @@ import java.net.UnknownHostException;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SDEditRtClient extends BaseSDEditClient {
 
     /**
-     *
      * @param methodCall
      */
     @Override
@@ -46,7 +46,7 @@ public class SDEditRtClient extends BaseSDEditClient {
 
             diagramWriter.
                     append("user:").
-                    append(methodCall.getClassName().replaceAll("\\.","\\\\.")).
+                    append(methodCall.getClassName().replaceAll("\\.", "\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);

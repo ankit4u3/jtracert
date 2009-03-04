@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class ClassFilterProcessor {
@@ -30,7 +31,6 @@ public class ClassFilterProcessor {
     }
 
     /**
-     *
      * @param classFilters
      */
     public ClassFilterProcessor(Collection<ClassFilter> classFilters) {
@@ -38,7 +38,6 @@ public class ClassFilterProcessor {
     }
 
     /**
-     *
      * @param classFilter
      * @return
      */
@@ -47,7 +46,6 @@ public class ClassFilterProcessor {
     }
 
     /**
-     *
      * @param classFilter
      * @return
      */
@@ -56,7 +54,6 @@ public class ClassFilterProcessor {
     }
 
     /**
-     *
      * @return
      */
     public Collection<ClassFilter> getClassFilters() {
@@ -64,7 +61,6 @@ public class ClassFilterProcessor {
     }
 
     /**
-     *
      * @param className
      * @param classLoader
      * @return

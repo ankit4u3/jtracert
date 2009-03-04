@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class MethodCallTraceBuilderFactory {
@@ -17,7 +18,6 @@ public class MethodCallTraceBuilderFactory {
     private static final String FACTORY_METHOD_NAME = "getMethodCallTraceBuilder";
 
     /**
-     *
      * @return
      */
     public static MethodCallTraceBuilder getMethodCallTraceBuilder() {
@@ -28,7 +28,6 @@ public class MethodCallTraceBuilderFactory {
     }
 
     /**
-     *
      * @param analyzeProperties
      */
     public static void configureMethodCallTraceBuilder(AnalyzeProperties analyzeProperties) {
@@ -36,7 +35,6 @@ public class MethodCallTraceBuilderFactory {
     }
 
     /**
-     *
      * @param methodCallTraceBuilder
      */
     public static void setMethodCallTraceBuilder(MethodCallTraceBuilder methodCallTraceBuilder) {
@@ -44,7 +42,6 @@ public class MethodCallTraceBuilderFactory {
     }
 
     /**
-     *
      * @return
      */
     public static Method getMethodCallTraceBuilderFactoryMethod() {
@@ -52,7 +49,7 @@ public class MethodCallTraceBuilderFactory {
             try {
                 methodCallTraceBuilderFactoryMethod =
                         MethodCallTraceBuilderFactory.class.
-                        getMethod(FACTORY_METHOD_NAME,(Class)null);
+                                getMethod(FACTORY_METHOD_NAME, (Class) null);
             } catch (NoSuchMethodException e) {
                 methodCallTraceBuilderFactoryMethod = null;
             }

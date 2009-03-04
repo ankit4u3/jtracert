@@ -10,12 +10,12 @@ import java.io.Writer;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SDEditFileClient extends BaseSDEditClient {
 
     /**
-     *
      * @param methodCall
      */
     @Override
@@ -37,7 +37,7 @@ public class SDEditFileClient extends BaseSDEditClient {
 
             diagramWriter.
                     append("user:").
-                    append(methodCall.getClassName().replaceAll("\\.","\\\\.")).
+                    append(methodCall.getClassName().replaceAll("\\.", "\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);
@@ -61,7 +61,6 @@ public class SDEditFileClient extends BaseSDEditClient {
     }
 
     /**
-     *
      * @param methodCall
      * @return
      */
@@ -83,7 +82,7 @@ public class SDEditFileClient extends BaseSDEditClient {
 
             diagramWriter.
                     append("user:").
-                    append(methodCall.getClassName().replaceAll("\\.","\\\\.")).
+                    append(methodCall.getClassName().replaceAll("\\.", "\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);
@@ -109,7 +108,6 @@ public class SDEditFileClient extends BaseSDEditClient {
     }
 
     /**
-     *
      * @param methodCall
      * @return
      * @throws IOException
@@ -133,7 +131,7 @@ public class SDEditFileClient extends BaseSDEditClient {
                 append(FileUtils.FILE_SEPARATOR).
                 append(classNameParts[classNameParts.length - 1]).
                 append('.').
-                append(methodCall.getMethodName().replaceAll("\\<","").replaceAll("\\>","")); // todo refactor
+                append(methodCall.getMethodName().replaceAll("\\<", "").replaceAll("\\>", "")); // todo refactor
 
         File diagramFile = new File(diagramFolderNameStringBuffer.toString() + ".sdx");
 

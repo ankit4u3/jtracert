@@ -11,12 +11,12 @@ import java.io.PrintWriter;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertASMByteCodeTransformer extends BaseJTracertByteCodeTransformer {
 
     /**
-     *
      * @param originalBytes
      * @param offset
      * @param length
@@ -49,7 +49,6 @@ public class JTracertASMByteCodeTransformer extends BaseJTracertByteCodeTransfor
     }
 
     /**
-     *
      * @param bytes
      */
     @Deprecated

@@ -8,15 +8,15 @@ import java.util.Map;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class HashCodeBuilderMethodCallGraphVisitor implements MethodCallVisitor<Integer> {
 
-    private Map<Integer,Integer> hashCodeInstanceCountMap = new HashMap<Integer,Integer>();
-    private Map<Integer,Integer> classesInstancesCountMap = new HashMap<Integer,Integer>();
+    private Map<Integer, Integer> hashCodeInstanceCountMap = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> classesInstancesCountMap = new HashMap<Integer, Integer>();
 
     /**
-     *
      * @param methodCall
      * @return
      */
@@ -64,6 +64,6 @@ public class HashCodeBuilderMethodCallGraphVisitor implements MethodCallVisitor<
         }
 
         return hashCode;
-        
+
     }
 }

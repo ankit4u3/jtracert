@@ -10,12 +10,12 @@ import java.lang.instrument.Instrumentation;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertAgent {
 
     /**
-     *
      * @param arg
      * @param instrumentation
      */
@@ -44,7 +44,7 @@ public class JTracertAgent {
 
         MethodCallTraceBuilderFactory.
                 configureMethodCallTraceBuilder(analyzeProperties);
-        
+
         instrumentation.
                 addTransformer(jTracertClassFileTransformer);
 
@@ -53,7 +53,6 @@ public class JTracertAgent {
     }
 
     /**
-     *
      * @param arg
      * @param instrumentationProperties
      * @param analyzeProperties
@@ -72,11 +71,11 @@ public class JTracertAgent {
                 SerializableTcpServer.getIstance(port);
 
         Runtime.getRuntime().addShutdownHook(new Thread(
-            new Runnable() {
-                public void run() {
-                    SerializableTcpServer.stop();
+                new Runnable() {
+                    public void run() {
+                        SerializableTcpServer.stop();
+                    }
                 }
-            }
         ));
 
         synchronized (serializableTcpServer) {

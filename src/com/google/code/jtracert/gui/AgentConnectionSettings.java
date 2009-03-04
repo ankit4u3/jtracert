@@ -12,7 +12,6 @@ public class AgentConnectionSettings {
     private String classNamePattern;
 
     /**
-     *
      * @param inetAddress
      * @param port
      * @param classNamePattern
@@ -24,7 +23,6 @@ public class AgentConnectionSettings {
     }
 
     /**
-     *
      * @return
      */
     public InetAddress getInetAddress() {
@@ -32,7 +30,6 @@ public class AgentConnectionSettings {
     }
 
     /**
-     *
      * @param inetAddress
      */
     public void setInetAddress(InetAddress inetAddress) {
@@ -40,7 +37,6 @@ public class AgentConnectionSettings {
     }
 
     /**
-     *
      * @return
      */
     public int getPort() {
@@ -48,7 +44,6 @@ public class AgentConnectionSettings {
     }
 
     /**
-     *
      * @param port
      */
     public void setPort(int port) {
@@ -56,7 +51,6 @@ public class AgentConnectionSettings {
     }
 
     /**
-     *
      * @return
      */
     public String getClassNamePattern() {
@@ -64,7 +58,6 @@ public class AgentConnectionSettings {
     }
 
     /**
-     *
      * @param classNamePattern
      */
     public void setClassNamePattern(String classNamePattern) {
@@ -72,7 +65,6 @@ public class AgentConnectionSettings {
     }
 
     /**
-     * 
      * @return
      */
     @Override
@@ -83,5 +75,5 @@ public class AgentConnectionSettings {
                 ", classNamePattern='" + classNamePattern + '\'' +
                 '}';
     }
-    
+
 }

@@ -4,6 +4,7 @@ import com.google.code.jtracert.classFilter.FilterAction;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class DenyClassByPackageNameFilter extends InheritClassFilter {
@@ -11,7 +12,6 @@ public class DenyClassByPackageNameFilter extends InheritClassFilter {
     private final String deniedPackageName;
 
     /**
-     *
      * @param deniedPackageName
      */
     public DenyClassByPackageNameFilter(String deniedPackageName) {
@@ -19,7 +19,6 @@ public class DenyClassByPackageNameFilter extends InheritClassFilter {
     }
 
     /**
-     * 
      * @param className
      * @return
      */

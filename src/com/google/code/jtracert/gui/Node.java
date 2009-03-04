@@ -4,6 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class Node extends DefaultMutableTreeNode {
@@ -18,7 +19,6 @@ public class Node extends DefaultMutableTreeNode {
     }
 
     /**
-     *
      * @param value
      */
     public Node(String value) {
@@ -26,7 +26,6 @@ public class Node extends DefaultMutableTreeNode {
     }
 
     /**
-     *
      * @param value
      * @param fileName
      */
@@ -36,7 +35,6 @@ public class Node extends DefaultMutableTreeNode {
     }
 
     /**
-     *
      * @return
      */
     public String getValue() {
@@ -44,7 +42,6 @@ public class Node extends DefaultMutableTreeNode {
     }
 
     /**
-     *
      * @param value
      */
     public void setValue(String value) {
@@ -52,7 +49,6 @@ public class Node extends DefaultMutableTreeNode {
     }
 
     /**
-     *
      * @return
      */
     public String getFileName() {
@@ -60,7 +56,6 @@ public class Node extends DefaultMutableTreeNode {
     }
 
     /**
-     *
      * @param fileName
      */
     public void setFileName(String fileName) {
@@ -68,7 +63,6 @@ public class Node extends DefaultMutableTreeNode {
     }
 
     /**
-     *
      * @return
      */
     @Override

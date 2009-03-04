@@ -17,27 +17,26 @@ import java.util.Enumeration;
 
 /**
  * This class provides a GUI frontend for jTracert agent
- *
+ * <p/>
  * First of all you should execute your application with jTracert javaagent
  * Just add following parameter to java command:
- *   -javaagent:<PATH_TO_J_TRACERT_JAR>/<J_TRACERT_AGENT_JAR>=<J_TRACERT_AGENT_PORT>
+ * -javaagent:<PATH_TO_J_TRACERT_JAR>/<J_TRACERT_AGENT_JAR>=<J_TRACERT_AGENT_PORT>
  * Where:
- *  <PATH_TO_J_TRACERT_JAR> is a path to jTracert agent jar, like C:/jTracert
- *  <J_TRACERT_AGENT_JAR is a jTracert agent jar name, like jTracer-0.0.6.jar
- *  <J_TRACERT_AGENT_PORT> is port number you want to use for agent-GUI negotiation, like 7007
- *
+ * <PATH_TO_J_TRACERT_JAR> is a path to jTracert agent jar, like C:/jTracert
+ * <J_TRACERT_AGENT_JAR is a jTracert agent jar name, like jTracer-0.0.6.jar
+ * <J_TRACERT_AGENT_PORT> is port number you want to use for agent-GUI negotiation, like 7007
+ * <p/>
  * An example may look like below:
- *  -javaagent:../../../deploy/jTracert.jar=7007
- *
+ * -javaagent:../../../deploy/jTracert.jar=7007
+ * <p/>
  * Now, execute the GUI and fill in some simple properties in agent connection dialog
- *
+ * <p/>
  * That's it!
  *
- *
- * @todo consider serious refactoring; this is just proof of concept implementation!
- *
- * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
  * @author Dmitry.Bedrin@gmail.com
+ * @todo consider serious refactoring; this is just proof of concept implementation!
+ * <p/>
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
  */
 public class MainApp {
 
@@ -45,7 +44,6 @@ public class MainApp {
     private static JTracertTreeModel jTracertTreeModel;
 
     /**
-     * 
      * @param arguments
      * @throws Exception
      */
@@ -113,7 +111,7 @@ public class MainApp {
 
                     }
 
-                    Node node = new Node(diagramFile.getName().substring(0, diagramFile.getName().length() - 4) ,diagramFileName);
+                    Node node = new Node(diagramFile.getName().substring(0, diagramFile.getName().length() - 4), diagramFileName);
                     node.setAllowsChildren(false);
 
                     jTracertTreeModel.insertNodeInto(node, contextNode, contextNode.getChildCount());
@@ -214,11 +212,11 @@ public class MainApp {
 
                             }
                         }
-                        
+
                     }
 
                 });
-                
+
                 JScrollPane scrollPane = new JScrollPane();
                 scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
                 scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -239,7 +237,7 @@ public class MainApp {
                 agentConnection.start();
 
             }
-            
+
         });
 
     }

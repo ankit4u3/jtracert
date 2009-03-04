@@ -5,6 +5,7 @@ import java.io.OutputStream;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SizeOutputStream extends OutputStream {
@@ -12,7 +13,6 @@ public class SizeOutputStream extends OutputStream {
     private long size = 0;
 
     /**
-     *
      * @param b
      * @throws IOException
      */
@@ -22,7 +22,6 @@ public class SizeOutputStream extends OutputStream {
     }
 
     /**
-     *
      * @param b
      * @throws IOException
      */
@@ -32,7 +31,6 @@ public class SizeOutputStream extends OutputStream {
     }
 
     /**
-     *
      * @param b
      * @param off
      * @param len
@@ -44,7 +42,6 @@ public class SizeOutputStream extends OutputStream {
     }
 
     /**
-     * 
      * @return
      */
     public long getSize() {

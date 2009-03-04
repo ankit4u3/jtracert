@@ -9,12 +9,12 @@ import java.io.Writer;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SDEditOutClient extends BaseSDEditClient {
 
     /**
-     *
      * @param methodCall
      */
     @Override
@@ -32,7 +32,7 @@ public class SDEditOutClient extends BaseSDEditClient {
 
             diagramWriter.
                     append("user:").
-                    append(methodCall.getClassName().replaceAll("\\.","\\\\.")).
+                    append(methodCall.getClassName().replaceAll("\\.", "\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);

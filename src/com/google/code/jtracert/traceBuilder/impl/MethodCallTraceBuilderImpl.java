@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 class MethodCallTraceBuilderState {
@@ -40,11 +41,10 @@ class MethodCallTraceBuilderState {
     public int level = 1;
     public int count = 1;
 
-    public Map<String,Integer> enterConstructorLevel = new HashMap<String,Integer>();
-    public Map<String,Integer> leaveConstructorLevel = new HashMap<String,Integer>();
+    public Map<String, Integer> enterConstructorLevel = new HashMap<String, Integer>();
+    public Map<String, Integer> leaveConstructorLevel = new HashMap<String, Integer>();
 
     /**
-     *
      * @return
      */
     @Override
@@ -66,7 +66,6 @@ class MethodCallTraceBuilderState {
 class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTraceBuilderState> {
 
     /**
-     *
      * @return
      */
     @Override
@@ -91,7 +90,7 @@ class JTracertThreadFactory implements ThreadFactory {
      */
     JTracertThreadFactory() {
         SecurityManager s = System.getSecurityManager();
-        group = (s != null)? s.getThreadGroup() :
+        group = (s != null) ? s.getThreadGroup() :
                 Thread.currentThread().getThreadGroup();
         namePrefix = "jTracert-" +
                 poolNumber.getAndIncrement() +
@@ -99,7 +98,6 @@ class JTracertThreadFactory implements ThreadFactory {
     }
 
     /**
-     *
      * @param r
      * @return
      */
@@ -137,7 +135,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 1,
                 1L,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<Runnable>(5,true),
+                new ArrayBlockingQueue<Runnable>(5, true),
                 new JTracertThreadFactory(),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
@@ -172,7 +170,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     private Set<String> jarURLs = new HashSet<String>();
 
     /**
-     *
      * @param className
      * @param methodName
      * @param methodDescriptor
@@ -244,7 +241,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             }
 
             if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println(className + "." + methodName + methodDescriptor +  " <<<");
+                System.out.println(className + "." + methodName + methodDescriptor + " <<<");
             }
 
         } catch (Throwable e) {
@@ -273,7 +270,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     /**
-     *
      * @param methodCall
      */
     private void graphFinished(final MethodCall methodCall) {
@@ -315,7 +311,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     private AnalyzeProperties analyzeProperties;
 
     /**
-     *
      * @return
      */
     public AnalyzeProperties getAnalyzeProperties() {
@@ -323,7 +318,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     /**
-     *
      * @param analyzeProperties
      */
     public void setAnalyzeProperties(AnalyzeProperties analyzeProperties) {
@@ -339,7 +333,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         private AnalyzeProperties analyzeProperties;
 
         /**
-         *
          * @param methodCall
          * @param analyzeProperties
          */
@@ -498,7 +491,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     /**
-     *
      * @param returnValue
      */
     public void leave(Object returnValue) {
@@ -506,7 +498,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     /**
-     *
      * @param e
      */
     public void exception(Throwable e) {
@@ -514,7 +505,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     /**
-     *
      * @param methodDescriptor
      */
     @Deprecated
@@ -556,7 +546,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     /**
-     *
      * @param className
      * @param methodName
      * @param methodDescriptor
@@ -570,7 +559,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     }
 
     /**
-     *
      * @param className
      * @param methodDescriptor
      */

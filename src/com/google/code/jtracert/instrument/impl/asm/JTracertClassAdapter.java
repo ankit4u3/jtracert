@@ -10,6 +10,7 @@ import org.objectweb.asm.Opcodes;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTransformer {
@@ -21,7 +22,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     private boolean isInterface;
 
     /**
-     *
      * @return
      */
     public String getClassName() {
@@ -29,7 +29,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @param className
      */
     public void setClassName(String className) {
@@ -37,7 +36,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @return
      */
     public String getParentClassName() {
@@ -45,7 +43,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @param parentClassName
      */
     public void setParentClassName(String parentClassName) {
@@ -53,7 +50,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @return
      */
     public InstrumentationProperties getInstrumentationProperties() {
@@ -61,7 +57,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @param instrumentationProperties
      */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
@@ -69,7 +64,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @param visitor
      */
     public JTracertClassAdapter(ClassVisitor visitor) {
@@ -77,7 +71,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @param visitor
      * @param instrumentationProperties
      */
@@ -87,7 +80,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     }
 
     /**
-     *
      * @param version
      * @param access
      * @param name
@@ -109,11 +101,10 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
         setParentClassName(superName);
 
         super.visit(version, access, name, signature, superName, interfaces);
-        
+
     }
 
     /**
-     *
      * @param access
      * @param name
      * @param desc

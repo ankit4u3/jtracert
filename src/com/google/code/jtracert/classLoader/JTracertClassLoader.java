@@ -8,12 +8,14 @@ import com.google.code.jtracert.instrument.ConfigurableTransformer;
 import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
 import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
 import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
+import com.google.code.jtracert.util.ClassUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertClassLoader
@@ -32,7 +34,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param instrumentationProperties
      */
     public JTracertClassLoader(InstrumentationProperties instrumentationProperties) {
@@ -42,7 +43,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param classFilterProcessor
      */
     public JTracertClassLoader(ClassFilterProcessor classFilterProcessor) {
@@ -51,7 +51,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param parentClassLoader
      */
     public JTracertClassLoader(ClassLoader parentClassLoader) {
@@ -60,7 +59,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param parentClassLoader
      * @param instrumentationProperties
      */
@@ -71,7 +69,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param parentClassLoader
      * @param classFilterProcessor
      */
@@ -81,7 +78,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param parentClassLoader
      * @param classFilterProcessor
      * @param instrumentationProperties
@@ -93,7 +89,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param name
      * @param resolve
      * @return
@@ -122,17 +117,14 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param name
      * @return
      */
-    @Deprecated
     private boolean checkClassName(String name) {
         return name.startsWith("java.");
     }
 
     /**
-     *
      * @param name
      * @return
      * @throws ClassNotFoundException
@@ -162,7 +154,8 @@ public class JTracertClassLoader
         byte[] transformedByteArray;
 
         try {
-            byteCodeInputStream = parentClassLoader.getResourceAsStream(convertClassNameToResourceName(name));
+            byteCodeInputStream = parentClassLoader.getResourceAsStream(
+                    ClassUtils.convertClassNameToResourceName(name));
             transformedByteArray = jTracertByteCodeTransformerAdapter.transform(byteCodeInputStream);
         } catch (ByteCodeTransformException e) {
             throw new ClassNotFoundException("Error while instrumenting class " + name, e);
@@ -180,17 +173,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
-     * @todo move to ClassUtils class
-     * @param name
-     * @return
-     */
-    private String convertClassNameToResourceName(String name) {
-        return name.replace('.','/') + ".class";
-    }
-
-    /**
-     *
      * @return
      */
     private ClassLoader getParentOrSystemClassLoader() {
@@ -206,7 +188,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @return
      */
     public InstrumentationProperties getInstrumentationProperties() {
@@ -214,7 +195,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @param instrumentationProperties
      */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
@@ -222,7 +202,6 @@ public class JTracertClassLoader
     }
 
     /**
-     *
      * @return
      */
     public ClassFilterProcessor getClassFilterProcessor() {
@@ -230,7 +209,6 @@ public class JTracertClassLoader
     }
 
     /**
-     * 
      * @param classFilterProcessor
      */
     public void setClassFilterProcessor(ClassFilterProcessor classFilterProcessor) {

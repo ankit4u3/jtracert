@@ -9,17 +9,16 @@ import java.util.Map;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
- * @author Dmitry.Bedrin@gmail.com
  *
+ * @author Dmitry.Bedrin@gmail.com
  * @todo consider using suffix trees or Boyer-Moore algorythm or Knuth-Morris-Pratt algorythm
  * @todo consider using ASM for getting information about recursion, repeating calls, e.t.c.
  */
 public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object> {
 
-    private final Map<MethodCall,Integer> methodCallHashCodeMap = new HashMap<MethodCall,Integer>();
+    private final Map<MethodCall, Integer> methodCallHashCodeMap = new HashMap<MethodCall, Integer>();
 
     /**
-     *
      * @param methodCall
      * @return
      */
@@ -46,10 +45,10 @@ public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object>
                     for (int k = 0; k < j - i && k + j < calleesSize; k++) {
                         equalSequenceFound &=
                                 getMethodCallHashCode(callees.get(i + k)).equals(
-                                getMethodCallHashCode(callees.get(j + k)));
+                                        getMethodCallHashCode(callees.get(j + k)));
                     }
                     if (equalSequenceFound) {
-                        calleesSize -= j-i;
+                        calleesSize -= j - i;
                         for (int k = 0; k < j - i; k++) {
                             callees.remove(j);
                         }
@@ -71,14 +70,13 @@ public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object>
     }
 
     /**
-     *
      * @param methodCall
      * @return
      */
     private Integer getMethodCallHashCode(MethodCall methodCall) {
 
         if (!methodCallHashCodeMap.containsKey(methodCall)) {
-            methodCallHashCodeMap.put(methodCall,methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor()));
+            methodCallHashCodeMap.put(methodCall, methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor()));
         }
 
         return methodCallHashCodeMap.get(methodCall);

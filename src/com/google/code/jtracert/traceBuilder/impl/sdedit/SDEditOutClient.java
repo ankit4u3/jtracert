@@ -27,7 +27,7 @@ public class SDEditOutClient extends BaseSDEditClient {
 
             diagramWriter.
                     append("user:").
-                    append(methodCall.getRealClassName().replaceAll("\\.","\\\\.")).
+                    append(methodCall.getClassName().replaceAll("\\.","\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);

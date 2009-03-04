@@ -32,7 +32,7 @@ public class SDEditFileClient extends BaseSDEditClient {
 
             diagramWriter.
                     append("user:").
-                    append(methodCall.getRealClassName().replaceAll("\\.","\\\\.")).
+                    append(methodCall.getClassName().replaceAll("\\.","\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);
@@ -73,7 +73,7 @@ public class SDEditFileClient extends BaseSDEditClient {
 
             diagramWriter.
                     append("user:").
-                    append(methodCall.getRealClassName().replaceAll("\\.","\\\\.")).
+                    append(methodCall.getClassName().replaceAll("\\.","\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);

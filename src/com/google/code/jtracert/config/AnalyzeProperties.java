@@ -26,6 +26,7 @@ public class AnalyzeProperties implements Serializable {
     private final static String SDEDIT_PORT = "sdEditPort";
     private final static String ANALYZER_OUTPUT = "analyzerOutput";
     private final static String OUTPUT_FOLDER = "outputFolder";
+    private final static String SHORTEN_CLASS_NAMES = "shortenClassNames";
     private final static String VERBOSE = "verboseAnalyze";
     private final static String SERIALIZABLE_TCP_SERVER_HOST = "serializableTcpServerHost";
     private final static String SERIALIZABLE_TCP_SERVER_PORT = "serializableTcpServerPort";
@@ -35,6 +36,7 @@ public class AnalyzeProperties implements Serializable {
     private AnalyzerOutput analyzerOutput;
     private String outputFolder;
     private boolean verbose;
+    private boolean shortenClassNames;
 
     private String serializableTcpServerHost;
     private int serializableTcpServerPort;
@@ -95,6 +97,14 @@ public class AnalyzeProperties implements Serializable {
             analyzeProperties.setVerbose(false);
         }
 
+        String shortenClassNames = System.getProperty(SHORTEN_CLASS_NAMES);
+        if (null != verboseAnalyze) {
+            analyzeProperties.setShortenClassNames(Boolean.valueOf(shortenClassNames));
+        } else {
+            analyzeProperties.setShortenClassNames(true);
+        }
+
+
         return analyzeProperties;
     }
 
@@ -154,4 +164,11 @@ public class AnalyzeProperties implements Serializable {
         this.serializableTcpServerPort = serializableTcpServerPort;
     }
 
+    public boolean isShortenClassNames() {
+        return shortenClassNames;
+    }
+
+    public void setShortenClassNames(boolean shortenClassNames) {
+        this.shortenClassNames = shortenClassNames;
+    }
 }

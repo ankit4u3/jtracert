@@ -523,21 +523,10 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     }
 
-    public Object wrap(Object o) {
+    public void preEnterConstructor(String className, String methodDescriptor) {
         System.out.println();
+        System.out.println("Pre entering constructor " + className + ".<init>" + methodDescriptor);
         System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("wrapping " + o);
-        return o;
-    }
-
-    public void wrap() {
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("wrapping void");
     }
 
 

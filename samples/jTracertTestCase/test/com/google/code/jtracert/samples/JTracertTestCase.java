@@ -13,6 +13,9 @@ public abstract class JTracertTestCase extends TestCase {
         return startJavaProcessWithJTracert(jarFileName, false);
     }
 
+    /**
+     * @todo use JAVA_HOME environment variable if applicable
+     */
     protected Process startJavaProcessWithJTracert(String jarFileName, boolean verbose) throws IOException {
 
         String[] commands =

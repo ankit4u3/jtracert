@@ -5,7 +5,8 @@ import com.google.code.jtracert.util.FileUtils;
 import java.io.Serializable;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class AnalyzeProperties implements Serializable {
 
@@ -41,10 +42,17 @@ public class AnalyzeProperties implements Serializable {
     private String serializableTcpServerHost;
     private int serializableTcpServerPort;
 
+    /**
+     *
+     */
     public AnalyzeProperties() {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public static AnalyzeProperties loadFromSystemProperties() {
         AnalyzeProperties analyzeProperties = new AnalyzeProperties();
 
@@ -108,66 +116,130 @@ public class AnalyzeProperties implements Serializable {
         return analyzeProperties;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSdEditHost() {
         return sdEditHost;
     }
 
+    /**
+     *
+     * @param sdEditHost
+     */
     public void setSdEditHost(String sdEditHost) {
         this.sdEditHost = sdEditHost;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSdEditPort() {
         return sdEditPort;
     }
 
+    /**
+     *
+     * @param sdEditPort
+     */
     public void setSdEditPort(int sdEditPort) {
         this.sdEditPort = sdEditPort;
     }
 
+    /**
+     *
+     * @return
+     */
     public AnalyzerOutput getAnalyzerOutput() {
         return analyzerOutput;
     }
 
+    /**
+     *
+     * @param analyzerOutput
+     */
     public void setAnalyzerOutput(AnalyzerOutput analyzerOutput) {
         this.analyzerOutput = analyzerOutput;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getOutputFolder() {
         return outputFolder;
     }
 
+    /**
+     *
+     * @param outputFolder
+     */
     public void setOutputFolder(String outputFolder) {
         this.outputFolder = outputFolder;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isVerbose() {
         return verbose;
     }
 
+    /**
+     *
+     * @param verbose
+     */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSerializableTcpServerHost() {
         return serializableTcpServerHost;
     }
 
+    /**
+     *
+     * @param serializableTcpServerHost
+     */
     public void setSerializableTcpServerHost(String serializableTcpServerHost) {
         this.serializableTcpServerHost = serializableTcpServerHost;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSerializableTcpServerPort() {
         return serializableTcpServerPort;
     }
 
+    /**
+     *
+     * @param serializableTcpServerPort
+     */
     public void setSerializableTcpServerPort(int serializableTcpServerPort) {
         this.serializableTcpServerPort = serializableTcpServerPort;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isShortenClassNames() {
         return shortenClassNames;
     }
 
+    /**
+     * 
+     * @param shortenClassNames
+     */
     public void setShortenClassNames(boolean shortenClassNames) {
         this.shortenClassNames = shortenClassNames;
     }

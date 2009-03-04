@@ -35,12 +35,20 @@ import java.util.Enumeration;
  *
  *
  * @todo consider serious refactoring; this is just proof of concept implementation!
+ *
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class MainApp {
 
     private static JTree jtree;
     private static JTracertTreeModel jTracertTreeModel;
 
+    /**
+     * 
+     * @param arguments
+     * @throws Exception
+     */
     public static void main(String[] arguments) throws Exception {
 
         final AgentConnectionDialog agentConnectionDialog = new AgentConnectionDialog();

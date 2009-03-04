@@ -12,6 +12,10 @@ import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+/**
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
+ */
 public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     private JTextField folderTextField;
@@ -21,10 +25,18 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     private AgentConnectionSettings agentConnectionSettings;
 
+    /**
+     *
+     * @return
+     */
     public String getFolder() {
         return folderTextField.getText();
     }
 
+    /**
+     *
+     * @param e
+     */
     public void actionPerformed(ActionEvent e) {
 
         String folder = folderTextField.getText();
@@ -69,10 +81,18 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public AgentConnectionSettings getAgentConnectionSettings() {
         return agentConnectionSettings;
     }
 
+    /**
+     *
+     * @throws HeadlessException
+     */
     public AgentConnectionDialog() throws HeadlessException {
 
         super();
@@ -87,6 +107,9 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     }
 
+    /**
+     *
+     */
     private void createGUI() {
 
         Container contentPane = getContentPane();
@@ -191,12 +214,20 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     }
 
+    /**
+     *
+     * @return
+     */
     private JButton createConnectButton() {
         JButton connectButton = new JButton("Connect");
         connectButton.addActionListener(this);
         return connectButton;
     }
 
+    /**
+     *
+     * @return
+     */
     private JButton createCancelButton() {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(
@@ -209,42 +240,71 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         return cancelButton;
     }
 
+    /**
+     *
+     * @return
+     */
     private JTextField createClassNameRegExTextField() {
         JTextField classNameRegExTextField = new JTextField();
         classNameRegExTextField.setText("com\\.mycompany.*");
         return classNameRegExTextField;
     }
 
+    /**
+     *
+     * @return
+     */
     private JLabel createClassNameRegExLabel() {
         JLabel classNameRegExLabel = new JLabel();
         classNameRegExLabel.setText("Class filter (regular expression like \"com\\.mycompany.*\")");
         return classNameRegExLabel;
     }
 
+    /**
+     *
+     * @return
+     */
     private JTextField createAgentPortTextField() {
         JTextField agentPortTextField = new JTextField();
         agentPortTextField.setText("7007");
         return agentPortTextField;
     }
 
+    /**
+     *
+     * @return
+     */
     private JLabel createAgentPortLabel() {
         JLabel agentPortLabel = new JLabel();
         agentPortLabel.setText("jTracert Agent port");
         return agentPortLabel;
     }
 
+    /**
+     *
+     * @return
+     */
     private JTextField createAgentAddressTextField() {
         JTextField agentAddressTextField = new JTextField();
         agentAddressTextField.setText("127.0.0.1");
         return agentAddressTextField;
     }
 
+    /**
+     *
+     * @return
+     */
     private JLabel createAgentAddressLabel() {
         JLabel agentAddressLabel = new JLabel();
         agentAddressLabel.setText("jTracert Agent address");
         return agentAddressLabel;
     }
 
+    /**
+     *
+     * @param folderTextField
+     * @return
+     */
     private JButton createBrowseFolderButton(final JTextField folderTextField) {
         JButton browseFolderButton = new JButton();
         browseFolderButton.setText("Browse");
@@ -260,6 +320,10 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         return browseFolderButton;
     }
 
+    /**
+     *
+     * @param folderTextField
+     */
     private void chooseFolder(JTextField folderTextField) {
 
         JFileChooser fileChooser = new JFileChooser();
@@ -272,6 +336,10 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
     }
 
+    /**
+     *
+     * @return
+     */
     private JTextField createFolderTextField() {
         final JTextField folderTextField = new JTextField();
         folderTextField.setText("Select project folder");
@@ -287,12 +355,20 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         return folderTextField;
     }
 
+    /**
+     *
+     * @return
+     */
     private JLabel createFolderLabel() {
         JLabel folderLabel = new JLabel();
         folderLabel.setText("Select project folder");
         return folderLabel;
     }
 
+    /**
+     *
+     * @return
+     */
     private JLabel createHeaderLabel() {
         JLabel headerLabel = new JLabel();
         headerLabel.setText("jTracert Agent Connection Wizard");
@@ -304,10 +380,18 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         return headerLabel;
     }
 
+    /**
+     *
+     * @return
+     */
     private AgentConnectionDialog self() {
         return this;
     }
 
+    /**
+     * 
+     * @return
+     */
     private Rectangle getFrameBounds() {
 
         Dimension wizardDimension = getSize();

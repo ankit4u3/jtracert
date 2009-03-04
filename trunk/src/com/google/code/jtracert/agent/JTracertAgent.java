@@ -9,10 +9,16 @@ import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpSe
 import java.lang.instrument.Instrumentation;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertAgent {
 
+    /**
+     *
+     * @param arg
+     * @param instrumentation
+     */
     public static void premain(final String arg, Instrumentation instrumentation) {
 
         System.out.println();
@@ -46,6 +52,13 @@ public class JTracertAgent {
 
     }
 
+    /**
+     *
+     * @param arg
+     * @param instrumentationProperties
+     * @param analyzeProperties
+     * @throws InterruptedException
+     */
     private static void processJTracertGuiConnection(String arg, InstrumentationProperties instrumentationProperties, AnalyzeProperties analyzeProperties) throws InterruptedException {
 
         int port = Integer.parseInt(arg);

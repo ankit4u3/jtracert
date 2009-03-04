@@ -9,7 +9,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertMethodAdapter extends AdviceAdapter implements ConfigurableTransformer {
 
@@ -22,6 +23,14 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
     private final Label startFinallyLabel = new Label();
 
+    /**
+     *
+     * @param mv
+     * @param access
+     * @param name
+     * @param desc
+     * @param className
+     */
     public JTracertMethodAdapter(MethodVisitor mv, int access, String name, String desc, String className) {
         super(mv, access, name, desc);
         this.className = className;
@@ -29,6 +38,16 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         this.isConstructor = name.equals("<init>");
     }
 
+    /**
+     *
+     * @param mv
+     * @param access
+     * @param name
+     * @param desc
+     * @param className
+     * @param instrumentationProperties
+     * @param parentClassName
+     */
     public JTracertMethodAdapter(
             MethodVisitor mv,
             int access,
@@ -42,12 +61,20 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         this.parentClassName = parentClassName;
     }
 
+    /**
+     *
+     */
     @Override
     public void visitCode() {
         super.visitCode();
         mv.visitLabel(startFinallyLabel);
     }
 
+    /**
+     *
+     * @param maxStack
+     * @param maxLocals
+     */
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
         Label endFinallyLabel = new Label();
@@ -58,6 +85,13 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         mv.visitMaxs(maxStack, maxLocals);
     }
 
+    /**
+     *
+     * @param opcode
+     * @param owner
+     * @param name
+     * @param desc
+     */
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc) {
 
@@ -90,6 +124,10 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
     }
 
+    /**
+     *
+     * @param opcode
+     */
     private void onFinally(int opcode) {
 
         if (isConstructor) {
@@ -141,22 +179,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
             }
 
         } else {
-            /*if (opcode == RETURN) {
-                mv.visitMethodInsn(
-                        INVOKESTATIC,
-                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
-                        "getMethodCallTraceBuilder",
-                        "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
-                );
-
-                mv.visitMethodInsn(
-                        INVOKEINTERFACE,
-                        "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
-                        "leave",
-                        "()V"
-                );
-
-            }*/
 
             if (opcode == ATHROW) {
 
@@ -232,6 +254,10 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
     }
 
+    /**
+     *
+     * @param opcode
+     */
     @Override
     protected void onMethodExit(int opcode) {
         if (opcode != ATHROW) {
@@ -239,6 +265,9 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         }
     }
 
+    /**
+     *
+     */
     @Override
     protected void onMethodEnter() {
         try {
@@ -297,6 +326,11 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
     }
 
+    /**
+     *
+     * @param argIndex
+     * @return
+     */
     private int generateArgumentsArray(int argIndex) {
 
         Type[] argumentTypes = Type.getArgumentTypes(getMethodDescriptor());
@@ -391,26 +425,50 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         return argIndex;
     }
 
+    /**
+     *
+     * @return
+     */
     private String getClassName() {
         return this.className;
     }
 
+    /**
+     *
+     * @return
+     */
     private String getMethodName() {
         return this.methodName;
     }
 
+    /**
+     *
+     * @return
+     */
     private String getMethodDescriptor() {
         return super.methodDesc;
     }
 
+    /**
+     *
+     * @return
+     */
     private int getMethodAccess() {
         return super.methodAccess;
     }
 
+    /**
+     *
+     * @return
+     */
     public InstrumentationProperties getInstrumentationProperties() {
         return instrumentationProperties;
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
         this.instrumentationProperties = instrumentationProperties;
     }

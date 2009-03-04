@@ -4,10 +4,14 @@ import com.google.code.jtracert.model.MethodCall;
 import junit.framework.TestCase;
 
 /**
- * @author dmitry.bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class NormalizeMetodCallGraphVisitorTest extends TestCase {
 
+    /**
+     * 
+     */
     public void testNormalizeTwoSobsequences() {
 
         MethodCall parentMethodCall = new MethodCall("ParentClass","main","()V",null);

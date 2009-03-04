@@ -13,6 +13,10 @@ import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
+ */
 public class SerializableTcpServer extends BaseMethodCallProcessor implements Runnable {
 
     private int port;
@@ -24,6 +28,10 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
     private BlockingQueue<MethodCall> methodCallQueue = new ArrayBlockingQueue<MethodCall>(5);
     private static SerializableTcpServer instance;
 
+    /**
+     *
+     * @param port
+     */
     private SerializableTcpServer(int port) {
         this.port = port;
 
@@ -32,6 +40,11 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
 
     }
 
+    /**
+     *
+     * @param port
+     * @return
+     */
     public static SerializableTcpServer getIstance(int port) {
         if (null == instance) {
             instance = new SerializableTcpServer(port);
@@ -39,14 +52,24 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
         return instance;
     }
 
+    /**
+     *
+     * @return
+     */
     public static SerializableTcpServer getIstance() {
         return instance;
     }
 
+    /**
+     *
+     */
     public static void stop() {
         getIstance().running = false;
     }
 
+    /**
+     *
+     */
     public void run() {
         running = true;
         try {
@@ -75,8 +98,9 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
 
                 MethodCall methodCall = methodCallQueue.take();
 
-                System.out.println("sending method call " + methodCall);
-
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("sending method call " + methodCall);
+                }
 
                 objectOutputStream.writeObject(methodCall);
 
@@ -89,19 +113,33 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
         }
     }
 
+    /**
+     *
+     * @param methodCall
+     */
     public void processMethodCall(MethodCall methodCall) {
         try {
-            System.out.println("putting method call " + methodCall);
+            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                System.out.println("putting method call " + methodCall);
+            }
             methodCallQueue.put(methodCall);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public InstrumentationProperties getInstrumentationProperties() {
         return instrumentationProperties;
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
         this.instrumentationProperties = instrumentationProperties;
     }

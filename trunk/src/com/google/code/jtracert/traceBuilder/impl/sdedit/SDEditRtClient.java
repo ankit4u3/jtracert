@@ -11,10 +11,15 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class SDEditRtClient extends BaseSDEditClient {
 
+    /**
+     *
+     * @param methodCall
+     */
     @Override
     public void processMethodCall(MethodCall methodCall) {
 

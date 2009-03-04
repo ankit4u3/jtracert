@@ -29,7 +29,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 class MethodCallTraceBuilderState {
 
@@ -42,6 +43,10 @@ class MethodCallTraceBuilderState {
     public Map<String,Integer> enterConstructorLevel = new HashMap<String,Integer>();
     public Map<String,Integer> leaveConstructorLevel = new HashMap<String,Integer>();
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "MethodCallTraceBuilderState{" +
@@ -55,8 +60,15 @@ class MethodCallTraceBuilderState {
 
 }
 
+/**
+ *
+ */
 class MethodCallTraceBuilderStateThreadLocal extends ThreadLocal<MethodCallTraceBuilderState> {
 
+    /**
+     *
+     * @return
+     */
     @Override
     protected MethodCallTraceBuilderState initialValue() {
         return new MethodCallTraceBuilderState();
@@ -74,6 +86,9 @@ class JTracertThreadFactory implements ThreadFactory {
     final AtomicInteger threadNumber = new AtomicInteger(1);
     final String namePrefix;
 
+    /**
+     *
+     */
     JTracertThreadFactory() {
         SecurityManager s = System.getSecurityManager();
         group = (s != null)? s.getThreadGroup() :
@@ -83,6 +98,11 @@ class JTracertThreadFactory implements ThreadFactory {
                 "-thread-";
     }
 
+    /**
+     *
+     * @param r
+     * @return
+     */
     public Thread newThread(Runnable r) {
         Thread t = new Thread(group, r,
                 namePrefix + threadNumber.getAndIncrement(),
@@ -94,6 +114,9 @@ class JTracertThreadFactory implements ThreadFactory {
     }
 }
 
+/**
+ *
+ */
 public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private static MethodCallTraceBuilderStateThreadLocal traceBuilderState = new MethodCallTraceBuilderStateThreadLocal();
@@ -102,6 +125,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     private Set<Integer> processedHashCodes;
     private static final int MAX_COUNT = 10000;
 
+    /**
+     *
+     */
     public MethodCallTraceBuilderImpl() {
 
         processedHashCodes = new HashSet<Integer>();
@@ -145,6 +171,14 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private Set<String> jarURLs = new HashSet<String>();
 
+    /**
+     *
+     * @param className
+     * @param methodName
+     * @param methodDescriptor
+     * @param object
+     * @param arguments
+     */
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
 
         //watchJar(object); // todo uncomment this line in order to track JAR dependencies
@@ -173,24 +207,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
                 state.level++;
                 state.count++;
-
-                /*if (methodName.equals("<init>")) {
-
-                    Integer constructorLevelFromState;
-                    int constructorLevel;
-
-                    constructorLevelFromState = state.enterConstructorLevel.get(className);
-                    if (null == constructorLevelFromState) {
-                        constructorLevel = 0;
-                    } else {
-                        constructorLevel = constructorLevelFromState;
-                    }
-
-                    constructorLevel++;
-
-                    state.enterConstructorLevel.put(className, constructorLevel);
-
-                }*/
 
                 if (state.count > MAX_COUNT) return;
 
@@ -242,6 +258,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
     /**
      * @todo refactor this method in order to store dependency information in some storage
      */
+    @Deprecated
     private void watchJar(Object object) {
         if (null != object) {
             URL codeLocationURL = object.getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -255,6 +272,10 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         }
     }
 
+    /**
+     *
+     * @param methodCall
+     */
     private void graphFinished(final MethodCall methodCall) {
 
         if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
@@ -293,24 +314,43 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private AnalyzeProperties analyzeProperties;
 
+    /**
+     *
+     * @return
+     */
     public AnalyzeProperties getAnalyzeProperties() {
         return analyzeProperties;
     }
 
+    /**
+     *
+     * @param analyzeProperties
+     */
     public void setAnalyzeProperties(AnalyzeProperties analyzeProperties) {
         this.analyzeProperties = analyzeProperties;
     }
 
+    /**
+     *
+     */
     private class SDEditClientRunnable implements Runnable {
 
         private MethodCall methodCall;
         private AnalyzeProperties analyzeProperties;
 
+        /**
+         *
+         * @param methodCall
+         * @param analyzeProperties
+         */
         public SDEditClientRunnable(MethodCall methodCall, AnalyzeProperties analyzeProperties) {
             this.methodCall = methodCall;
             this.analyzeProperties = analyzeProperties;
         }
 
+        /**
+         *
+         */
         public void run() {
 
             long currentTime = System.nanoTime();
@@ -410,6 +450,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     }
 
+    /**
+     *
+     */
     public void leave() {
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
@@ -454,28 +497,36 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     }
 
+    /**
+     *
+     * @param returnValue
+     */
     public void leave(Object returnValue) {
         leave();
     }
 
+    /**
+     *
+     * @param e
+     */
     public void exception(Throwable e) {
         leave();
     }
 
+    /**
+     *
+     * @param methodDescriptor
+     */
     @Deprecated
     public void leaveConstructor(String methodDescriptor) {
 
         leave();
 
-        /*if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-            System.out.println("Leaving constructor with desriptor " + methodDescriptor);
-        }
-
-        swapConstructors();
-
-        leave();*/
     }
 
+    /**
+     *
+     */
     @Deprecated
     private void swapConstructors() {
         MethodCallTraceBuilderState state = traceBuilderState.get();
@@ -504,91 +555,30 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         }
     }
 
+    /**
+     *
+     * @param className
+     * @param methodName
+     * @param methodDescriptor
+     * @param exception
+     */
     @Deprecated
     public void leaveConstructor(String className, String methodName, String methodDescriptor, Throwable exception) {
 
         exception(exception);
 
-        /*if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-            System.out.println();
-            System.out.println(System.identityHashCode(exception));
-            System.out.println();
-            System.out.println("Leaving constructor on exception with desriptor " + methodDescriptor);
-        }
-
-        MethodCallTraceBuilderState state = traceBuilderState.get();
-
-        Integer constructorLevelFromState;
-        int constructorLevel;
-
-        constructorLevelFromState = state.leaveConstructorLevel.get(className);
-        if (null == constructorLevelFromState) {
-            constructorLevel = 0;
-        } else {
-            constructorLevel = constructorLevelFromState;
-        }
-
-        constructorLevel++;
-
-        state.leaveConstructorLevel.put(className, constructorLevel);
-
-        int enterConstructorLevel = state.enterConstructorLevel.get(className);
-        int leaveConstructorLevel = state.leaveConstructorLevel.get(className);
-
-        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-            System.out.println("enterConstructorLevel=" + enterConstructorLevel);
-            System.out.println("leaveConstructorLevel=" + leaveConstructorLevel);
-        }
-
-        if (enterConstructorLevel < leaveConstructorLevel) {
-
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("enterConstructorLevel < leaveConstructorLevel");
-            }
-
-            enter(
-                    className,
-                    methodName,
-                    methodDescriptor,
-                    null,
-                    null);
-
-
-            // Assign hash code from previous sibling constructor
-
-            MethodCall currentMethodCall = state.methodCall;
-
-            List<MethodCall> siblingCallees = currentMethodCall.getCalleer().getCallees();
-
-            if (siblingCallees.size() > 1) {
-                MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
-
-                if (previousSiblingMethodCall.getMethodName().equals("<init>")) {
-                    currentMethodCall.setObjectHashCode(previousSiblingMethodCall.getObjectHashCode());
-                }
-
-            }
-
-            // EO assign hash code
-
-            swapConstructors();
-            leave();
-
-        } else {
-            leave();
-        }*/
-
     }
 
     /**
-     * @todo implement this method
+     *
+     * @param className
+     * @param methodDescriptor
      */
     public void preEnterConstructor(String className, String methodDescriptor) {
-        System.out.println("Pre entering constructor " + className + ".<init>" + methodDescriptor);
+        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+            System.out.println("Pre entering constructor " + className + ".<init>" + methodDescriptor);
+        }
         enter(className, "<init>", methodDescriptor, null, null);
-        /*System.out.println();
-        System.out.println("Pre entering constructor " + className + ".<init>" + methodDescriptor);
-        System.out.println();*/
     }
 
 

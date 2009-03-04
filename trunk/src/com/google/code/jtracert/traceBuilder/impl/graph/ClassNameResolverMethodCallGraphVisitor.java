@@ -9,17 +9,26 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- * @author dmitry.bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class ClassNameResolverMethodCallGraphVisitor implements MethodCallVisitor<Object> {
 
     private Map<String, Collection<String>> classNameMap = new HashMap<String, Collection<String>>();
     private boolean renaming = false;
 
+    /**
+     *
+     */
     public void setRenaming() {
         renaming = true;
     }
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     */
     public Object visit(MethodCall methodCall) {
 
         String longClassName = methodCall.getRealClassName();

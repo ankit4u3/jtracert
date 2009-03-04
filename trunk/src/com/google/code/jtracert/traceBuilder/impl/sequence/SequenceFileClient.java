@@ -10,10 +10,15 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class SequenceFileClient extends BaseMethodCallProcessor {
 
+    /**
+     *
+     * @param methodCall
+     */
     public void processMethodCall(MethodCall methodCall) {
 
         Writer diagramWriter = null;
@@ -42,6 +47,13 @@ public class SequenceFileClient extends BaseMethodCallProcessor {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @param diagramWriter
+     * @param level
+     * @throws IOException
+     */
     private void writeSequence(MethodCall methodCall, Writer diagramWriter, int level) throws IOException {
 
         String className = methodCall.getRealClassName().replaceAll("\\.","/");
@@ -71,6 +83,12 @@ public class SequenceFileClient extends BaseMethodCallProcessor {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     * @throws IOException
+     */
     private File getDiagramFile(MethodCall methodCall) throws IOException {
 
         String baseDiagramsFolderName = getAnalyzeProperties().getOutputFolder();

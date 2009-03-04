@@ -12,12 +12,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertClassLoaderTest extends TestCase {
 
     private JTracertClassLoader jTracertClassLoader;
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
         ClassLoader currentClassLoader = JTracertClassLoaderTest.class.getClassLoader();
@@ -28,6 +32,9 @@ public class JTracertClassLoaderTest extends TestCase {
                 new AllowClassByNameFilter("com.google.code.jtracert.classLoader.ExperimentalClass1"));
     }
 
+    /**
+     *
+     */
     @Test
     public void testClassLoaderProcessMethodBodyCorrectly() {
 
@@ -65,6 +72,9 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testCallTraceBuilt() {
 
@@ -97,6 +107,9 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testCallTraceBuiltMethodReturnVoid() {
 
@@ -136,6 +149,9 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testCallTraceBuiltEmptyMethod() {
 
@@ -175,6 +191,9 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testCallTraceBuiltMethodReturnObject() {
 
@@ -214,6 +233,9 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testCallTraceBuiltMethodThrowException() {
 
@@ -257,6 +279,9 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testCallTraceBuiltMethodReThrowException() {
 
@@ -300,6 +325,9 @@ public class JTracertClassLoaderTest extends TestCase {
 
     }
 
+    /**
+     *
+     */
     private static class MethodCallTraceBuilderInvokeCounter
             implements MethodCallTraceBuilder {
 
@@ -310,54 +338,121 @@ public class JTracertClassLoaderTest extends TestCase {
 
         private AnalyzeProperties analyzeProperties;
 
+        /**
+         *
+         * @return
+         */
         public AnalyzeProperties getAnalyzeProperties() {
             return analyzeProperties;
         }
 
+        /**
+         *
+         * @param analyzeProperties
+         */
         public void setAnalyzeProperties(AnalyzeProperties analyzeProperties) {
             this.analyzeProperties = analyzeProperties;
         }
 
+        /**
+         *
+         * @param className
+         * @param methodName
+         * @param methodDescriptor
+         * @param object
+         * @param arguments
+         */
         public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
             enterMethodCount = getEnterMethodCount() + 1;
         }
 
+        /**
+         *
+         */
         public void leave() {
             leaveOnReturnVoidCount = getLeaveOnReturnVoidCount() + 1;
         }
 
+        /**
+         *
+         * @param returnValue
+         */
         public void leave(Object returnValue) {
             leaveOnReturnValueCount = getLeaveOnReturnValueCount() + 1;
         }
 
+        /**
+         *
+         * @param e
+         */
         public void exception(Throwable e) {
             leaveOnThrowExceptionValueCount = getLeaveOnThrowExceptionValueCount() + 1;
         }
 
+        /**
+         *
+         * @param methodDescriptor
+         */
         public void leaveConstructor(String methodDescriptor) {
             leaveOnReturnVoidCount = getLeaveOnReturnVoidCount() + 1;
         }
 
+        /**
+         *
+         * @param className
+         * @param methodName
+         * @param methodDescriptor
+         * @param exception
+         */
         public void leaveConstructor(String className, String methodName, String methodDescriptor, Throwable exception) {
             leaveOnThrowExceptionValueCount = getLeaveOnThrowExceptionValueCount() + 1;
         }
 
+        /**
+         *
+         * @param className
+         * @param methodDescriptor
+         */
+        public void preEnterConstructor(String className, String methodDescriptor) {
+
+        }
+
+        /**
+         *
+         * @return
+         */
         public int getEnterMethodCount() {
             return enterMethodCount;
         }
 
+        /**
+         *
+         * @return
+         */
         public int getLeaveOnReturnVoidCount() {
             return leaveOnReturnVoidCount;
         }
 
+        /**
+         *
+         * @return
+         */
         public int getLeaveOnReturnValueCount() {
             return leaveOnReturnValueCount;
         }
 
+        /**
+         *
+         * @return
+         */
         public int getLeaveOnThrowExceptionValueCount() {
             return leaveOnThrowExceptionValueCount;
         }
 
+        /**
+         * 
+         * @return
+         */
         @Override
         public String toString() {
             return "MethodCallTraceBuilderInvokeCounter{" +

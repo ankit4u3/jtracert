@@ -6,25 +6,46 @@ import com.google.code.jtracert.instrument.ByteCodeTransformer;
 import java.io.*;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
 
     private ByteCodeTransformer byteCodeTransformer;
 
+    /**
+     *
+     * @return
+     */
     public ByteCodeTransformer getByteCodeTransformer() {
         return byteCodeTransformer;
     }
 
+    /**
+     *
+     * @param byteCodeTransformer
+     */
     public void setByteCodeTransformer(ByteCodeTransformer byteCodeTransformer) {
         this.byteCodeTransformer = byteCodeTransformer;
     }
 
+    /**
+     *
+     * @param byteCodeTransformer
+     */
     public ByteCodeTransformerAdapter(ByteCodeTransformer byteCodeTransformer) {
         super();
         setByteCodeTransformer(byteCodeTransformer);
     }
 
+    /**
+     *
+     * @param originalBytes
+     * @param offset
+     * @param length
+     * @return
+     * @throws ByteCodeTransformException
+     */
     public byte[] transform(byte[] originalBytes, int offset, int length) throws ByteCodeTransformException {
 
         assert null != getByteCodeTransformer();
@@ -33,6 +54,12 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
 
     }
 
+    /**
+     *
+     * @param originalBytes
+     * @return
+     * @throws ByteCodeTransformException
+     */
     public byte[] transform(byte[] originalBytes) throws ByteCodeTransformException {
 
         assert null != originalBytes;
@@ -41,6 +68,12 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
 
     }
 
+    /**
+     *
+     * @param inputStream
+     * @param outputStream
+     * @throws ByteCodeTransformException
+     */
     public void transform(InputStream inputStream, OutputStream outputStream) throws ByteCodeTransformException {
 
         assert null != inputStream;
@@ -70,6 +103,12 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
 
     }
 
+    /**
+     *
+     * @param inputStream
+     * @return
+     * @throws ByteCodeTransformException
+     */
     public byte[] transform(InputStream inputStream) throws ByteCodeTransformException {
 
         assert null != inputStream;

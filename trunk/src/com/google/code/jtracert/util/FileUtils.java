@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class FileUtils {
 
@@ -12,6 +13,11 @@ public class FileUtils {
     public final static String FILE_SEPARATOR = System.getProperty("file.separator");
     public final static String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
+    /**
+     * 
+     * @param directory
+     * @throws IOException
+     */
     public static void forceMkdir(File directory) throws IOException {
         if (directory.exists()) {
             if (directory.isFile()) {

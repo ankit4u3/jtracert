@@ -12,38 +12,63 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class ClassFilterProcessor {
 
     private Collection<ClassFilter> classFilters = new LinkedList<ClassFilter>();
 
+    /**
+     *
+     */
     public ClassFilterProcessor() {
         addFilter(new AllowClassFilter());
         addFilter(new DenyJTracertClassesFilter());
         addFilter(new DenyBootstrapAndExtensionsClassLoaders());
         addFilter(new DenyClassByPackageNameFilter("sun.reflect"));
-
-        // temporary workaround for issue 3
-//        addFilter(new DenyClassByPackageNameFilter("com.sun.crypto.provider.SunJCE")); // todo - fix issue
     }
 
+    /**
+     *
+     * @param classFilters
+     */
     public ClassFilterProcessor(Collection<ClassFilter> classFilters) {
         this.classFilters = classFilters;
     }
 
+    /**
+     *
+     * @param classFilter
+     * @return
+     */
     public synchronized boolean addFilter(ClassFilter classFilter) {
         return classFilters.add(classFilter);
     }
 
+    /**
+     *
+     * @param classFilter
+     * @return
+     */
     public synchronized boolean removeClassFilter(ClassFilter classFilter) {
         return classFilters.remove(classFilter);
     }
 
+    /**
+     *
+     * @return
+     */
     public Collection<ClassFilter> getClassFilters() {
         return Collections.unmodifiableCollection(classFilters);
     }
 
+    /**
+     *
+     * @param className
+     * @param classLoader
+     * @return
+     */
     public synchronized boolean processClass(String className, ClassLoader classLoader) {
 
         FilterAction classNameFilterAction = ALLOW;

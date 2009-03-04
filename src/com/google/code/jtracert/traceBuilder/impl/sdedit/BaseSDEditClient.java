@@ -12,15 +12,26 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author dmitry.bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
 
     private final Set<Integer> addedClassNames = new HashSet<Integer>();
     private final Map<String,Integer> classLevelMap = new HashMap<String,Integer>();
 
+    /**
+     *
+     * @param methodCall
+     */
     public abstract void processMethodCall(MethodCall methodCall);
 
+    /**
+     *
+     * @param methodCall
+     * @param diagramWriter
+     * @throws IOException
+     */
     protected void writeObjectNames(MethodCall methodCall, Writer diagramWriter) throws IOException {
 
         String className = methodCall.getClassName();
@@ -42,6 +53,12 @@ public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @param diagramWriter
+     * @throws IOException
+     */
     protected void writeMethodNames(MethodCall methodCall, Writer diagramWriter) throws IOException {
 
         String callerClassName = methodCall.getClassName();

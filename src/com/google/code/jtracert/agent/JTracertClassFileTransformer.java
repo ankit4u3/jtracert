@@ -19,7 +19,8 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertClassFileTransformer
         implements ClassFileTransformer, ConfigurableTransformer, ClassFilterable {
@@ -27,24 +28,50 @@ public class JTracertClassFileTransformer
     private InstrumentationProperties instrumentationProperties;
     private ClassFilterProcessor classFilterProcessor;
 
+    /**
+     *
+     */
     public JTracertClassFileTransformer() {
         this(null, new ClassFilterProcessor());
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     */
     public JTracertClassFileTransformer(InstrumentationProperties instrumentationProperties) {
         this(instrumentationProperties, new ClassFilterProcessor());
     }
 
+    /**
+     *
+     * @param classFilterProcessor
+     */
     public JTracertClassFileTransformer(ClassFilterProcessor classFilterProcessor) {
         this(null, classFilterProcessor);
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     * @param classFilterProcessor
+     */
     public JTracertClassFileTransformer(InstrumentationProperties instrumentationProperties, ClassFilterProcessor classFilterProcessor) {
         super();
         this.instrumentationProperties = instrumentationProperties;
         this.classFilterProcessor = classFilterProcessor;
     }
 
+    /**
+     *
+     * @param loader
+     * @param className
+     * @param classBeingRedefined
+     * @param protectionDomain
+     * @param classfileBuffer
+     * @return
+     * @throws IllegalClassFormatException
+     */
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
         className = ClassUtils.getFullyQualifiedName(className);
@@ -101,18 +128,34 @@ public class JTracertClassFileTransformer
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public InstrumentationProperties getInstrumentationProperties() {
         return instrumentationProperties;
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
         this.instrumentationProperties = instrumentationProperties;
     }
 
+    /**
+     *
+     * @return
+     */
     public ClassFilterProcessor getClassFilterProcessor() {
         return classFilterProcessor;
     }
 
+    /**
+     *
+     * @param classFilterProcessor
+     */
     public void setClassFilterProcessor(ClassFilterProcessor classFilterProcessor) {
         this.classFilterProcessor = classFilterProcessor;
     }

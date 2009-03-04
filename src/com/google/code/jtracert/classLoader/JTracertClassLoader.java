@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertClassLoader
         extends ClassLoader
@@ -22,45 +23,82 @@ public class JTracertClassLoader
     private InstrumentationProperties instrumentationProperties;
     private ClassFilterProcessor classFilterProcessor;
 
+    /**
+     *
+     */
     public JTracertClassLoader() {
         super();
         this.classFilterProcessor = new ClassFilterProcessor();
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     */
     public JTracertClassLoader(InstrumentationProperties instrumentationProperties) {
         super();
         this.instrumentationProperties = instrumentationProperties;
         this.classFilterProcessor = new ClassFilterProcessor();
     }
 
+    /**
+     *
+     * @param classFilterProcessor
+     */
     public JTracertClassLoader(ClassFilterProcessor classFilterProcessor) {
         super();
         this.classFilterProcessor = classFilterProcessor;
     }
 
+    /**
+     *
+     * @param parentClassLoader
+     */
     public JTracertClassLoader(ClassLoader parentClassLoader) {
         super(parentClassLoader);
         this.classFilterProcessor = new ClassFilterProcessor();
     }
 
+    /**
+     *
+     * @param parentClassLoader
+     * @param instrumentationProperties
+     */
     public JTracertClassLoader(ClassLoader parentClassLoader, InstrumentationProperties instrumentationProperties) {
         super(parentClassLoader);
         this.instrumentationProperties = instrumentationProperties;
         this.classFilterProcessor = new ClassFilterProcessor();
     }
 
+    /**
+     *
+     * @param parentClassLoader
+     * @param classFilterProcessor
+     */
     public JTracertClassLoader(ClassLoader parentClassLoader, ClassFilterProcessor classFilterProcessor) {
         super(parentClassLoader);
         this.classFilterProcessor = classFilterProcessor;
     }
 
-
+    /**
+     *
+     * @param parentClassLoader
+     * @param classFilterProcessor
+     * @param instrumentationProperties
+     */
     public JTracertClassLoader(ClassLoader parentClassLoader, ClassFilterProcessor classFilterProcessor, InstrumentationProperties instrumentationProperties) {
         super(parentClassLoader);
         this.classFilterProcessor = classFilterProcessor;
         this.instrumentationProperties = instrumentationProperties;
     }
-    
+
+    /**
+     *
+     * @param name
+     * @param resolve
+     * @return
+     * @throws ClassNotFoundException
+     */
     @Override
     protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 
@@ -83,10 +121,26 @@ public class JTracertClassLoader
 
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
+    @Deprecated
+    private boolean checkClassName(String name) {
+        return name.startsWith("java.");
+    }
+
+    /**
+     *
+     * @param name
+     * @return
+     * @throws ClassNotFoundException
+     */
     @Override
     protected Class<?> findClass(final String name) throws ClassNotFoundException {
 
-        //if (checkClassName(name)) return null;
+        if (checkClassName(name)) return null;
 
         ClassFilterProcessor classFilterProcessor = getClassFilterProcessor();
         if (null != classFilterProcessor) {
@@ -125,15 +179,20 @@ public class JTracertClassLoader
         return defineClass(name, transformedByteArray, 0, transformedByteArray.length);
     }
 
-    @Deprecated
-    private boolean checkClassName(String name) {
-        return (name.startsWith("java.")) || (name.startsWith("javax.")) || (name.startsWith("sun."));
-    }
-
+    /**
+     *
+     * @todo move to ClassUtils class
+     * @param name
+     * @return
+     */
     private String convertClassNameToResourceName(String name) {
         return name.replace('.','/') + ".class";
     }
 
+    /**
+     *
+     * @return
+     */
     private ClassLoader getParentOrSystemClassLoader() {
 
         ClassLoader parentClassLoader = getParent();
@@ -146,18 +205,34 @@ public class JTracertClassLoader
 
     }
 
+    /**
+     *
+     * @return
+     */
     public InstrumentationProperties getInstrumentationProperties() {
         return instrumentationProperties;
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
         this.instrumentationProperties = instrumentationProperties;
     }
 
+    /**
+     *
+     * @return
+     */
     public ClassFilterProcessor getClassFilterProcessor() {
         return classFilterProcessor;
     }
 
+    /**
+     * 
+     * @param classFilterProcessor
+     */
     public void setClassFilterProcessor(ClassFilterProcessor classFilterProcessor) {
         this.classFilterProcessor = classFilterProcessor;
     }

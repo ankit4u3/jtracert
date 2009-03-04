@@ -7,13 +7,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author dmitry.bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class HashCodeBuilderMethodCallGraphVisitor implements MethodCallVisitor<Integer> {
 
     private Map<Integer,Integer> hashCodeInstanceCountMap = new HashMap<Integer,Integer>();
     private Map<Integer,Integer> classesInstancesCountMap = new HashMap<Integer,Integer>();
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     */
     public Integer visit(MethodCall methodCall) {
 
         int hashCode = 17;

@@ -9,10 +9,15 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class SequenceOutClient extends BaseMethodCallProcessor {
 
+    /**
+     *
+     * @param methodCall
+     */
     public void processMethodCall(MethodCall methodCall) {
 
         try {
@@ -29,6 +34,13 @@ public class SequenceOutClient extends BaseMethodCallProcessor {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @param diagramWriter
+     * @param level
+     * @throws IOException
+     */
     private void writeSequence(MethodCall methodCall, Writer diagramWriter, int level) throws IOException {
 
         String className = methodCall.getRealClassName().replaceAll("\\.","/");

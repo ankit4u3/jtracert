@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 /**
  * @todo introduce serialVersionUID field
- * @author Dmitry Bedrin
+ *
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class InstrumentationProperties implements Serializable {
 
@@ -16,10 +18,17 @@ public class InstrumentationProperties implements Serializable {
     private boolean verbose;
     private boolean dumpTransformedClasses;
 
+    /**
+     *
+     */
     public InstrumentationProperties() {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public static InstrumentationProperties loadFromSystemProperties() {
         InstrumentationProperties instrumentationProperties
                 = new InstrumentationProperties();
@@ -46,27 +55,52 @@ public class InstrumentationProperties implements Serializable {
         return instrumentationProperties;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getClassNameRegEx() {
         return classNameRegEx;
     }
 
+    /**
+     *
+     * @param classNameRegEx
+     */
     public void setClassNameRegEx(String classNameRegEx) {
         this.classNameRegEx = classNameRegEx;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isVerbose() {
         return verbose;
     }
 
+    /**
+     *
+     * @param verbose
+     */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isDumpTransformedClasses() {
         return dumpTransformedClasses;
     }
 
+    /**
+     *
+     * @param dumpTransformedClasses
+     */
     public void setDumpTransformedClasses(boolean dumpTransformedClasses) {
         this.dumpTransformedClasses = dumpTransformedClasses;
     }
+
 }

@@ -6,15 +6,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author dmitry.bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class HashCodeBuilderMethodCallGraphVisitorTest extends TestCase {
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
 
     }
 
+    /**
+     * 
+     */
     @Test
     public void testHashCodeEquality() {
 

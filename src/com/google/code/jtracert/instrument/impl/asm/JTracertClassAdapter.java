@@ -9,7 +9,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTransformer {
 
@@ -19,39 +20,81 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
     private boolean isInterface;
 
+    /**
+     *
+     * @return
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     *
+     * @param className
+     */
     public void setClassName(String className) {
         this.className = className;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getParentClassName() {
         return parentClassName;
     }
 
+    /**
+     *
+     * @param parentClassName
+     */
     public void setParentClassName(String parentClassName) {
         this.parentClassName = parentClassName;
     }
 
+    /**
+     *
+     * @return
+     */
     public InstrumentationProperties getInstrumentationProperties() {
         return instrumentationProperties;
     }
 
+    /**
+     *
+     * @param instrumentationProperties
+     */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
         this.instrumentationProperties = instrumentationProperties;
     }
 
+    /**
+     *
+     * @param visitor
+     */
     public JTracertClassAdapter(ClassVisitor visitor) {
         super(visitor);
     }
 
+    /**
+     *
+     * @param visitor
+     * @param instrumentationProperties
+     */
     public JTracertClassAdapter(ClassVisitor visitor, InstrumentationProperties instrumentationProperties) {
         super(visitor);
         this.instrumentationProperties = instrumentationProperties;
     }
 
+    /**
+     *
+     * @param version
+     * @param access
+     * @param name
+     * @param signature
+     * @param superName
+     * @param interfaces
+     */
     @Override
     public void visit(int version,
                       int access,
@@ -69,6 +112,15 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
         
     }
 
+    /**
+     *
+     * @param access
+     * @param name
+     * @param desc
+     * @param signature
+     * @param exceptions
+     * @return
+     */
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
@@ -110,6 +162,9 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
     }
 
+    /**
+     *
+     */
     @Override
     public void visitEnd() {
 

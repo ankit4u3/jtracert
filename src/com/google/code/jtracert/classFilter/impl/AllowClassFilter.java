@@ -4,10 +4,15 @@ import com.google.code.jtracert.classFilter.FilterAction;
 import static com.google.code.jtracert.classFilter.FilterAction.ALLOW;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class AllowClassFilter extends DefaultActionClassFilterAdapter {
 
+    /**
+     * 
+     * @return
+     */
     protected FilterAction getDefaultFilterAction() {
         return ALLOW;
     }

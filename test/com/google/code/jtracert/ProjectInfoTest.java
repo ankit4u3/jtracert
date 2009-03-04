@@ -4,10 +4,14 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class ProjectInfoTest extends TestCase {
 
+    /**
+     * 
+     */
     @Test
     public void testPackageName() {
 

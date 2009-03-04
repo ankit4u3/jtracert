@@ -7,6 +7,10 @@ import javax.swing.event.EventListenerList;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
+ */
 public class AgentConnection implements Runnable {
 
     private AgentConnectionSettings settings;
@@ -16,24 +20,41 @@ public class AgentConnection implements Runnable {
 
     private EventListenerList listeners = new EventListenerList();
 
+    /**
+     *
+     * @param settings
+     */
     public AgentConnection(AgentConnectionSettings settings) {
         this.settings = settings;
         agentClientThread = new Thread(this);
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void connect() throws IOException {
         socket = new Socket(settings.getInetAddress(), settings.getPort());
     }
 
+    /**
+     *
+     */
     public void start() {
         running = true;
         agentClientThread.start();
     }
 
+    /**
+     *
+     */
     public void stop() {
         running = false;
     }
 
+    /**
+     *
+     */
     public void run() {
         try {
 
@@ -64,6 +85,10 @@ public class AgentConnection implements Runnable {
         }
     }
 
+    /**
+     *
+     * @param methodCall
+     */
     private void methodCallRecieved(MethodCall methodCall) {
         MethodCallEvent methodCallEvent = new MethodCallEvent(methodCall);
         for (MethodCallListener methodCallListener : listeners.getListeners(MethodCallListener.class)) {
@@ -71,13 +96,20 @@ public class AgentConnection implements Runnable {
         }
     }
 
+    /**
+     *
+     * @param methodCallListener
+     */
     public void addMethodCallListener(MethodCallListener methodCallListener) {
         listeners.add(MethodCallListener.class, methodCallListener);
     }
 
+    /**
+     *
+     * @param methodCallListener
+     */
     public void removeMethodCallListener(MethodCallListener methodCallListener) {
         listeners.remove(MethodCallListener.class, methodCallListener);
     }
-
 
 }

@@ -8,10 +8,15 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 /**
- * @author dmitry.bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class SDEditOutClient extends BaseSDEditClient {
 
+    /**
+     *
+     * @param methodCall
+     */
     @Override
     public void processMethodCall(MethodCall methodCall) {
 

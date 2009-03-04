@@ -1,7 +1,8 @@
 package com.google.code.jtracert;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class ProjectInfo {
 

@@ -1,7 +1,8 @@
 package com.google.code.jtracert.classFilter;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public enum FilterAction {
 
@@ -9,6 +10,11 @@ public enum FilterAction {
     DENY,
     ALLOW;
 
+    /**
+     *
+     * @param fa
+     * @return
+     */
     public FilterAction apply(FilterAction fa) {
         switch (fa) {
             case INHERIT:

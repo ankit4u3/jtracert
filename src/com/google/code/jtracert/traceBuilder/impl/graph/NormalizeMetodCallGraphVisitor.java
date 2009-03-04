@@ -8,13 +8,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
+ *
  * @todo consider using suffix trees or Boyer-Moore algorythm or Knuth-Morris-Pratt algorythm
+ * @todo consider using ASM for getting information about recursion, repeating calls, e.t.c.
  */
 public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object> {
 
     private final Map<MethodCall,Integer> methodCallHashCodeMap = new HashMap<MethodCall,Integer>();
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     */
     public Object visit(MethodCall methodCall) {
 
         List<MethodCall> callees = methodCall.getCallees();
@@ -62,6 +70,11 @@ public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object>
         return null;
     }
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     */
     private Integer getMethodCallHashCode(MethodCall methodCall) {
 
         if (!methodCallHashCodeMap.containsKey(methodCall)) {

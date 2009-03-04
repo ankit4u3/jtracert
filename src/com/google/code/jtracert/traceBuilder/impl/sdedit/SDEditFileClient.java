@@ -9,10 +9,15 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * @author dmitry.bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class SDEditFileClient extends BaseSDEditClient {
 
+    /**
+     *
+     * @param methodCall
+     */
     @Override
     public void processMethodCall(MethodCall methodCall) {
 
@@ -55,6 +60,11 @@ public class SDEditFileClient extends BaseSDEditClient {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     */
     public File saveMethodCall(MethodCall methodCall) {
 
         Writer diagramWriter = null;
@@ -98,6 +108,12 @@ public class SDEditFileClient extends BaseSDEditClient {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     * @throws IOException
+     */
     private File getDiagramFile(MethodCall methodCall) throws IOException {
 
         String baseDiagramsFolderName = getAnalyzeProperties().getOutputFolder();

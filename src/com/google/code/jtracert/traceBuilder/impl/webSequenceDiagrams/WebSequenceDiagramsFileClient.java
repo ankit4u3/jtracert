@@ -10,10 +10,15 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * @author Dmitry Bedrin
+ * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ * @author Dmitry.Bedrin@gmail.com
  */
 public class WebSequenceDiagramsFileClient extends BaseMethodCallProcessor {
 
+    /**
+     *
+     * @param methodCall
+     */
     public void processMethodCall(MethodCall methodCall) {
 
         Writer diagramWriter = null;
@@ -42,6 +47,12 @@ public class WebSequenceDiagramsFileClient extends BaseMethodCallProcessor {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @param diagramWriter
+     * @throws IOException
+     */
     private void writeSequence(MethodCall methodCall, Writer diagramWriter) throws IOException {
 
         for (MethodCall callee: methodCall.getCallees()) {
@@ -59,6 +70,12 @@ public class WebSequenceDiagramsFileClient extends BaseMethodCallProcessor {
 
     }
 
+    /**
+     *
+     * @param methodCall
+     * @return
+     * @throws IOException
+     */
     private File getDiagramFile(MethodCall methodCall) throws IOException {
 
         String baseDiagramsFolderName = getAnalyzeProperties().getOutputFolder();

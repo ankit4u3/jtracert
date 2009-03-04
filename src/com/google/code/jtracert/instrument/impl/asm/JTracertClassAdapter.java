@@ -14,6 +14,7 @@ import org.objectweb.asm.Opcodes;
 public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTransformer {
 
     private String className;
+    private String parentClassName;
     private InstrumentationProperties instrumentationProperties;
 
     private boolean isInterface;
@@ -24,6 +25,14 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getParentClassName() {
+        return parentClassName;
+    }
+
+    public void setParentClassName(String parentClassName) {
+        this.parentClassName = parentClassName;
     }
 
     public InstrumentationProperties getInstrumentationProperties() {
@@ -54,6 +63,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
         isInterface = 0 != (access & Opcodes.ACC_INTERFACE);
 
         setClassName(ClassUtils.getFullyQualifiedName(name));
+        setParentClassName(superName);
 
         super.visit(version, access, name, signature, superName, interfaces);
         
@@ -78,7 +88,8 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                     name,
                     desc,
                     getClassName(),
-                    getInstrumentationProperties()
+                    getInstrumentationProperties(),
+                    getParentClassName()
             );
 
         } else {

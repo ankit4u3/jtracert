@@ -5,6 +5,9 @@ import com.google.code.jtracert.instrument.impl.BaseJTracertByteCodeTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.util.ASMifierClassVisitor;
+
+import java.io.PrintWriter;
 
 /**
  * @author Dmitry Bedrin
@@ -24,12 +27,32 @@ public class JTracertASMByteCodeTransformer extends BaseJTracertByteCodeTransfor
 
             classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES);
 
-            return classWriter.toByteArray();
+            byte[] transformedBytes = classWriter.toByteArray();
+
+            //dumpBytes(transformedBytes);
+
+            return transformedBytes;
 
         } catch (Throwable e) {
             throw new ByteCodeTransformException(e);
         }
 
     }
+
+    @Deprecated
+    private static void dumpBytes(byte[] bytes) {
+
+        try {
+            ClassReader classReader = new ClassReader(bytes);
+
+            ClassVisitor classVisitor = new ASMifierClassVisitor(new PrintWriter(System.out));
+
+            classReader.accept(classVisitor, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

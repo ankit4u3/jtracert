@@ -86,7 +86,7 @@ public class JTracertClassLoader
     @Override
     protected Class<?> findClass(final String name) throws ClassNotFoundException {
 
-        if (checkClassName(name)) return null;
+        //if (checkClassName(name)) return null;
 
         ClassFilterProcessor classFilterProcessor = getClassFilterProcessor();
         if (null != classFilterProcessor) {

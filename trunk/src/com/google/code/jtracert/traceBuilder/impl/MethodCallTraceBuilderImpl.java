@@ -2,8 +2,10 @@ package com.google.code.jtracert.traceBuilder.impl;
 
 import com.google.code.jtracert.config.AnalyzeProperties;
 import com.google.code.jtracert.model.MethodCall;
-import com.google.code.jtracert.model.MethodCallVisitor;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
+import com.google.code.jtracert.traceBuilder.impl.graph.ClassNameResolverMethodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
+import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditOutClient;
 import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditRtClient;
@@ -13,9 +15,6 @@ import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpCl
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsFileClient;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
-import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
-import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
-import com.google.code.jtracert.traceBuilder.impl.graph.ClassNameResolverMethodCallGraphVisitor;
 import com.google.code.jtracert.util.FileUtils;
 import com.google.code.jtracert.util.SizeOutputStream;
 
@@ -24,9 +23,9 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

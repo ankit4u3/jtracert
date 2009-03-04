@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class NormalizeMetodCallGraphVisitor implements MethodCallVisitor<Object> {
 
-    private Map<MethodCall,Integer> methodCallHashCodeMap = new HashMap<MethodCall,Integer>();
+    private final Map<MethodCall,Integer> methodCallHashCodeMap = new HashMap<MethodCall,Integer>();
 
     public Object visit(MethodCall methodCall) {
 

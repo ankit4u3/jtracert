@@ -3,7 +3,10 @@ package com.google.code.jtracert.traceBuilder.impl.graph;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.model.MethodCallVisitor;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * @author dmitry.bedrin

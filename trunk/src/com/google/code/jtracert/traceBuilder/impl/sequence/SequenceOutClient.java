@@ -10,12 +10,12 @@ import java.io.Writer;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SequenceOutClient extends BaseMethodCallProcessor {
 
     /**
-     *
      * @param methodCall
      */
     public void processMethodCall(MethodCall methodCall) {
@@ -35,7 +35,6 @@ public class SequenceOutClient extends BaseMethodCallProcessor {
     }
 
     /**
-     *
      * @param methodCall
      * @param diagramWriter
      * @param level
@@ -43,8 +42,8 @@ public class SequenceOutClient extends BaseMethodCallProcessor {
      */
     private void writeSequence(MethodCall methodCall, Writer diagramWriter, int level) throws IOException {
 
-        String className = methodCall.getRealClassName().replaceAll("\\.","/");
-        String methodName = methodCall.getMethodName().replaceAll("\\<","").replaceAll("\\>","");
+        String className = methodCall.getRealClassName().replaceAll("\\.", "/");
+        String methodName = methodCall.getMethodName().replaceAll("\\<", "").replaceAll("\\>", "");
 
         StringBuffer tabStringBuffer = new StringBuffer();
         for (int i = 0; i < level; i++) {
@@ -60,7 +59,7 @@ public class SequenceOutClient extends BaseMethodCallProcessor {
         diagramWriter.write(" {");
         diagramWriter.write(FileUtils.LINE_SEPARATOR);
 
-        for (MethodCall callee: methodCall.getCallees()) {
+        for (MethodCall callee : methodCall.getCallees()) {
             writeSequence(callee, diagramWriter, level + 1);
         }
 

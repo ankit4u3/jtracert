@@ -9,6 +9,7 @@ import java.net.Socket;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class AgentConnection implements Runnable {
@@ -21,7 +22,6 @@ public class AgentConnection implements Runnable {
     private EventListenerList listeners = new EventListenerList();
 
     /**
-     *
      * @param settings
      */
     public AgentConnection(AgentConnectionSettings settings) {
@@ -30,7 +30,6 @@ public class AgentConnection implements Runnable {
     }
 
     /**
-     *
      * @throws IOException
      */
     public void connect() throws IOException {
@@ -76,7 +75,7 @@ public class AgentConnection implements Runnable {
             while (running) {
 
                 Object o = ois.readObject();
-                methodCallRecieved((MethodCall) o );
+                methodCallRecieved((MethodCall) o);
 
             }
 
@@ -86,7 +85,6 @@ public class AgentConnection implements Runnable {
     }
 
     /**
-     *
      * @param methodCall
      */
     private void methodCallRecieved(MethodCall methodCall) {
@@ -97,7 +95,6 @@ public class AgentConnection implements Runnable {
     }
 
     /**
-     *
      * @param methodCallListener
      */
     public void addMethodCallListener(MethodCallListener methodCallListener) {
@@ -105,7 +102,6 @@ public class AgentConnection implements Runnable {
     }
 
     /**
-     *
      * @param methodCallListener
      */
     public void removeMethodCallListener(MethodCallListener methodCallListener) {

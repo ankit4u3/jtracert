@@ -10,6 +10,7 @@ import org.objectweb.asm.commons.AdviceAdapter;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertMethodAdapter extends AdviceAdapter implements ConfigurableTransformer {
@@ -24,7 +25,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     private final Label startFinallyLabel = new Label();
 
     /**
-     *
      * @param mv
      * @param access
      * @param name
@@ -39,7 +39,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @param mv
      * @param access
      * @param name
@@ -71,7 +70,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @param maxStack
      * @param maxLocals
      */
@@ -86,7 +84,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @param opcode
      * @param owner
      * @param name
@@ -125,7 +122,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @param opcode
      */
     private void onFinally(int opcode) {
@@ -137,7 +133,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                 super.visitInsn(DUP);
 
                 int exceptionVar = newLocal(Type.getType(Throwable.class));
-                super.visitVarInsn(ASTORE,exceptionVar);
+                super.visitVarInsn(ASTORE, exceptionVar);
 
                 super.visitMethodInsn(
                         INVOKESTATIC,
@@ -149,7 +145,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                 super.visitLdcInsn(getClassName());
                 super.visitLdcInsn(getMethodName());
                 super.visitLdcInsn(getMethodDescriptor());
-                super.visitVarInsn(ALOAD,exceptionVar);
+                super.visitVarInsn(ALOAD, exceptionVar);
 
                 super.visitMethodInsn(
                         INVOKEINTERFACE,
@@ -185,7 +181,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                 super.visitInsn(DUP);
 
                 int exceptionVar = newLocal(Type.getType(Throwable.class));
-                super.visitVarInsn(ASTORE,exceptionVar);
+                super.visitVarInsn(ASTORE, exceptionVar);
 
                 super.visitMethodInsn(
                         INVOKESTATIC,
@@ -194,7 +190,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                         "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
                 );
 
-                super.visitVarInsn(ALOAD,exceptionVar);
+                super.visitVarInsn(ALOAD, exceptionVar);
 
                 super.visitMethodInsn(
                         INVOKEINTERFACE,
@@ -221,7 +217,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
             } else {
 
-                if(opcode==LRETURN || opcode==DRETURN) {
+                if (opcode == LRETURN || opcode == DRETURN) {
                     super.visitInsn(DUP2);
                 } else {
                     super.visitInsn(DUP);
@@ -229,7 +225,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                 box(Type.getReturnType(this.methodDesc));
 
                 int returnVar = newLocal(Type.getType(Throwable.class));
-                super.visitVarInsn(ASTORE,returnVar);
+                super.visitVarInsn(ASTORE, returnVar);
 
                 super.visitMethodInsn(
                         INVOKESTATIC,
@@ -238,7 +234,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
                         "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
                 );
 
-                super.visitVarInsn(ALOAD,returnVar);
+                super.visitVarInsn(ALOAD, returnVar);
 
                 super.visitMethodInsn(
                         INVOKEINTERFACE,
@@ -255,7 +251,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @param opcode
      */
     @Override
@@ -327,7 +322,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @param argIndex
      * @return
      */
@@ -426,7 +420,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @return
      */
     private String getClassName() {
@@ -434,7 +427,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @return
      */
     private String getMethodName() {
@@ -442,7 +434,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @return
      */
     private String getMethodDescriptor() {
@@ -450,7 +441,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @return
      */
     private int getMethodAccess() {
@@ -458,7 +448,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @return
      */
     public InstrumentationProperties getInstrumentationProperties() {
@@ -466,7 +455,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     }
 
     /**
-     *
      * @param instrumentationProperties
      */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {

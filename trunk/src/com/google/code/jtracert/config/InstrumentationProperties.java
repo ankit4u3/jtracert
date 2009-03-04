@@ -3,9 +3,8 @@ package com.google.code.jtracert.config;
 import java.io.Serializable;
 
 /**
- * @todo introduce serialVersionUID field
- *
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class InstrumentationProperties implements Serializable {
@@ -18,6 +17,8 @@ public class InstrumentationProperties implements Serializable {
     private boolean verbose;
     private boolean dumpTransformedClasses;
 
+    static final long serialVersionUID = -2208856375496944037L;
+
     /**
      *
      */
@@ -26,7 +27,6 @@ public class InstrumentationProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public static InstrumentationProperties loadFromSystemProperties() {
@@ -56,7 +56,6 @@ public class InstrumentationProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public String getClassNameRegEx() {
@@ -64,7 +63,6 @@ public class InstrumentationProperties implements Serializable {
     }
 
     /**
-     *
      * @param classNameRegEx
      */
     public void setClassNameRegEx(String classNameRegEx) {
@@ -72,7 +70,6 @@ public class InstrumentationProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isVerbose() {
@@ -80,7 +77,6 @@ public class InstrumentationProperties implements Serializable {
     }
 
     /**
-     *
      * @param verbose
      */
     public void setVerbose(boolean verbose) {
@@ -88,7 +84,6 @@ public class InstrumentationProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isDumpTransformedClasses() {
@@ -96,7 +91,6 @@ public class InstrumentationProperties implements Serializable {
     }
 
     /**
-     *
      * @param dumpTransformedClasses
      */
     public void setDumpTransformedClasses(boolean dumpTransformedClasses) {

@@ -2,6 +2,7 @@ package com.google.code.jtracert.instrument;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class ByteCodeTransformException extends Exception {
@@ -14,7 +15,6 @@ public class ByteCodeTransformException extends Exception {
     }
 
     /**
-     *
      * @param message
      */
     public ByteCodeTransformException(String message) {
@@ -22,7 +22,6 @@ public class ByteCodeTransformException extends Exception {
     }
 
     /**
-     *
      * @param message
      * @param cause
      */
@@ -31,7 +30,6 @@ public class ByteCodeTransformException extends Exception {
     }
 
     /**
-     *
      * @param cause
      */
     public ByteCodeTransformException(Throwable cause) {

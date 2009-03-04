@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 @Deprecated
@@ -14,7 +15,6 @@ public class JTracertObjectCompanion implements Serializable {
     private final int hashCode;
 
     /**
-     *
      * @param hashCode
      */
     public JTracertObjectCompanion(int hashCode) {
@@ -22,7 +22,6 @@ public class JTracertObjectCompanion implements Serializable {
     }
 
     /**
-     *
      * @param o
      * @return
      */
@@ -38,12 +37,11 @@ public class JTracertObjectCompanion implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     @Override
     public int hashCode() {
         return hashCode;
     }
-    
+
 }

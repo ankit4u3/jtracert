@@ -11,12 +11,12 @@ import java.io.Writer;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class WebSequenceDiagramsFileClient extends BaseMethodCallProcessor {
 
     /**
-     *
      * @param methodCall
      */
     public void processMethodCall(MethodCall methodCall) {
@@ -48,30 +48,28 @@ public class WebSequenceDiagramsFileClient extends BaseMethodCallProcessor {
     }
 
     /**
-     *
      * @param methodCall
      * @param diagramWriter
      * @throws IOException
      */
     private void writeSequence(MethodCall methodCall, Writer diagramWriter) throws IOException {
 
-        for (MethodCall callee: methodCall.getCallees()) {
-            
+        for (MethodCall callee : methodCall.getCallees()) {
+
             diagramWriter.write(methodCall.getRealClassName());
             diagramWriter.write("->");
             diagramWriter.write(callee.getRealClassName());
             diagramWriter.write(":");
             diagramWriter.write(callee.getMethodName());
             diagramWriter.write(FileUtils.LINE_SEPARATOR);
-            
+
             writeSequence(callee, diagramWriter);
-            
+
         }
 
     }
 
     /**
-     *
      * @param methodCall
      * @return
      * @throws IOException
@@ -95,7 +93,7 @@ public class WebSequenceDiagramsFileClient extends BaseMethodCallProcessor {
                 append(FileUtils.FILE_SEPARATOR).
                 append(classNameParts[classNameParts.length - 1]).
                 append('.').
-                append(methodCall.getMethodName().replaceAll("\\<","").replaceAll("\\>","")); // todo refactor
+                append(methodCall.getMethodName().replaceAll("\\<", "").replaceAll("\\>", "")); // todo refactor
 
         File diagramFile = new File(diagramFolderNameStringBuffer.toString() + ".wsd");
 

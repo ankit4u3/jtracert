@@ -5,6 +5,7 @@ import static com.google.code.jtracert.classFilter.FilterAction.DENY;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class AllowClassByNameRegExFilter extends InheritClassFilter {
@@ -12,7 +13,6 @@ public class AllowClassByNameRegExFilter extends InheritClassFilter {
     private final String allowedClassNameRegEx;
 
     /**
-     *
      * @param allowedClassNameRegEx
      */
     public AllowClassByNameRegExFilter(String allowedClassNameRegEx) {
@@ -20,7 +20,6 @@ public class AllowClassByNameRegExFilter extends InheritClassFilter {
     }
 
     /**
-     * 
      * @param className
      * @return
      */

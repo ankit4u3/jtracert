@@ -14,6 +14,7 @@ import java.util.regex.PatternSyntaxException;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class AgentConnectionDialog extends JDialog implements ActionListener {
@@ -26,7 +27,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     private AgentConnectionSettings agentConnectionSettings;
 
     /**
-     *
      * @return
      */
     public String getFolder() {
@@ -34,7 +34,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @param e
      */
     public void actionPerformed(ActionEvent e) {
@@ -82,7 +81,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     public AgentConnectionSettings getAgentConnectionSettings() {
@@ -90,14 +88,13 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @throws HeadlessException
      */
     public AgentConnectionDialog() throws HeadlessException {
 
         super();
 
-        setSize(400,250);
+        setSize(400, 250);
         setTitle("jTracert Connection Wizard");
         setResizable(false);
         setModal(true);
@@ -138,62 +135,62 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
         // Header
 
-        contentPane.add(headerLabel, new GridBagConstraints(0,0,2,1, 0,0,
+        contentPane.add(headerLabel, new GridBagConstraints(0, 0, 2, 1, 0, 0,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
-                new Insets(0,10,0,10),0,0
+                new Insets(0, 10, 0, 10), 0, 0
         ));
 
         // Folder
 
-        contentPane.add(folderLabel, new GridBagConstraints(0,1,2,1, 1,0,
+        contentPane.add(folderLabel, new GridBagConstraints(0, 1, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
-                new Insets(10,5,0,5),0,0
+                new Insets(10, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(folderTextField, new GridBagConstraints(0,2,1,1, 1,0,
+        contentPane.add(folderTextField, new GridBagConstraints(0, 2, 1, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
-                new Insets(0,5,0,0),0,0
+                new Insets(0, 5, 0, 0), 0, 0
         ));
 
-        contentPane.add(browseFolderButton, new GridBagConstraints(1,2,1,1, 0,0,
+        contentPane.add(browseFolderButton, new GridBagConstraints(1, 2, 1, 1, 0, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
-                new Insets(0,5,0,5),0,0
+                new Insets(0, 5, 0, 5), 0, 0
         ));
 
         // Agent address
 
-        contentPane.add(agentAddressLabel, new GridBagConstraints(0,3,2,1, 1,0,
+        contentPane.add(agentAddressLabel, new GridBagConstraints(0, 3, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
-                new Insets(0,5,0,5),0,0
+                new Insets(0, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(agentAddressTextField, new GridBagConstraints(0,4,2,1, 1,0,
+        contentPane.add(agentAddressTextField, new GridBagConstraints(0, 4, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
-                new Insets(0,5,0,5),0,0
+                new Insets(0, 5, 0, 5), 0, 0
         ));
 
         // Agent label
 
-        contentPane.add(agentPortLabel, new GridBagConstraints(0,5,2,1, 1,0,
+        contentPane.add(agentPortLabel, new GridBagConstraints(0, 5, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
-                new Insets(0,5,0,5),0,0
+                new Insets(0, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(agentPortTextField, new GridBagConstraints(0,6,2,1, 1,0,
+        contentPane.add(agentPortTextField, new GridBagConstraints(0, 6, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
-                new Insets(0,5,0,5),0,0
+                new Insets(0, 5, 0, 5), 0, 0
         ));
 
         // Class name pattern
 
-        contentPane.add(classNameRegExLabel, new GridBagConstraints(0,7,2,1, 1,0,
+        contentPane.add(classNameRegExLabel, new GridBagConstraints(0, 7, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
-                new Insets(0,5,0,5),0,0
+                new Insets(0, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(classNameRegExTextField, new GridBagConstraints(0,8,2,1, 1,0,
+        contentPane.add(classNameRegExTextField, new GridBagConstraints(0, 8, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
-                new Insets(0,5,0,5),0,0
+                new Insets(0, 5, 0, 5), 0, 0
         ));
 
         // Buttons
@@ -201,21 +198,20 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         JButton cancelButton = createCancelButton();
         JButton connectButton = createConnectButton();
 
-        contentPane.add(cancelButton, new GridBagConstraints(0,9,1,1, 1,1,
+        contentPane.add(cancelButton, new GridBagConstraints(0, 9, 1, 1, 1, 1,
                 GridBagConstraints.EAST, GridBagConstraints.NONE,
-                new Insets(0,0,0,0),0,0));
+                new Insets(0, 0, 0, 0), 0, 0));
 
 
-        contentPane.add(connectButton, new GridBagConstraints(1,9,1,1, 0,1,
+        contentPane.add(connectButton, new GridBagConstraints(1, 9, 1, 1, 0, 1,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                new Insets(0,5,0,5),0,0));
+                new Insets(0, 5, 0, 5), 0, 0));
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
     }
 
     /**
-     *
      * @return
      */
     private JButton createConnectButton() {
@@ -225,7 +221,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JButton createCancelButton() {
@@ -241,7 +236,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JTextField createClassNameRegExTextField() {
@@ -251,7 +245,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JLabel createClassNameRegExLabel() {
@@ -261,7 +254,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JTextField createAgentPortTextField() {
@@ -271,7 +263,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JLabel createAgentPortLabel() {
@@ -281,7 +272,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JTextField createAgentAddressTextField() {
@@ -291,7 +281,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JLabel createAgentAddressLabel() {
@@ -301,7 +290,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @param folderTextField
      * @return
      */
@@ -321,7 +309,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @param folderTextField
      */
     private void chooseFolder(JTextField folderTextField) {
@@ -337,7 +324,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JTextField createFolderTextField() {
@@ -356,7 +342,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JLabel createFolderLabel() {
@@ -366,13 +351,12 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private JLabel createHeaderLabel() {
         JLabel headerLabel = new JLabel();
         headerLabel.setText("jTracert Agent Connection Wizard");
-        headerLabel.setBorder(BorderFactory.createMatteBorder(0,0,2,0, Color.BLACK));
+        headerLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         Font labelFont = headerLabel.getFont();
         labelFont = labelFont.deriveFont(Font.BOLD, 18);
@@ -381,7 +365,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     *
      * @return
      */
     private AgentConnectionDialog self() {
@@ -389,7 +372,6 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     }
 
     /**
-     * 
      * @return
      */
     private Rectangle getFrameBounds() {
@@ -401,7 +383,7 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
         Rectangle rectangle = new Rectangle(
                 new Point(0, 0), Toolkit.getDefaultToolkit().getScreenSize()
-            );
+        );
 
         double f = 1.0F;
         int i = (int) (f * width);

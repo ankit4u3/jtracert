@@ -6,9 +6,10 @@ import java.util.List;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
-public class MethodCall implements Serializable  {
+public class MethodCall implements Serializable {
 
     static final long serialVersionUID = -1692513983094960602L;
 
@@ -34,7 +35,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param className
      * @param methodName
      * @param methodSignature
@@ -49,7 +49,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public String getMethodName() {
@@ -57,7 +56,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param methodName
      */
     public void setMethodName(String methodName) {
@@ -65,7 +63,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public String getMethodSignature() {
@@ -73,7 +70,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param methodSignature
      */
     public void setMethodSignature(String methodSignature) {
@@ -81,7 +77,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param methodCall
      */
     public void addCallee(MethodCall methodCall) {
@@ -90,7 +85,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public MethodCall getCalleer() {
@@ -98,7 +92,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param calleer
      */
     public void setCalleer(MethodCall calleer) {
@@ -106,7 +99,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public List<MethodCall> getCallees() {
@@ -114,7 +106,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param callees
      */
     public void setCallees(List<MethodCall> callees) {
@@ -122,7 +113,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public JTracertObjectCompanion getjTracertObjectCompanion() {
@@ -130,7 +120,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param jTracertObjectCompanion
      */
     public void setjTracertObjectCompanion(JTracertObjectCompanion jTracertObjectCompanion) {
@@ -138,7 +127,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public String getRealClassName() {
@@ -146,7 +134,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param realClassName
      */
     public void setRealClassName(String realClassName) {
@@ -154,7 +141,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public int getCallCount() {
@@ -162,7 +148,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param callCount
      */
     public void setCallCount(int callCount) {
@@ -177,7 +162,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public int getObjectHashCode() {
@@ -185,7 +169,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param objectHashCode
      */
     public void setObjectHashCode(int objectHashCode) {
@@ -193,7 +176,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     public String getClassName() {
@@ -201,7 +183,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param className
      */
     public void setClassName(String className) {
@@ -209,7 +190,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @param visitor
      * @param <T>
      * @return
@@ -219,7 +199,6 @@ public class MethodCall implements Serializable  {
     }
 
     /**
-     *
      * @return
      */
     @Override

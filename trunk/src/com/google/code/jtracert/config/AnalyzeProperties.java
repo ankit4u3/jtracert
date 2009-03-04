@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class AnalyzeProperties implements Serializable {
@@ -50,7 +51,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public static AnalyzeProperties loadFromSystemProperties() {
@@ -117,7 +117,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public String getSdEditHost() {
@@ -125,7 +124,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @param sdEditHost
      */
     public void setSdEditHost(String sdEditHost) {
@@ -133,7 +131,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public int getSdEditPort() {
@@ -141,7 +138,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @param sdEditPort
      */
     public void setSdEditPort(int sdEditPort) {
@@ -149,7 +145,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public AnalyzerOutput getAnalyzerOutput() {
@@ -157,7 +152,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @param analyzerOutput
      */
     public void setAnalyzerOutput(AnalyzerOutput analyzerOutput) {
@@ -165,7 +159,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public String getOutputFolder() {
@@ -173,7 +166,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @param outputFolder
      */
     public void setOutputFolder(String outputFolder) {
@@ -181,7 +173,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isVerbose() {
@@ -189,7 +180,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @param verbose
      */
     public void setVerbose(boolean verbose) {
@@ -197,7 +187,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public String getSerializableTcpServerHost() {
@@ -205,7 +194,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @param serializableTcpServerHost
      */
     public void setSerializableTcpServerHost(String serializableTcpServerHost) {
@@ -213,7 +201,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public int getSerializableTcpServerPort() {
@@ -221,7 +208,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @param serializableTcpServerPort
      */
     public void setSerializableTcpServerPort(int serializableTcpServerPort) {
@@ -229,7 +215,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isShortenClassNames() {
@@ -237,7 +222,6 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
-     * 
      * @param shortenClassNames
      */
     public void setShortenClassNames(boolean shortenClassNames) {

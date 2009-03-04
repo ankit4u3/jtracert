@@ -11,12 +11,12 @@ import java.io.Writer;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SequenceFileClient extends BaseMethodCallProcessor {
 
     /**
-     *
      * @param methodCall
      */
     public void processMethodCall(MethodCall methodCall) {
@@ -48,7 +48,6 @@ public class SequenceFileClient extends BaseMethodCallProcessor {
     }
 
     /**
-     *
      * @param methodCall
      * @param diagramWriter
      * @param level
@@ -56,8 +55,8 @@ public class SequenceFileClient extends BaseMethodCallProcessor {
      */
     private void writeSequence(MethodCall methodCall, Writer diagramWriter, int level) throws IOException {
 
-        String className = methodCall.getRealClassName().replaceAll("\\.","/");
-        String methodName = methodCall.getMethodName().replaceAll("\\<","").replaceAll("\\>",""); // todo refactor
+        String className = methodCall.getRealClassName().replaceAll("\\.", "/");
+        String methodName = methodCall.getMethodName().replaceAll("\\<", "").replaceAll("\\>", ""); // todo refactor
 
         StringBuffer tabStringBuffer = new StringBuffer();
         for (int i = 0; i < level; i++) {
@@ -73,7 +72,7 @@ public class SequenceFileClient extends BaseMethodCallProcessor {
         diagramWriter.write(" {");
         diagramWriter.write(FileUtils.LINE_SEPARATOR);
 
-        for (MethodCall callee: methodCall.getCallees()) {
+        for (MethodCall callee : methodCall.getCallees()) {
             writeSequence(callee, diagramWriter, level + 1);
         }
 
@@ -84,7 +83,6 @@ public class SequenceFileClient extends BaseMethodCallProcessor {
     }
 
     /**
-     *
      * @param methodCall
      * @return
      * @throws IOException
@@ -108,7 +106,7 @@ public class SequenceFileClient extends BaseMethodCallProcessor {
                 append(FileUtils.FILE_SEPARATOR).
                 append(classNameParts[classNameParts.length - 1]).
                 append('.').
-                append(methodCall.getMethodName().replaceAll("\\<","").replaceAll("\\>","")); // todo refactor
+                append(methodCall.getMethodName().replaceAll("\\<", "").replaceAll("\\>", "")); // todo refactor
 
         File diagramFile = new File(diagramFolderNameStringBuffer.toString() + ".sq");
 

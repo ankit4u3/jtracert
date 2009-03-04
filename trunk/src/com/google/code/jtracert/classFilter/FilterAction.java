@@ -2,6 +2,7 @@ package com.google.code.jtracert.classFilter;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public enum FilterAction {
@@ -11,7 +12,6 @@ public enum FilterAction {
     ALLOW;
 
     /**
-     *
      * @param fa
      * @return
      */

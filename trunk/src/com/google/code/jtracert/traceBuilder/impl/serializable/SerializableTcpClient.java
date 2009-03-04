@@ -11,12 +11,12 @@ import java.net.UnknownHostException;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class SerializableTcpClient extends BaseMethodCallProcessor {
 
     /**
-     *
      * @param methodCall
      */
     public void processMethodCall(MethodCall methodCall) {

@@ -5,12 +5,12 @@ import com.google.code.jtracert.classFilter.FilterAction;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public abstract class DefaultActionClassFilterAdapter implements ClassFilter {
 
     /**
-     *
      * @param className
      * @return
      */
@@ -19,7 +19,6 @@ public abstract class DefaultActionClassFilterAdapter implements ClassFilter {
     }
 
     /**
-     * 
      * @param classLoader
      * @return
      */

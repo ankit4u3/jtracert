@@ -5,12 +5,12 @@ import com.google.code.jtracert.instrument.impl.asm.JTracertASMByteCodeTransform
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertByteCodeTransformerFactory {
 
     /**
-     *
      * @return
      */
     public static JTracertByteCodeTransformer getJTracertByteCodeTransformer() {
@@ -18,7 +18,6 @@ public class JTracertByteCodeTransformerFactory {
     }
 
     /**
-     *
      * @param instrumentationProperties
      * @return
      */

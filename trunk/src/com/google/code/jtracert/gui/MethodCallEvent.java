@@ -6,6 +6,7 @@ import java.util.EventObject;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class MethodCallEvent extends EventObject {
@@ -13,7 +14,6 @@ public class MethodCallEvent extends EventObject {
     private final MethodCall methodCall;
 
     /**
-     *
      * @param methodCall
      */
     public MethodCallEvent(MethodCall methodCall) {
@@ -22,11 +22,10 @@ public class MethodCallEvent extends EventObject {
     }
 
     /**
-     *
      * @return
      */
     public MethodCall getMethodCall() {
         return methodCall;
     }
-    
+
 }

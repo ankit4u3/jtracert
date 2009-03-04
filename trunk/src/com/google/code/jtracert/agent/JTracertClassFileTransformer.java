@@ -20,6 +20,7 @@ import java.security.ProtectionDomain;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertClassFileTransformer
@@ -36,7 +37,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @param instrumentationProperties
      */
     public JTracertClassFileTransformer(InstrumentationProperties instrumentationProperties) {
@@ -44,7 +44,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @param classFilterProcessor
      */
     public JTracertClassFileTransformer(ClassFilterProcessor classFilterProcessor) {
@@ -52,7 +51,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @param instrumentationProperties
      * @param classFilterProcessor
      */
@@ -63,7 +61,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @param loader
      * @param className
      * @param classBeingRedefined
@@ -112,11 +109,12 @@ public class JTracertClassFileTransformer
     }
 
     /**
+     * @param className       class name
+     * @param transformedData bytecode of the class
      * @todo refactor this method in order to make path for classes configurable
      * @todo refactor this method and build folder structure when dumping classes
-     * @param className class name
-     * @param transformedData bytecode of the class
      */
+    @Deprecated
     private void dumpTransformedClass(String className, byte[] transformedData) {
         try {
             File debugFile = new File("/tmp/" + className + ".class");
@@ -129,7 +127,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @return
      */
     public InstrumentationProperties getInstrumentationProperties() {
@@ -137,7 +134,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @param instrumentationProperties
      */
     public void setInstrumentationProperties(InstrumentationProperties instrumentationProperties) {
@@ -145,7 +141,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @return
      */
     public ClassFilterProcessor getClassFilterProcessor() {
@@ -153,7 +148,6 @@ public class JTracertClassFileTransformer
     }
 
     /**
-     *
      * @param classFilterProcessor
      */
     public void setClassFilterProcessor(ClassFilterProcessor classFilterProcessor) {

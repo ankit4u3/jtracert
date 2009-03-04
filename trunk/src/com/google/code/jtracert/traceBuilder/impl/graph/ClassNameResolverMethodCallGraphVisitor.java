@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class ClassNameResolverMethodCallGraphVisitor implements MethodCallVisitor<Object> {
@@ -25,7 +26,6 @@ public class ClassNameResolverMethodCallGraphVisitor implements MethodCallVisito
     }
 
     /**
-     *
      * @param methodCall
      * @return
      */

@@ -5,6 +5,7 @@ import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class JTracertByteCodeTransformerAdapter extends ByteCodeTransformerAdapter
@@ -13,7 +14,6 @@ public class JTracertByteCodeTransformerAdapter extends ByteCodeTransformerAdapt
     private JTracertByteCodeTransformer JTracertByteCodeTransformer;
 
     /**
-     *
      * @return
      */
     public JTracertByteCodeTransformer getJTracertByteCodeTransformer() {
@@ -21,7 +21,6 @@ public class JTracertByteCodeTransformerAdapter extends ByteCodeTransformerAdapt
     }
 
     /**
-     *
      * @param JTracertByteCodeTransformer
      */
     public void setJTracertByteCodeTransformer(JTracertByteCodeTransformer JTracertByteCodeTransformer) {
@@ -29,7 +28,6 @@ public class JTracertByteCodeTransformerAdapter extends ByteCodeTransformerAdapt
     }
 
     /**
-     *
      * @param JTracertByteCodeTransformer
      */
     public JTracertByteCodeTransformerAdapter(JTracertByteCodeTransformer JTracertByteCodeTransformer) {
@@ -39,7 +37,6 @@ public class JTracertByteCodeTransformerAdapter extends ByteCodeTransformerAdapt
     }
 
     /**
-     *
      * @return
      */
     public InstrumentationProperties getInstrumentationProperties() {
@@ -48,7 +45,6 @@ public class JTracertByteCodeTransformerAdapter extends ByteCodeTransformerAdapt
     }
 
     /**
-     *
      * @param istrumentationProperties
      */
     public void setInstrumentationProperties(InstrumentationProperties istrumentationProperties) {

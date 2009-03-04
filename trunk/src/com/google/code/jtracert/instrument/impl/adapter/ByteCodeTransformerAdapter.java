@@ -7,6 +7,7 @@ import java.io.*;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+ *
  * @author Dmitry.Bedrin@gmail.com
  */
 public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
@@ -14,7 +15,6 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
     private ByteCodeTransformer byteCodeTransformer;
 
     /**
-     *
      * @return
      */
     public ByteCodeTransformer getByteCodeTransformer() {
@@ -22,7 +22,6 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
     }
 
     /**
-     *
      * @param byteCodeTransformer
      */
     public void setByteCodeTransformer(ByteCodeTransformer byteCodeTransformer) {
@@ -30,7 +29,6 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
     }
 
     /**
-     *
      * @param byteCodeTransformer
      */
     public ByteCodeTransformerAdapter(ByteCodeTransformer byteCodeTransformer) {
@@ -39,7 +37,6 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
     }
 
     /**
-     *
      * @param originalBytes
      * @param offset
      * @param length
@@ -55,7 +52,6 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
     }
 
     /**
-     *
      * @param originalBytes
      * @return
      * @throws ByteCodeTransformException
@@ -69,7 +65,6 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
     }
 
     /**
-     *
      * @param inputStream
      * @param outputStream
      * @throws ByteCodeTransformException
@@ -104,7 +99,6 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
     }
 
     /**
-     *
      * @param inputStream
      * @return
      * @throws ByteCodeTransformException

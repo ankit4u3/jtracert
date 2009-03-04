@@ -119,11 +119,11 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 new Runnable() {
                     public void run() {
 
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < 100; i++)
                             Thread.yield();
 
                         try {
-                            executorService.awaitTermination(500L, TimeUnit.MILLISECONDS);
+                            executorService.awaitTermination(1L, TimeUnit.SECONDS);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }

@@ -1,7 +1,5 @@
 package com.google.code.jtracert.model;
 
-import com.google.code.jtracert.model.MethodCallVisitor;
-
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;

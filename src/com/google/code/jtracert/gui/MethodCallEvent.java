@@ -6,7 +6,7 @@ import java.util.EventObject;
 
 public class MethodCallEvent extends EventObject {
 
-    private MethodCall methodCall;
+    private final MethodCall methodCall;
 
     public MethodCallEvent(MethodCall methodCall) {
         super(methodCall);

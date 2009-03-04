@@ -1,5 +1,8 @@
 package com.google.code.jtracert.gui;
 
+import com.google.code.jtracert.config.AnalyzeProperties;
+import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
 import net.sf.sdedit.Main;
 import net.sf.sdedit.editor.Editor;
 import net.sf.sdedit.ui.UserInterface;
@@ -11,10 +14,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Enumeration;
-
-import com.google.code.jtracert.model.MethodCall;
-import com.google.code.jtracert.traceBuilder.impl.sdedit.SDEditFileClient;
-import com.google.code.jtracert.config.AnalyzeProperties;
 
 /**
  * This class provides a GUI frontend for jTracert agent

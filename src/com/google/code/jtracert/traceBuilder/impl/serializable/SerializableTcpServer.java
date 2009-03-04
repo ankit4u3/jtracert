@@ -1,15 +1,15 @@
 package com.google.code.jtracert.traceBuilder.impl.serializable;
 
+import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;
-import com.google.code.jtracert.config.InstrumentationProperties;
 
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
-import java.util.Queue;
-import java.util.LinkedList;
+import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 

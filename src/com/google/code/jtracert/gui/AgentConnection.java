@@ -1,11 +1,11 @@
 package com.google.code.jtracert.gui;
 
-import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.config.InstrumentationProperties;
+import com.google.code.jtracert.model.MethodCall;
 
 import javax.swing.event.EventListenerList;
-import java.net.Socket;
 import java.io.*;
+import java.net.Socket;
 
 public class AgentConnection implements Runnable {
 

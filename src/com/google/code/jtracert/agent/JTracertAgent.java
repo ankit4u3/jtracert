@@ -1,8 +1,8 @@
 package com.google.code.jtracert.agent;
 
 import com.google.code.jtracert.config.AnalyzeProperties;
-import com.google.code.jtracert.config.InstrumentationProperties;
 import static com.google.code.jtracert.config.AnalyzeProperties.AnalyzerOutput.serializableTcpServer;
+import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 

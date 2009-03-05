@@ -23,3 +23,7 @@ Version 1.7 is fine.
 In order to build _jTracert_, just go the folder with the sources, and type '_ant_'
 
 That's it! Now you have latest jTracert jar file placed to _deploy_ folder
+
+= Executing integration tests =
+
+jTracert comes with a set of integration tests. In order to execute them just type '_ant_ _integration.test_'

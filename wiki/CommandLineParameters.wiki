@@ -1,5 +1,5 @@
 #summary Command line parameters for jTracert javaagent
-#labels Featured,Phase-Deploy
+#labels Phase-Deploy
 
 = Executing jTracert agent =
 

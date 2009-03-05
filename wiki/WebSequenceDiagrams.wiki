@@ -1,6 +1,9 @@
 #summary Using jTracert together with websequencediagrams.com service
+#labels Deprecated
 
 = Introduction =
+
+*WARNING* - this feature is discontinued and no longer tested or support. It may work inproperly
 
 websequencediagrams is an online service, providing you with the ability to generate sequence diagrams online without installing any applications on your computer.
 
@@ -14,4 +17,4 @@ An example command line for using jTracert together with websequencediagrams is 
 
 _java -!DanalyzerOutput=*webSequenceDiagramsFileSystem* -!DoutputFolder=/home/dmitrybedrin/bla -!DclassNameRegEx=net\.sf.{{{*}}} -javaagent:jTracert.jar -jar sdedit-3.0.3.jar_
 
-*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.0.5.jar
+*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.1.0.jar

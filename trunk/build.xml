@@ -133,7 +133,7 @@ Author: Dmitry.Bedrin@gmail.com
 
     <target name="all" depends="jar,gui.jar"/>
 
-    <target name="release" depends="all,integration.test">
+    <target name="release" depends="all,test,integration.test">
         <copyfile src="${deploy.dir}/jTracert.jar" dest="${release.dir}/jTracert-${release.version}.jar"/>
         <copyfile src="${deploy.dir}/jTracert-gui.jar" dest="${release.dir}/jTracert-gui-${release.version}.jar"/>
         <zip

@@ -2,6 +2,16 @@ jTracert Changes List
 
 ========================================
 
+jTracert 0.1.0
+
+Released on 5 March 2009
+
+    * A new GUI frontend introduced; you can execute it with 'java -jar jTracert-gui-0.1.0.jar'
+    * Bugfixing (Issue 10, Issue 11, Issue 12, Issue 13)
+    * jTracert will try using short class names (without package) if applicable and -DshortenClassNames=false is not specified
+
+========================================
+
 jTracert 0.0.5
 
 Released on 17 February 2009

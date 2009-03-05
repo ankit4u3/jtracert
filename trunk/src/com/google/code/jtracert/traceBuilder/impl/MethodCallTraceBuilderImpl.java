@@ -190,10 +190,15 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             if (methodName.equals("<init>") && null != object) {
 
-                System.out.println("Entering " + className + "." + methodName + methodDescriptor);
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Entering " + className + "." + methodName + methodDescriptor);
+                }
 
                 MethodCall contextMethodCall = state.methodCall;
-                System.out.println("contextMethodCall=" + contextMethodCall);
+
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("contextMethodCall=" + contextMethodCall);
+                }
 
                 if ("<init>".equals(contextMethodCall.getMethodName()) &&
                         className.equals(contextMethodCall.getRealClassName())) {

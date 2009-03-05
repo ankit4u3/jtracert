@@ -44,3 +44,4 @@ A typical command line for executing jTracert agent as a SDEdit realtime client 
 || sdEditHost || host of SDEdit RT server; used if jTracert is run with -!DanalyzerOutput=sdEditRtClient || 127.0.0.1 || 127.0.0.1 ||
 || sdEditPort || port of SDEdit RT server; used if jTracert is run with -!DanalyzerOutput=sdEditRtClient || 60001 || 60001 ||
 || outputFolder || folder where jTracert stores generated sequence diagram files; used if jTracert is run with -!DanalyzerOutput=sdEditFileSystem, -!DanalyzerOutput=webSequenceDiagramsFileSystem or -!DanalyzerOutput=sequenceFileSystem || your temp folder || /tmp/sdeditdiagrams ||
+|| shortenClassNames || Shorten class names if applicable (remove package name) || true || true

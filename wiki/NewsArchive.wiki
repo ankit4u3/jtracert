@@ -1,6 +1,17 @@
 #summary Archive of jTracert related news and updated
 #labels Deprecated
 
+== 05 March 2009 - jTracert 0.1.0 released ==
+
+jTracert 0.1.0 is the first version of jTracert which comes with a special GUI frontend.
+Now it's much more convenient to use jTracert
+
+Some significant changes since previous version:
+
+  * A new GUI frontend introduced; you can execute it with 'java -jar jTracert-gui-0.1.0.jar'
+  * Bugfixing (Issue 10, Issue 11, Issue 12, Issue 13)
+  * jTracert will try using short class names (without package) if applicable and -!DshortenClassNames=false is not specified
+
 == 17 February 2009 - jTracert 0.0.5 released ==
 
 We're glad to announce a new version of jTracert - 0.0.5

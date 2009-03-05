@@ -5,17 +5,11 @@
 
 There's a "Quick Start" chapter on the project main page: http://code.google.com/p/jtracert/
 
-In a few words: 
- # Install SDEdit (it's absolutely free) http://sdedit.sourceforge.net/ 
- # Open SDEdit 
- # Choose Item Start/stop RT server in menu Extras 
- # Enter any port you like and press ok 
- # Add the following parameters to your application startup: -!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar
-
-The place where you should specify these parameters depends on your application server.
+The only difference for J2EE application is the place, where you should specify jTracert JVM parameters (-javaagent: ...).
+This place depends on your application server.
 
 A few examples are stated below. 
-*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.0.5.jar
+*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.1.0.jar
 
 = !WebLogic 9+ =
 
@@ -23,13 +17,13 @@ A few examples are stated below.
 
 File: %DOMAIN_HOME%\bin\startWeblogic.cmd. Add the following line:
 
-set JAVA_OPTIONS=-!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar %JAVA_OPTIONS%
+set JAVA_OPTIONS=-!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar=7007 %JAVA_OPTIONS%
 
 *Linux*
 
 File: $DOMAIN_HOME\bin\startWeblogic.sh. Add the following line:
 
-JAVA_OPTIONS="-!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar $JAVA_OPTIONS"
+JAVA_OPTIONS="-!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar=7007 $JAVA_OPTIONS"
 
 = !GlassFish V2 =
 
@@ -37,7 +31,7 @@ JAVA_OPTIONS="-!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEdit
 
 File: %DOMAIN_HOME%\config\domain.xml
 
-Search for jvm-options element and add the elements -!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar Start the domain as usual.
+Search for jvm-options element and add the elements -!DanalyzerOutput=sdEditRtClient -!DsdEditHost=127.0.0.1 -!DsdEditPort=60001 -javaagent:jTracert.jar=7007 Start the domain as usual.
 
 = Other Application Servers =
 

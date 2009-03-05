@@ -80,7 +80,7 @@ public class AgentConnection implements Runnable {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MainApp.processException(e);
         }
     }
 

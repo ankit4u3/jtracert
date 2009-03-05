@@ -5,13 +5,27 @@
 
 In order to start your application with jTracert agent, just add the following JVM parameter: _-javaagent:jTracert.jar_
 
-*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.0.5.jar
+*IMPORTANT!* you should replace jTracert.jar with correct file name, like jTracert-0.1.0.jar
 
 If you were executing your application with command line '_java -jar yourApplicationJar.jar_', you should amend it to '_java -javaagent:jTracert.jar -jar yourApplicationJar.jar_'
 
-javaagent option described above would turn on jTracert agent, but it will omit it's output since it's not yet configured. Let's consider configuring jTracert agent.
 
-= Configuring jTracert agent =
+
+There're two modes of using jTracert agent: one is for jTracert GUI and the other one is for other frontends.
+
+In order to user jTracert togerther with jTracert GUI, you just need to add the port number after javaagent definition.
+For example -javaagent:/home/dmitrybedrin/java/jTracert-0.1.0.jar=7007
+
+If the port isn't specified, jTracert will rely on analyzerOutput parameter for choosing frontend. See below for details.
+
+= Configuring jTracert agent for standard frontend=
+
+Since version 0.1.0, jTracert comes with a special GUI.
+The following short article describes how to use it: [http://code.google.com/p/jtracert/#Quick_Start Quick Start]
+
+= Configuring jTracert agent for non-standard frontend=
+
+You can also configure jTracert for using it together with another frontend. Please note that some of these features will be removed in future.
 
 == Overview ==
 

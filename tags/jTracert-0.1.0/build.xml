@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jTracert" default="all">
+
+<!--
+Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+Author: Dmitry.Bedrin@gmail.com
+-->
+
+    <property file="build.properties"/>
+
+    <property name="compile.debug" value="true" />
+
+    <property name="src.dir" value="src"/>
+    <property name="src.test.dir" value="test"/>
+    <property name="config.dir" value="config"/>
+    <property name="classes.dir" value="classes"/>
+    <property name="classes.project.dir" value="${classes.dir}/project"/>
+    <property name="classes.test.dir" value="${classes.dir}/test"/>
+    <property name="deploy.dir" value="deploy"/>
+    <property name="release.dir" value="release"/>
+    <property name="release.version" value="0.1.0"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="lib.build.dir" value="lib/build"/>
+    <property name="lib.runtime.dir" value="lib/runtime"/>
+    <property name="lib.gui.dir" value="lib/gui"/>
+
+    <path id="build.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${classes.dir}"/>
+        <delete dir="${deploy.dir}"/>
+        <delete dir="${release.dir}"/>
+        <delete dir="junit"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${classes.project.dir}"/>
+        <mkdir dir="${classes.test.dir}"/>
+        <mkdir dir="${deploy.dir}"/>
+        <mkdir dir="${release.dir}"/>
+    </target>
+
+    <target name="compile.test" depends="compile">
+        <javac destdir="${classes.test.dir}" debug="${compile.debug}">
+            <src path="${src.test.dir}"/>
+            <classpath refid="build.classpath"/>
+            <classpath path="${classes.project.dir}"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="compile.test">
+
+        <mkdir dir="junit"/>
+
+        <junit printsummary="yes" haltonerror="yes" showoutput="yes">
+
+            <classpath path="${classes.project.dir}"/>
+            <classpath path="${classes.test.dir}"/>
+            <classpath refid="build.classpath"/>
+            
+            <batchtest todir="junit">
+                <fileset dir="${src.test.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+
+            <formatter type="plain" />
+
+        </junit>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="${classes.project.dir}" debug="${compile.debug}" target="1.5">
+            <src path="${src.dir}"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <taskdef
+            name="jarjar"
+            classname="com.tonicsystems.jarjar.JarJarTask"
+            classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
+        <jarjar destfile="${deploy.dir}/jTracert.jar" manifest="${config.dir}/manifest.mf">
+            <fileset dir="${classes.project.dir}">
+                <exclude name="com/google/code/jtracert/gui/**"/> 
+            </fileset>
+            <zipfileset src="${lib.runtime.dir}/asm-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-commons-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-tree-3.1.jar"/>
+            <rule pattern="org.objectweb.asm.**" result="com.google.code.jTracert.org.objectweb.asm.@1"/>
+        </jarjar>
+    </target>
+
+    <target name="gui.jar" depends="jar">
+        <taskdef
+            name="jarjar"
+            classname="com.tonicsystems.jarjar.JarJarTask"
+            classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
+        <jarjar destfile="${deploy.dir}/jTracert-gui.jar">
+
+            <fileset dir="${classes.project.dir}"/>
+
+            <manifest>
+                <attribute name="Main-Class" value="com.google.code.jtracert.gui.MainApp"/>
+            </manifest>
+
+            <zipfileset src="${lib.gui.dir}/sdedit-3.0.5.jar"/>
+
+        </jarjar>
+
+    </target>
+
+    <target name="integration.test" depends="jar">
+        <ant dir="samples/jTracertTestCase"/>
+        
+        <ant dir="samples/simpleApp1"/>
+        <ant dir="samples/simpleApp2"/>
+        <ant dir="samples/jaxbApplication"/>
+        <ant dir="samples/issue8"/>
+        <ant dir="samples/xerces"/>
+        <ant dir="samples/issue9"/>
+        <ant dir="samples/constructor"/>
+        <ant dir="samples/bootStrapClassConstructor"/>
+        <ant dir="samples/issue13"/>
+
+    </target>
+
+    <target name="all" depends="jar,gui.jar"/>
+
+    <target name="release" depends="all,test,integration.test">
+        <copyfile src="${deploy.dir}/jTracert.jar" dest="${release.dir}/jTracert-${release.version}.jar"/>
+        <copyfile src="${deploy.dir}/jTracert-gui.jar" dest="${release.dir}/jTracert-gui-${release.version}.jar"/>
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}-src.zip"
+            basedir="."
+            excludes="samples/**, classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}-samples-src.zip"
+            basedir="."
+            excludes="classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
+    </target>
+
+</project>

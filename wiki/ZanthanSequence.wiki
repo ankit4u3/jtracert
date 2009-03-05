@@ -1,4 +1,5 @@
 #summary Using jTracert together with Zanthan SEQUENCE application
+#labels Deprecated
 
 = Introduction =
 

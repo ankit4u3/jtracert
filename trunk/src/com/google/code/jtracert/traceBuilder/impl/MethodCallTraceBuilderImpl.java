@@ -167,8 +167,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     }
 
-    private Set<String> jarURLs = new HashSet<String>();
-
     /**
      * @param className
      * @param methodName
@@ -177,8 +175,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
      * @param arguments
      */
     public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
-
-        //watchJar(object); // todo uncomment this line in order to track JAR dependencies
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
 
@@ -240,6 +236,11 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                     currentMethodCall.setRealClassName(className);
                 } else {
                     currentMethodCall.setRealClassName(object.getClass().getName());
+
+                    URL location = object.getClass().getProtectionDomain().getCodeSource().getLocation();
+                    if (null != location) {
+                        currentMethodCall.setJarUrl(location.toString());
+                    }
                 }
 
                 //state.graphHashCode = hashCode;
@@ -255,23 +256,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             state.buildingTrace = false;
         }
 
-    }
-
-    /**
-     * @todo refactor this method in order to store dependency information in some storage
-     */
-    @Deprecated
-    private void watchJar(Object object) {
-        if (null != object) {
-            URL codeLocationURL = object.getClass().getProtectionDomain().getCodeSource().getLocation();
-            if (null != codeLocationURL) {
-                String jarURL = codeLocationURL.toString();
-                if (!jarURLs.contains(jarURL)) {
-                    System.out.println("Dependency from JAR: " + jarURL);
-                    jarURLs.add(jarURL);
-                }
-            }
-        }
     }
 
     /**
@@ -514,40 +498,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
      */
     @Deprecated
     public void leaveConstructor(String methodDescriptor) {
-
         leave();
-
-    }
-
-    /**
-     *
-     */
-    @Deprecated
-    private void swapConstructors() {
-        MethodCallTraceBuilderState state = traceBuilderState.get();
-
-        MethodCall currentMethodCall = state.methodCall;
-
-        MethodCall parentMethodCall = currentMethodCall.getCalleer();
-
-        if (null != parentMethodCall) {
-            List<MethodCall> siblingCallees = parentMethodCall.getCallees();
-
-            if (siblingCallees.size() > 1) {
-                MethodCall previousSiblingMethodCall = siblingCallees.get(siblingCallees.size() - 2);
-
-                if ((previousSiblingMethodCall.getMethodName().equals("<init>")) &&
-                        (previousSiblingMethodCall.getObjectHashCode() == currentMethodCall.getObjectHashCode())) {
-                    currentMethodCall.addCallee(previousSiblingMethodCall);
-                    siblingCallees.remove(previousSiblingMethodCall);
-
-                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                        System.out.println("Swapping constructors!!!!");
-                    }
-
-                }
-            }
-        }
     }
 
     /**
@@ -558,9 +509,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
      */
     @Deprecated
     public void leaveConstructor(String className, String methodName, String methodDescriptor, Throwable exception) {
-
         exception(exception);
-
     }
 
     /**

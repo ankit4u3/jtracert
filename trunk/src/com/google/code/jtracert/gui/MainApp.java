@@ -15,9 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 import java.beans.PropertyChangeListener;
 
 /**
@@ -48,6 +46,21 @@ public class MainApp {
     private static JTree jtree;
     private static JTracertTreeModel jTracertTreeModel;
 
+    protected static Set<String> jarUrls = new HashSet<String>();
+
+    private static void processMethodCall(MethodCall methodCall) {
+       String jarUrl = methodCall.getJarUrl();
+
+        if (!jarUrls.contains(jarUrl)) {
+            jarUrls.add(jarUrl);
+        }
+
+        for (MethodCall callee : methodCall.getCallees()) {
+            processMethodCall(callee);
+        }
+
+    }
+
     /**
      * @param arguments
      * @throws Exception
@@ -71,6 +84,8 @@ public class MainApp {
 
                     try {
                         MethodCall methodCall = methodCallEvent.getMethodCall();
+
+                        processMethodCall(methodCall);
 
                         SDEditFileClient methodCallProcessor = new SDEditFileClient();
 
@@ -187,7 +202,50 @@ public class MainApp {
                         }
                     });
 
+                    Editor.getEditor().getUI().addAction("Extras", new Action() {
 
+                        private Map<String,Object> values = new HashMap<String,Object>();
+
+                        {
+                            values.put(Action.NAME,"View dependencies");
+                        }
+
+                        public Object getValue(String key) {
+                            return values.get(key);
+                        }
+
+                        public void putValue(String key, Object value) {
+                            values.put(key, value);
+                        }
+
+                        public void setEnabled(boolean b) {
+                            //To change body of implemented methods use File | Settings | File Templates.
+                        }
+
+                        public boolean isEnabled() {
+                            return true;
+                        }
+
+                        public void addPropertyChangeListener(PropertyChangeListener listener) {
+                            //To change body of implemented methods use File | Settings | File Templates.
+                        }
+
+                        public void removePropertyChangeListener(PropertyChangeListener listener) {
+                            //To change body of implemented methods use File | Settings | File Templates.
+                        }
+
+                        public void actionPerformed(ActionEvent e) {
+                            DependenciesDialog dependenciesDialog =
+                                    new DependenciesDialog(uiFrame, true);
+                            dependenciesDialog.setVisible(true);
+                        }
+
+                    }, new Activator() {
+
+                        public boolean isEnabled() {
+                            return true;
+                        }
+                    });
 
 
 

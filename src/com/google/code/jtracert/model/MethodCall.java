@@ -19,6 +19,7 @@ public class MethodCall implements Serializable {
     private JTracertObjectCompanion jTracertObjectCompanion;
     private String realClassName;
     private String className;
+    private String jarUrl;
 
     private List<MethodCall> callees;
     private MethodCall calleer;
@@ -187,6 +188,22 @@ public class MethodCall implements Serializable {
      */
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getJarUrl() {
+        return jarUrl;
+    }
+
+    /**
+     * 
+     * @param jarUrl
+     */
+    public void setJarUrl(String jarUrl) {
+        this.jarUrl = jarUrl;
     }
 
     /**

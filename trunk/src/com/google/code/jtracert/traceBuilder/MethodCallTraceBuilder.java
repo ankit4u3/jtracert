@@ -14,7 +14,7 @@ public interface MethodCallTraceBuilder extends ConfigurableAnalyzer {
      * @param object
      * @param arguments
      */
-    void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/);
+    void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments);
 
     /**
      *

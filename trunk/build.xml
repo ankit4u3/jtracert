@@ -113,6 +113,7 @@ Author: Dmitry.Bedrin@gmail.com
             <zipfileset src="${lib.gui.dir}/sdedit-3.0.5.jar"/>
 
         </jarjar>
+        <copyfile src="bin/jtracert.sh" dest="deploy/jtracert.sh"/>
 
     </target>
 

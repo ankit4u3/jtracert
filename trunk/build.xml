@@ -114,7 +114,7 @@ Author: Dmitry.Bedrin@gmail.com
 
         </jarjar>
         <copyfile src="bin/jtracert.sh" dest="deploy/jtracert.sh"/>
-
+        <chmod file="deploy/jtracert.sh" perm="+x"/>
     </target>
 
     <target name="integration.test" depends="jar">

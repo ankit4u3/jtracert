@@ -40,7 +40,7 @@ public class JTracertClassLoaderTest extends TestCase {
 
         try {
 
-            Class experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
+            Class<?> experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
@@ -48,13 +48,11 @@ public class JTracertClassLoaderTest extends TestCase {
 
             for (int i = 0; i < 5; i ++) {
 
-                int inputValue = i;
-
-                Object resultValue = experimentalMethod.invoke(experimentalObject1, inputValue);
+                Object resultValue = experimentalMethod.invoke(experimentalObject1, i);
 
                 int resultInt = (Integer) resultValue;
 
-                assertEquals(resultInt, inputValue + 1);
+                assertEquals(resultInt, i + 1);
 
             }
 
@@ -85,7 +83,7 @@ public class JTracertClassLoaderTest extends TestCase {
 
             MethodCallTraceBuilderFactory.setMethodCallTraceBuilder(methodCallTraceBuilderInvokeCounter);
 
-            Class experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
+            Class<?> experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
@@ -120,7 +118,7 @@ public class JTracertClassLoaderTest extends TestCase {
 
             MethodCallTraceBuilderFactory.setMethodCallTraceBuilder(methodCallTraceBuilderInvokeCounter);
 
-            Class experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
+            Class<?> experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
@@ -162,7 +160,7 @@ public class JTracertClassLoaderTest extends TestCase {
 
             MethodCallTraceBuilderFactory.setMethodCallTraceBuilder(methodCallTraceBuilderInvokeCounter);
 
-            Class experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
+            Class<?> experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
@@ -204,7 +202,7 @@ public class JTracertClassLoaderTest extends TestCase {
 
             MethodCallTraceBuilderFactory.setMethodCallTraceBuilder(methodCallTraceBuilderInvokeCounter);
 
-            Class experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
+            Class<?> experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
@@ -246,7 +244,7 @@ public class JTracertClassLoaderTest extends TestCase {
 
             MethodCallTraceBuilderFactory.setMethodCallTraceBuilder(methodCallTraceBuilderInvokeCounter);
 
-            Class experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
+            Class<?> experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 
@@ -292,7 +290,7 @@ public class JTracertClassLoaderTest extends TestCase {
 
             MethodCallTraceBuilderFactory.setMethodCallTraceBuilder(methodCallTraceBuilderInvokeCounter);
 
-            Class experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
+            Class<?> experimentalClass1 = jTracertClassLoader.loadClass("com.google.code.jtracert.classLoader.ExperimentalClass1");
 
             Object experimentalObject1 = experimentalClass1.newInstance();
 

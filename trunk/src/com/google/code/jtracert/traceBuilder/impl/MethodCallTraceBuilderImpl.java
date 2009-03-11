@@ -27,6 +27,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.security.ProtectionDomain;
+import java.security.CodeSource;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -237,9 +239,15 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 } else {
                     currentMethodCall.setRealClassName(object.getClass().getName());
 
-                    URL location = object.getClass().getProtectionDomain().getCodeSource().getLocation();
-                    if (null != location) {
-                        currentMethodCall.setJarUrl(location.toString());
+                    ProtectionDomain protectionDomain = object.getClass().getProtectionDomain();
+                    if (null != protectionDomain) {
+                        CodeSource codeSource = protectionDomain.getCodeSource();
+                        if (null != codeSource) {
+                            URL location = codeSource.getLocation();
+                            if (null != location) {
+                                currentMethodCall.setJarUrl(location.toString());
+                            }
+                        }
                     }
                 }
 

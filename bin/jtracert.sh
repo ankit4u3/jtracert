@@ -1,11 +1,12 @@
-#!/bin/sh
+#!/bin/bash
+#
 
-JAR_FILE_NAME="jTracert-gui-0.1.0.jar"
+JAR_FILE_NAME="jTracert-gui.jar"
 
 if [ "x$JAVA_HOME" == "x" ] ; then
-    JAVA=`which java`
+JAVA=`which java`
 else
-    JAVA=$JAVA_HOME/bin/java
+JAVA="$JAVA_HOME/bin/java"
 fi
 
 exec $JAVA -jar $JAR_FILE_NAME

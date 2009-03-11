@@ -176,7 +176,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
      * @param object
      * @param arguments
      */
-    public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments/*, JTracertObjectCompanion jTracertObjectCompanion*/) {
+    public void enter(String className, String methodName, String methodDescriptor, Object object, Object[] arguments) {
 
         MethodCallTraceBuilderState state = traceBuilderState.get();
 

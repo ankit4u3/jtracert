@@ -16,7 +16,6 @@ public class MethodCall implements Serializable {
     private String methodName;
     private String methodSignature;
 
-    private JTracertObjectCompanion jTracertObjectCompanion;
     private String realClassName;
     private String className;
     private String jarUrl;
@@ -39,14 +38,12 @@ public class MethodCall implements Serializable {
      * @param className
      * @param methodName
      * @param methodSignature
-     * @param jTracertObjectCompanion
      */
-    public MethodCall(String className, String methodName, String methodSignature, JTracertObjectCompanion jTracertObjectCompanion) {
+    public MethodCall(String className, String methodName, String methodSignature) {
         this();
         this.realClassName = className;
         this.methodName = methodName;
         this.methodSignature = methodSignature;
-        this.jTracertObjectCompanion = jTracertObjectCompanion;
     }
 
     /**
@@ -111,20 +108,6 @@ public class MethodCall implements Serializable {
      */
     public void setCallees(List<MethodCall> callees) {
         this.callees = callees;
-    }
-
-    /**
-     * @return
-     */
-    public JTracertObjectCompanion getjTracertObjectCompanion() {
-        return jTracertObjectCompanion;
-    }
-
-    /**
-     * @param jTracertObjectCompanion
-     */
-    public void setjTracertObjectCompanion(JTracertObjectCompanion jTracertObjectCompanion) {
-        this.jTracertObjectCompanion = jTracertObjectCompanion;
     }
 
     /**

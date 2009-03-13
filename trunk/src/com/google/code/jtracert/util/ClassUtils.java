@@ -6,6 +6,7 @@ package com.google.code.jtracert.util;
  * @author Dmitry.Bedrin@gmail.com
  */
 public class ClassUtils {
+    public static final String CONSTRUCTOR_METHOD_NAME = "<init>";
 
     /**
      * @param className

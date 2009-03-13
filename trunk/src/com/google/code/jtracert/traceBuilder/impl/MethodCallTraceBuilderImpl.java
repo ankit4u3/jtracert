@@ -146,6 +146,11 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 new Runnable() {
                     public void run() {
 
+                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            System.out.println("Shutting down");
+                            System.out.println("Active tasks count: " + executorService.getActiveCount());
+                        }
+
                         for (int i = 0; i < 100; i++)
                             Thread.yield();
 
@@ -161,6 +166,11 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                             executorService.awaitTermination(5L, TimeUnit.SECONDS);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
+                        }
+
+                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            System.out.println("Shut down");
+                            System.out.println("Active tasks count: " + executorService.getActiveCount());
                         }
 
                     }

@@ -173,6 +173,7 @@ public class AnalyzeProperties implements Serializable {
     }
 
     /**
+     * @todo refactor: use some logging tool with several logging levels for this purpose
      * @return
      */
     public boolean isVerbose() {

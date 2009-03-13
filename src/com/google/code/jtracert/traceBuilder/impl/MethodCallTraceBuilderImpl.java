@@ -17,6 +17,7 @@ import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenc
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
 import com.google.code.jtracert.util.FileUtils;
 import com.google.code.jtracert.util.SizeOutputStream;
+import com.google.code.jtracert.util.ClassUtils;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -193,7 +194,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
             state.buildingTrace = true;
 
-            if (methodName.equals("<init>") && null != object) {
+            if (methodName.equals(ClassUtils.CONSTRUCTOR_METHOD_NAME) && null != object) {
 
                 if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
                     System.out.println("Entering " + className + "." + methodName + methodDescriptor);
@@ -205,7 +206,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                     System.out.println("contextMethodCall=" + contextMethodCall);
                 }
 
-                if ("<init>".equals(contextMethodCall.getMethodName()) &&
+                if (ClassUtils.CONSTRUCTOR_METHOD_NAME.equals(contextMethodCall.getMethodName()) &&
                         className.equals(contextMethodCall.getRealClassName())) {
                     contextMethodCall.setObjectHashCode(System.identityHashCode(object));
                 }
@@ -535,7 +536,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
         if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
             System.out.println("Pre entering constructor " + className + ".<init>" + methodDescriptor);
         }
-        enter(className, "<init>", methodDescriptor, null, null);
+        enter(className, ClassUtils.CONSTRUCTOR_METHOD_NAME, methodDescriptor, null, null);
     }
 
 

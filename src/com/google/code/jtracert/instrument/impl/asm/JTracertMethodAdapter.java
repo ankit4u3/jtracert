@@ -35,7 +35,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
         super(mv, access, name, desc);
         this.className = className;
         this.methodName = name;
-        this.isConstructor = name.equals("<init>");
+        this.isConstructor = name.equals(ClassUtils.CONSTRUCTOR_METHOD_NAME);
     }
 
     /**
@@ -92,7 +92,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc) {
 
-        if (isConstructor && name.equals("<init>") && (owner.equals(parentClassName) || ClassUtils.getFullyQualifiedName(owner).equals(getClassName()))) {
+        if (isConstructor && name.equals(ClassUtils.CONSTRUCTOR_METHOD_NAME) && (owner.equals(parentClassName) || ClassUtils.getFullyQualifiedName(owner).equals(getClassName()))) {
 
             if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
                 System.out.println("Instrumenting constructor " + getClassName() + ".<init>" + getMethodDescriptor());

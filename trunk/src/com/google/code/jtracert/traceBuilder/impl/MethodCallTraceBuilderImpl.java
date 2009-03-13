@@ -43,9 +43,6 @@ class MethodCallTraceBuilderState {
     public int level = 1;
     public int count = 1;
 
-    public Map<String, Integer> enterConstructorLevel = new HashMap<String, Integer>();
-    public Map<String, Integer> leaveConstructorLevel = new HashMap<String, Integer>();
-
     /**
      * @return
      */

@@ -71,37 +71,49 @@ public class JTracertClassFileTransformer
      */
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
-        className = ClassUtils.getFullyQualifiedName(className);
-
-        ClassFilterProcessor classFilterProcessor = new ClassFilterProcessor();
-
-        String classNameRegEx = getInstrumentationProperties().getClassNameRegEx();
-
-        if (null != classNameRegEx) {
-            classFilterProcessor.addFilter(new AllowClassByNameRegExFilter(classNameRegEx));
-        }
-
-        if (!classFilterProcessor.processClass(className, loader)) {
-            return null;
-        }
-
-        if (getInstrumentationProperties().isVerbose()) {
-            System.out.println("Transforming " + className);
-        }
-
-        JTracertByteCodeTransformer jTracertByteCodeTransformer =
-                JTracertByteCodeTransformerFactory.getJTracertByteCodeTransformer(getInstrumentationProperties());
-
-        JTracertByteCodeTransformerAdapter jTracertByteCodeTransformerAdapter =
-                new JTracertByteCodeTransformerAdapter(jTracertByteCodeTransformer);
-
         try {
-            byte[] transformedData = jTracertByteCodeTransformerAdapter.transform(classfileBuffer);
-            if (getInstrumentationProperties().isDumpTransformedClasses()) {
-                dumpTransformedClass(className, transformedData);
+
+            className = ClassUtils.getFullyQualifiedName(className);
+
+            ClassFilterProcessor classFilterProcessor = new ClassFilterProcessor();
+
+            String classNameRegEx = getInstrumentationProperties().getClassNameRegEx();
+
+            if (null != classNameRegEx) {
+                classFilterProcessor.addFilter(new AllowClassByNameRegExFilter(classNameRegEx));
             }
-            return transformedData;
-        } catch (ByteCodeTransformException e) {
+
+            if (!classFilterProcessor.processClass(className, loader)) {
+                return null;
+            }
+
+            if (getInstrumentationProperties().isVerbose()) {
+                System.out.println("Transforming " + className);
+            }
+
+            JTracertByteCodeTransformer jTracertByteCodeTransformer =
+                    JTracertByteCodeTransformerFactory.getJTracertByteCodeTransformer(getInstrumentationProperties());
+
+            JTracertByteCodeTransformerAdapter jTracertByteCodeTransformerAdapter =
+                    new JTracertByteCodeTransformerAdapter(jTracertByteCodeTransformer);
+
+            try {
+                byte[] transformedData = jTracertByteCodeTransformerAdapter.transform(classfileBuffer);
+                if (getInstrumentationProperties().isDumpTransformedClasses()) {
+                    dumpTransformedClass(className, transformedData);
+                }
+
+                if (getInstrumentationProperties().isVerbose()) {
+                    System.out.println("Transformation complete " + className);
+                }
+
+                return transformedData;
+            } catch (ByteCodeTransformException e) {
+                e.printStackTrace();
+                throw new IllegalClassFormatException(e.getMessage());
+            }
+
+        } catch (Throwable e) {
             e.printStackTrace();
             throw new IllegalClassFormatException(e.getMessage());
         }

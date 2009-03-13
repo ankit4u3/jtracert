@@ -1,5 +1,10 @@
 #!/bin/bash
 #
+# jTracert GUI start script
+#
+# Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+# Author Dmitry.Bedrin@gmail.com
+#
 
 JAR_FILE_NAME="jTracert-gui.jar"
 

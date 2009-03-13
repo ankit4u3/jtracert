@@ -35,6 +35,8 @@ public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
 
         String className = methodCall.getClassName();
 
+        if (null == className) className = methodCall.getRealClassName();
+
         int classNameHash = className.hashCode();
 
         if (!addedClassNames.contains(classNameHash)) {
@@ -60,12 +62,14 @@ public abstract class BaseSDEditClient extends BaseMethodCallProcessor {
     protected void writeMethodNames(MethodCall methodCall, Writer diagramWriter) throws IOException {
 
         String callerClassName = methodCall.getClassName();
+        if (null == callerClassName) callerClassName = methodCall.getRealClassName();
 
         classLevelMap.put(callerClassName, 0);
 
         for (MethodCall callee : methodCall.getCallees()) {
 
             String calleeClassName = callee.getClassName();
+            if (null == calleeClassName) calleeClassName = callee.getRealClassName();
 
             int level = classLevelMap.get(callerClassName);
 

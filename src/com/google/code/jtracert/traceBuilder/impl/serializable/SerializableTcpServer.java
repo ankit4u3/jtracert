@@ -87,6 +87,14 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
 
                 connected = true;
 
+                Runtime.getRuntime().addShutdownHook(new Thread(
+                        new Runnable() {
+                            public void run() {
+                                SerializableTcpServer.stop();
+                            }
+                        }
+                ));
+
                 notifyAll();
             }
 

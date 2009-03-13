@@ -80,9 +80,13 @@ public class SDEditFileClient extends BaseSDEditClient {
 
             diagramWriter.append(FileUtils.LINE_SEPARATOR);
 
+            String className = methodCall.getClassName();
+
+            if (null == className) className = methodCall.getRealClassName();
+
             diagramWriter.
                     append("user:").
-                    append(methodCall.getClassName().replaceAll("\\.", "\\\\.")).
+                    append(className.replaceAll("\\.", "\\\\.")).
                     append(".").
                     append(methodCall.getMethodName()).
                     append(FileUtils.LINE_SEPARATOR);

@@ -87,7 +87,7 @@ Author: Dmitry.Bedrin@gmail.com
             classname="com.tonicsystems.jarjar.JarJarTask"
             classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
         <jarjar destfile="${deploy.dir}/jTracert.jar" manifest="${config.dir}/manifest.mf">
-            <fileset dir="${classes.project.dir}">
+            <fileset dir="${classes.project.dir}" includes="com/google/code/jtracert/**">
                 <exclude name="com/google/code/jtracert/gui/**"/> 
             </fileset>
             <zipfileset src="${lib.runtime.dir}/asm-3.1.jar"/>
@@ -104,7 +104,7 @@ Author: Dmitry.Bedrin@gmail.com
             classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
         <jarjar destfile="${deploy.dir}/jTracert-gui.jar">
 
-            <fileset dir="${classes.project.dir}"/>
+            <fileset dir="${classes.project.dir}" includes="com/google/code/jtracert/**"/>
 
             <manifest>
                 <attribute name="Main-Class" value="com.google.code.jtracert.gui.MainApp"/>

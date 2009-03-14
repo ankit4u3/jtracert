@@ -33,6 +33,7 @@ public class JTracertAgent {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NoSuchMethodError r) {
+            r.printStackTrace();
             System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
         }
 
@@ -59,6 +60,13 @@ public class JTracertAgent {
 
         instrumentation.
                 addTransformer(jTracertClassFileTransformer);
+
+        /*try {
+            instrumentation.setNativeMethodPrefix(jTracertClassFileTransformer, "$jTracert$");
+        } catch (NoSuchMethodError r) {
+            r.printStackTrace();
+            System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
+        }*/
 
         System.out.println();
 

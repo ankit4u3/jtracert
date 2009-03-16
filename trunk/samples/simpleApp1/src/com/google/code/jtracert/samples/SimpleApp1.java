@@ -1,5 +1,7 @@
 package com.google.code.jtracert.samples;
 
+import java.util.ArrayList;
+
 public class SimpleApp1 {
 
     public static void main(String[] arguments) throws Exception {
@@ -13,6 +15,7 @@ public class SimpleApp1 {
     }
 
     private static void method2() {
+        new ArrayList<SimpleApp1>();
     }
 
 }

@@ -7,7 +7,10 @@ import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 
 import java.lang.instrument.Instrumentation;
+import java.lang.instrument.UnmodifiableClassException;
 import java.util.jar.JarFile;
+import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.net.URL;
 
@@ -68,7 +71,87 @@ public class JTracertAgent {
             System.err.println("WARNING - Cannot set native method prefix; native methods will be absent in jTracet diagrams; use JRE 1.6+");
         }
 
+        if (isRetransformSystemClasses()) {
+            try {
+                //retransformSystemClasses(instrumentation, jTracertClassFileTransformer);
+                retransformSystemClasses(instrumentation);
+            } catch (UnmodifiableClassException e) {
+                e.printStackTrace(System.err); // todo refactor this line
+            }
+        }
+
         System.out.println();
+
+    }
+
+    public static boolean isRetransformSystemClasses() {
+        return false;
+    }
+
+    private static void retransformSystemClasses(Instrumentation instrumentation)
+            throws UnmodifiableClassException {
+
+        try {
+            if (instrumentation.isRetransformClassesSupported()) {
+                Class[] loadedClasses = instrumentation.getAllLoadedClasses();
+                List<Class> classesToBeRetransformed = new ArrayList<Class>(loadedClasses.length);
+                for (Class clazz : loadedClasses) {
+                    if (instrumentation.isModifiableClass(clazz)) {
+                        classesToBeRetransformed.add(clazz);
+                    }
+                }
+                instrumentation.retransformClasses(classesToBeRetransformed.toArray(new Class<?>[]{null}));
+            }
+        } catch (NoSuchMethodError r) {
+            System.err.println("WARNING - Cannot retransform system classes; these classes will be absent in jTracert analyzis; use JRE 1.6+");
+        }
+
+        /*for (Class clazz : instrumentation.getAllLoadedClasses()) {
+            String classFileName = ClassUtils.convertClassNameToResourceName(clazz.getName());
+            if (classFileName.charAt(0) == '[') continue;
+
+            System.out.println("ClassLoader.getSystemResource(classFileName)=" + ClassLoader.getSystemResource(classFileName));
+
+            InputStream inputStream = ClassLoader.getSystemResourceAsStream(classFileName);
+            ByteArrayOutputStream originalByteArrayOutputStream = new ByteArrayOutputStream();
+
+            byte[] originalBytes = null;
+
+            try {
+
+                while (inputStream.available() > 0) {
+                    originalByteArrayOutputStream.write(inputStream.read());
+                }
+
+                originalBytes = originalByteArrayOutputStream.toByteArray();
+
+            } catch (IOException e) {
+                e.printStackTrace(); // todo refactor this line
+            } finally {
+                try {
+                    originalByteArrayOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace(); // todo refactor this line
+                }
+            }
+
+            if (null != originalBytes) {
+
+                byte[] transformedBytes = jTracertClassFileTransformer.transform(
+                        clazz.getClassLoader(),
+                        clazz.getCanonicalName(),
+                        clazz,
+                        clazz.getProtectionDomain(),
+                        originalBytes
+                );
+
+                ClassDefinition retransformedClassDefinition = new ClassDefinition(clazz, transformedBytes);
+
+                instrumentation.redefineClasses(retransformedClassDefinition);
+
+            }
+
+        }*/
 
     }
 

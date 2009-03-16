@@ -61,7 +61,9 @@ public class JTracertAgent {
                 addTransformer(jTracertClassFileTransformer);
 
         try {
-            instrumentation.setNativeMethodPrefix(jTracertClassFileTransformer, "$jTracert$");
+            if (instrumentation.isNativeMethodPrefixSupported()) {
+                instrumentation.setNativeMethodPrefix(jTracertClassFileTransformer, "$jTracert$");
+            }
         } catch (NoSuchMethodError r) {
             System.err.println("WARNING - Cannot set native method prefix; native methods will be absent in jTracet diagrams; use JRE 1.6+");
         }

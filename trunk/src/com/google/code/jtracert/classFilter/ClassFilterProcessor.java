@@ -6,6 +6,7 @@ import com.google.code.jtracert.classFilter.impl.AllowClassFilter;
 import com.google.code.jtracert.classFilter.impl.DenyBootstrapAndExtensionsClassLoaders;
 import com.google.code.jtracert.classFilter.impl.DenyClassByPackageNameFilter;
 import com.google.code.jtracert.classFilter.impl.DenyJTracertClassesFilter;
+import com.google.code.jtracert.agent.JTracertAgent;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +27,9 @@ public class ClassFilterProcessor {
     public ClassFilterProcessor() {
         addFilter(new AllowClassFilter());
         addFilter(new DenyJTracertClassesFilter());
-        addFilter(new DenyBootstrapAndExtensionsClassLoaders());
+        if (!JTracertAgent.isRetransformSystemClasses()) {
+            addFilter(new DenyBootstrapAndExtensionsClassLoaders());
+        }
         addFilter(new DenyClassByPackageNameFilter("sun.reflect"));
     }
 

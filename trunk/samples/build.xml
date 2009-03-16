@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="createSampleApp" default="all">
 
+<!--
+Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+Author: Dmitry.Bedrin@gmail.com
+-->    
+
     <property environment="env"/>
 
     <property name="applicationName" value="${env.applicationName}"/>

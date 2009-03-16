@@ -5,13 +5,17 @@ import static com.google.code.jtracert.config.AnalyzeProperties.AnalyzerOutput.s
 import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
+import com.google.code.jtracert.util.ClassUtils;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
+import java.lang.instrument.ClassDefinition;
 import java.util.jar.JarFile;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
 /**
@@ -60,6 +64,17 @@ public class JTracertAgent {
         MethodCallTraceBuilderFactory.
                 configureMethodCallTraceBuilder(analyzeProperties);
 
+
+
+        if (isRetransformSystemClasses()) {
+            try {
+                retransformSystemClasses(instrumentation, jTracertClassFileTransformer);
+                //retransformSystemClasses(instrumentation);
+            } catch (UnmodifiableClassException e) {
+                e.printStackTrace(System.err); // todo refactor this line
+            }
+        }
+
         instrumentation.
                 addTransformer(jTracertClassFileTransformer);
 
@@ -71,15 +86,6 @@ public class JTracertAgent {
             System.err.println("WARNING - Cannot set native method prefix; native methods will be absent in jTracet diagrams; use JRE 1.6+");
         }
 
-        if (isRetransformSystemClasses()) {
-            try {
-                //retransformSystemClasses(instrumentation, jTracertClassFileTransformer);
-                retransformSystemClasses(instrumentation);
-            } catch (UnmodifiableClassException e) {
-                e.printStackTrace(System.err); // todo refactor this line
-            }
-        }
-
         System.out.println();
 
     }
@@ -88,10 +94,11 @@ public class JTracertAgent {
         return false;
     }
 
-    private static void retransformSystemClasses(Instrumentation instrumentation)
+    private static void retransformSystemClasses(Instrumentation instrumentation,
+                                                 JTracertClassFileTransformer jTracertClassFileTransformer)
             throws UnmodifiableClassException {
 
-        try {
+        /*try {
             if (instrumentation.isRetransformClassesSupported()) {
                 Class[] loadedClasses = instrumentation.getAllLoadedClasses();
                 List<Class> classesToBeRetransformed = new ArrayList<Class>(loadedClasses.length);
@@ -104,9 +111,13 @@ public class JTracertAgent {
             }
         } catch (NoSuchMethodError r) {
             System.err.println("WARNING - Cannot retransform system classes; these classes will be absent in jTracert analyzis; use JRE 1.6+");
-        }
+        }*/
 
-        /*for (Class clazz : instrumentation.getAllLoadedClasses()) {
+        for (Class clazz : instrumentation.getAllLoadedClasses()) {
+
+            if ("java.lang.Integer".equals(clazz.getName())) continue;
+            if ("java.lang.Long".equals(clazz.getName())) continue;
+
             String classFileName = ClassUtils.convertClassNameToResourceName(clazz.getName());
             if (classFileName.charAt(0) == '[') continue;
 
@@ -137,21 +148,29 @@ public class JTracertAgent {
 
             if (null != originalBytes) {
 
-                byte[] transformedBytes = jTracertClassFileTransformer.transform(
-                        clazz.getClassLoader(),
-                        clazz.getCanonicalName(),
-                        clazz,
-                        clazz.getProtectionDomain(),
-                        originalBytes
-                );
+                try {
+                    byte[] transformedBytes = jTracertClassFileTransformer.transform(
+                            clazz.getClassLoader(),
+                            clazz.getName(),
+                            clazz,
+                            clazz.getProtectionDomain(),
+                            originalBytes
+                    );
 
-                ClassDefinition retransformedClassDefinition = new ClassDefinition(clazz, transformedBytes);
-
-                instrumentation.redefineClasses(retransformedClassDefinition);
+                    if (null != transformedBytes) {
+                        ClassDefinition retransformedClassDefinition = new ClassDefinition(clazz, transformedBytes);
+                        instrumentation.redefineClasses(retransformedClassDefinition);
+                    }
+                    
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
 
             }
 
-        }*/
+        }
+
+        System.out.println("Done!");
 
     }
 

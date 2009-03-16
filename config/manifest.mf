@@ -1,1 +1,2 @@
 Premain-Class: com.google.code.jtracert.agent.JTracertAgent
+Can-Set-Native-Method-Prefix: true

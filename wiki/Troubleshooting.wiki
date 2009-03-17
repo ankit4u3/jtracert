@@ -13,23 +13,14 @@ The most probable reason is that you're using too old JVM. One of jTracert users
 
 == Error opening zip file: jTracert.jar == 
 
-You may face thw following problem when starting your application together with jTracert:
+You may face the following problem when starting your application together with jTracert:
 "Error occurred during initialization of VM agent library failed to init: instrument Error opening zip file: jTracert.jar"
 
-In this case, please check jTracert actuall file name.
-For example it can be jTracert-0.0.5.jar, but not just jTracert.jar ; please note that you should specify the full path to the jTracert jar; not only file name
+In this case, please check jTracert actuall file name with full path.
+For example it can be /home/dmitrybedrin/java/jTracert.jar, but not just jTracert.jar
 
 See also Issue 2
 
-== I'm getting strange !NullPointerException from class !MethodCallTraceBuilderImpl ==
+== Other issues ==
 
-Sometimes you may face following exception:
-{{{
- java.lang.NullPointerException
- 	at com.google.code.jtracert.traceBuilder.impl.MethodCallTraceBuilderImpl.leave(MethodCallTraceBuilderImpl.java:323)
-}}}
-This is caused by JVM bytecode limitations - we cannot insert new code before parent constructor call.
-
-A partial fix was dilevered in Issue 9 fix - jTracert release 0.0.5
-
-If you're still getting this exception, try to expand the set of instrumented classes (or just remove classNameRegEx parameter) - see CommandLineParameters page.
+If you're experiencing issues with using jTracert, please [http://code.google.com/p/jtracert/issues/entry submit an issue report] or ask for help is [http://groups.google.com/group/jtracert jTracert mailing list]

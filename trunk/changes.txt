@@ -2,6 +2,20 @@ jTracert Changes List
 
 ========================================
 
+jTracert 0.1.1
+
+Released on 17 March 2009
+
+    * Added support for OSGi environments (Issue 14)
+    * Analyze native method calls on JRE 1.6+
+    * View dependencies tool added to jTracert GUI (Menu item Extras\View dependencies)
+    * Create shell wrappers for convinient executing jTracert GUI on GNU/Linux and Windows operation systems
+    * jTracert is now packages as a single zip archive file
+    * Fixed integration test on JDK 1.5
+    * Some other minor refactorings
+
+========================================
+
 jTracert 0.1.0
 
 Released on 5 March 2009

@@ -1,6 +1,19 @@
 #summary Archive of jTracert related news and updated
 #labels Deprecated
 
+== 17 March 2009 - jTracert 0.1.1 released ==
+
+We're glad to announce a new version of jTracert - 0.1.1
+Changes since previous version:
+
+  * Added support for OSGi environments (Issue 14)
+  * Analyze native method calls on JRE 1.6+
+  * View dependencies tool added to jTracert GUI (Menu item Extras\View dependencies)
+  * Create shell wrappers for convinient executing jTracert GUI on GNU/Linux and Windows operation systems
+  * jTracert is now packages as a single zip archive file
+  * Fixed integration test on JDK 1.5
+  * Some other minor refactorings
+
 == 05 March 2009 - jTracert 0.1.0 released ==
 
 jTracert 0.1.0 is the first version of jTracert which comes with a special GUI frontend.

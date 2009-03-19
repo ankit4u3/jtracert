@@ -110,7 +110,7 @@ public class JTracertClassFileTransformer
                 return transformedData;
             } catch (ByteCodeTransformException e) {
                 e.printStackTrace();
-                throw new IllegalClassFormatException(e.getMessage());
+                throw new IllegalClassFormatException("Failed to transform bytecode of class " + className);
             }
 
         } catch (Throwable e) {

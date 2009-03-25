@@ -1,0 +1,145 @@
+package com.google.code.jtracert.client.gui.shapes;
+
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.AffineTransform;
+import java.io.Serializable;
+
+public abstract class DiagramElement implements Paintable, Serializable {
+
+    protected boolean packed;
+
+    public volatile boolean active = false;
+
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
+
+    public abstract void paint(Graphics g);
+
+    public abstract boolean contains(double x, double y);
+
+    public boolean contains(double x, double y, double w, double h) {
+
+        for (double i = 0; i < w; i++) {
+            for (double j = 0; j < h; j++) {
+                if (!contains(x+i,y+j)) return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public boolean intersects(double x, double y, double w, double h) {
+
+        for (double i = 0; i < w; i++) {
+            for (double j = 0; j < h; j++) {
+                if (contains(x+i,y+j)) return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
+    }
+
+    public Rectangle2D getBounds2D() {
+        return getBounds();
+    }
+
+    public boolean contains(Point2D p) {
+        return contains(p.getX(), p.getY());
+    }
+
+    public boolean contains(Rectangle2D r) {
+        return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+    }
+
+    public boolean intersects(Rectangle2D r) {
+        return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+    }
+
+    public PathIterator getPathIterator(AffineTransform at) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    public PathIterator getPathIterator(AffineTransform at, double flatness) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DiagramElement)) return false;
+
+        DiagramElement that = (DiagramElement) o;
+
+        if (height != that.height) return false;
+        if (width != that.width) return false;
+        if (x != that.x) return false;
+        if (y != that.y) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        result = 31 * result + width;
+        result = 31 * result + height;
+        return result;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        markUnPacked();
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        markUnPacked();
+        this.y = y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        markUnPacked();
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        markUnPacked();
+        this.height = height;
+    }
+
+    protected void markUnPacked() {
+        packed = false;
+    }
+
+    protected boolean isPacked() {
+        return packed;
+    }
+
+}

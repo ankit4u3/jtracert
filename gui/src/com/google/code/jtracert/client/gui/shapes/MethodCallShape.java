@@ -56,4 +56,5 @@ public class MethodCallShape extends DiagramElement {
     public void setCaptionHeight(int captionHeight) {
         this.captionHeight = captionHeight;
     }
+
 }

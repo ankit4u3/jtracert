@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
 import java.util.Collection;
 
 public class JSequenceDiagramPane extends JPanel {
@@ -107,8 +106,6 @@ public class JSequenceDiagramPane extends JPanel {
     private Graphics2D castGraphics(Graphics g) {
         return (Graphics2D) g;
     }
-
-
 
     protected void paintSequenceDiagram(Graphics2D g) {
 

@@ -20,7 +20,14 @@ public abstract class DiagramElement implements Paintable, Serializable {
 
     public abstract void paint(Graphics g);
 
-    public abstract boolean contains(double x, double y);
+    public boolean contains(double x, double y) {
+
+        return (x >= this.x &&
+                x <= this.x + this.width &&
+                y >= this.y &&
+                y <= this.y + this.height);
+
+    }
 
     public boolean contains(double x, double y, double w, double h) {
 

@@ -3,6 +3,7 @@ package com.google.code.jtracert.client.gui;
 import com.google.code.jtracert.client.gui.shapes.ClassShape;
 import com.google.code.jtracert.client.gui.shapes.Paintable;
 import com.google.code.jtracert.client.gui.shapes.MethodShape;
+import com.google.code.jtracert.client.gui.shapes.MethodCallShape;
 import com.google.code.jtracert.client.model.MethodCall;
 
 import java.awt.*;
@@ -38,18 +39,34 @@ public class ShapesBuilder {
 
         ClassShape classShape = classShapesMap.get(className);
 
-        int width = 10;
-
-        MethodShape methodShape = new MethodShape();
-        methodShape.setX(classShape.getX() + (classShape.getWidth() / 2) - (width / 2));
-        methodShape.setY(classShape.getY() + classShape.getHeight() - 20);
-        methodShape.setWidth(width);
-        methodShape.setHeight(30);
-
-        methodShape.setRightSlotHeight(20);
-        methodShape.setRightSlotWidth(3);
+        MethodShape methodShape = buildMethodShape(classShape);
 
         shapes.add(methodShape);
+
+        ///
+
+
+        String methodName = call.getResolvedMethodName();
+
+        TextLayout methodNameTextLayout = new TextLayout(methodName, g.getFont(), g.getFontRenderContext());
+        Rectangle2D methodNameTextBounds = methodNameTextLayout.getBounds();
+
+        double captionWidth = methodNameTextBounds.getWidth();
+        double captionHeight = methodNameTextBounds.getHeight();
+
+        MethodCallShape methodCallShape = new MethodCallShape();
+
+        methodCallShape.setX(classShape.getX() + (classShape.getWidth() / 2) + 5);
+        methodCallShape.setY(classShape.getY() + classShape.getHeight() - 20);
+        methodCallShape.setWidth((int) captionWidth + 15);
+        methodCallShape.setHeight((int) captionHeight + 5);
+
+        methodCallShape.setCaptionHeight((int) captionHeight + 2);
+        methodCallShape.setMethodName(methodName);
+
+        shapes.add(methodCallShape);
+        
+        ///
 
         if (null != call.getCallees()) {
             for (MethodCall callee : call.getCallees()) {
@@ -57,6 +74,20 @@ public class ShapesBuilder {
             }
         }
 
+    }
+
+    private MethodShape buildMethodShape(ClassShape classShape) {
+        int width = 10;
+
+        MethodShape methodShape = new MethodShape();
+        methodShape.setX(classShape.getX() + (classShape.getWidth() / 2) - (width / 2));
+        methodShape.setY(classShape.getY() + classShape.getHeight() - 20);
+        methodShape.setWidth(width);
+        methodShape.setHeight(100);
+
+        methodShape.setRightSlotHeight(20);
+        methodShape.setRightSlotWidth(3);
+        return methodShape;
     }
 
     private void buildClassShape(String className) {
@@ -82,7 +113,7 @@ public class ShapesBuilder {
         shapes.add(classShape);
         classShapesMap.put(className, classShape);
 
-        x += (captionWidth + 4 + 2 * BORDER_WIDTH + 5);
+        x += (captionWidth + 4 + 2 * BORDER_WIDTH + 50);
 
     }
 

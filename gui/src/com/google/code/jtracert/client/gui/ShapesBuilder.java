@@ -23,13 +23,15 @@ public class ShapesBuilder {
     private Map<String,ClassShape> classShapesMap = new HashMap<String,ClassShape>();
     private int x;
     private static final int BORDER_WIDTH = 1;
+    private static final int METHOD_SHAPE_VERTICAL_PADDING = 20;
+    private static final int METHOD_SHAPE_DEFAULT_HEIGHT = 40;
 
     private ShapesBuilder(Graphics2D g) {
         this.g = g;
         x = 10;
     }
 
-    private void buildShapes(MethodCall call) {
+    private void buildShapes(MethodCall call, MethodShape previousMethodShape) {
 
         String className = call.getResolvedClassName();
 
@@ -39,54 +41,112 @@ public class ShapesBuilder {
 
         ClassShape classShape = classShapesMap.get(className);
 
+        ///
+
         MethodShape methodShape = buildMethodShape(classShape);
 
         shapes.add(methodShape);
+
+        classShape.currentMethodsStack.add(methodShape);
 
         ///
 
 
         String methodName = call.getResolvedMethodName();
 
-        TextLayout methodNameTextLayout = new TextLayout(methodName, g.getFont(), g.getFontRenderContext());
-        Rectangle2D methodNameTextBounds = methodNameTextLayout.getBounds();
+        double captionWidth;
+        double captionHeight;
 
-        double captionWidth = methodNameTextBounds.getWidth();
-        double captionHeight = methodNameTextBounds.getHeight();
+        if (null == methodName || "".equals(methodName)) {
+            captionWidth = 0;
+            captionHeight = 0;
+        } else {
+            TextLayout methodNameTextLayout = new TextLayout(methodName, g.getFont(), g.getFontRenderContext());
+            Rectangle2D methodNameTextBounds = methodNameTextLayout.getBounds();
+
+            captionWidth = methodNameTextBounds.getWidth();
+            captionHeight = methodNameTextBounds.getHeight();
+        }
 
         MethodCallShape methodCallShape = new MethodCallShape();
 
-        methodCallShape.setX(classShape.getX() + (classShape.getWidth() / 2) + 5);
-        methodCallShape.setY(classShape.getY() + classShape.getHeight() - 20);
-        methodCallShape.setWidth((int) captionWidth + 15);
+        if (null == previousMethodShape) {
+
+            methodCallShape.setX(5);
+            methodCallShape.setY(methodShape.getY());
+            methodCallShape.setWidth((int) captionWidth + 15);
+
+
+        } else {
+            int methodCallX = previousMethodShape.getX() + previousMethodShape.getWidth();
+            methodCallShape.setX(methodCallX);
+            methodCallShape.setY(previousMethodShape.getY());
+
+            int distance =
+                methodShape.getX() -
+                        previousMethodShape.getX() -
+                        previousMethodShape.getWidth();
+
+            methodCallShape.setWidth(distance);
+
+            if (distance < captionWidth + 15) {
+                methodShape.setX(methodCallX + (int)captionWidth + 15);
+                methodCallShape.setWidth((int)captionWidth + 15);
+            }
+
+        }
+
         methodCallShape.setHeight((int) captionHeight + 5);
 
         methodCallShape.setCaptionHeight((int) captionHeight + 2);
         methodCallShape.setMethodName(methodName);
 
         shapes.add(methodCallShape);
-        
+
         ///
 
         if (null != call.getCallees()) {
             for (MethodCall callee : call.getCallees()) {
-                buildShapes(callee);
+                buildShapes(callee, methodShape);
             }
         }
+
+        classShape.currentMethodsStack.remove(classShape.currentMethodsStack.size() - 1);
 
     }
 
     private MethodShape buildMethodShape(ClassShape classShape) {
+
         int width = 10;
+        int height = METHOD_SHAPE_DEFAULT_HEIGHT;
 
         MethodShape methodShape = new MethodShape();
-        methodShape.setX(classShape.getX() + (classShape.getWidth() / 2) - (width / 2));
-        methodShape.setY(classShape.getY() + classShape.getHeight() - 20);
-        methodShape.setWidth(width);
-        methodShape.setHeight(100);
 
-        methodShape.setRightSlotHeight(20);
-        methodShape.setRightSlotWidth(3);
+        int leftPadding = classShape.currentMethodsStack.size() * (width - 3);
+
+        if (classShape.currentMethodsStack.size() > 0) {
+            MethodShape parentMethodShape =
+                    classShape.currentMethodsStack.get(classShape.currentMethodsStack.size() - 1);
+
+            int topPadding = parentMethodShape.getHeight() / 2;
+
+            methodShape.setY(parentMethodShape.getY() + topPadding);
+
+        } else {
+            methodShape.setY(classShape.getY() + classShape.getHeight());
+        }
+
+        methodShape.setX(classShape.getX() + (classShape.getWidth() / 2) - (width / 2) + leftPadding);
+
+        methodShape.setWidth(width);
+        methodShape.setHeight(height);
+
+        for (MethodShape stackMethodShape : classShape.currentMethodsStack) {
+            stackMethodShape.setHeight(stackMethodShape.getHeight() + height);
+            stackMethodShape.setRightSlotHeight(stackMethodShape.getRightSlotHeight() + height);
+            stackMethodShape.setRightSlotWidth(3);
+        }
+
         return methodShape;
     }
 
@@ -103,7 +163,7 @@ public class ShapesBuilder {
         classShape.setX(x);
         classShape.setY(5);
         classShape.setWidth((int)captionWidth + 4 + 2 * BORDER_WIDTH);
-        classShape.setHeight((int)captionHeight + 100);
+        classShape.setHeight((int)captionHeight + METHOD_SHAPE_VERTICAL_PADDING);
 
         classShape.setClassName(className);
 
@@ -121,10 +181,10 @@ public class ShapesBuilder {
 
         ShapesBuilder shapesBuilder = new ShapesBuilder(g);
 
-        shapesBuilder.buildShapes(call);
+        shapesBuilder.buildShapes(call, null);
 
         return shapesBuilder.shapes;
-        
+
     }
 
 }

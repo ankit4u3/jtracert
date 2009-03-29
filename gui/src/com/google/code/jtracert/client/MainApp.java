@@ -22,13 +22,25 @@ public class MainApp {
 
         SequenceDiagramModel sequenceDiagramModel = new DefaultSequenceDiagramModel();
 
-        MethodCall methodCall = new MethodCall("Class1","method1");
-        methodCall.addCallee(new MethodCall("Class2","method2"));
-        methodCall.addCallee(new MethodCall("Class3","method3"));
+        /*MethodCall methodCall = new MethodCall("Class1","method1");
 
-        for (int i = 4; i < 10000; i++) {
-            methodCall.addCallee(new MethodCall("Class" + i, "method" + i));
-        }
+        MethodCall mc;
+        methodCall.addCallee(mc = new MethodCall("Class1","method2"));
+        mc.addCallee(new MethodCall("Class1","method3"));
+
+        methodCall.addCallee(new MethodCall("Class2","method2"));
+        methodCall.addCallee(new MethodCall("Class3","method3"));*/
+
+        MethodCall mc1 = new MethodCall("Class1","");
+        MethodCall methodCall = mc1;
+
+
+        MethodCall mc2 = new MethodCall("Class2","method2longName");
+
+        mc1.addCallee(mc2);
+
+        mc1 = new MethodCall("Class3","method3");
+        mc2.addCallee(mc1);
 
         sequenceDiagramModel.setRootMethodCall(methodCall);
 

@@ -73,6 +73,10 @@ public class JTracertClassFileTransformer
 
         try {
 
+            if (getInstrumentationProperties().isVerbose()) {
+                System.out.println("Checking filters for " + className);
+            }
+
             className = ClassUtils.getFullyQualifiedName(className);
 
             ClassFilterProcessor classFilterProcessor = new ClassFilterProcessor();

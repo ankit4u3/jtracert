@@ -204,6 +204,7 @@ public class JTracertAgent {
         String guiClassNameRegEx = guiInstrumentationProperties.getClassNameRegEx();
 
         if ((null != guiClassNameRegEx) && (!"".equals(guiClassNameRegEx.trim()))) {
+            System.out.println("Using class name filter: " + guiClassNameRegEx);
             instrumentationProperties.setClassNameRegEx(guiClassNameRegEx);
         }
 

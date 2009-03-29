@@ -18,7 +18,7 @@ public class DenyJTracertClassesFilter extends InheritClassFilter {
     @Override
     public FilterAction filterClassName(String className) {
         if (className.startsWith(ProjectInfo.PROJECT_PACKAGE_NAME)) {
-            if (className.startsWith(ProjectInfo.PROJECT_PACKAGE_NAME + ".samples")) {
+            if (className.startsWith(ProjectInfo.PROJECT_PACKAGE_NAME + ".samples") || className.startsWith(ProjectInfo.PROJECT_PACKAGE_NAME + ".client") ) {
                 return super.filterClassName(className);
             } else {
                 return DENY;

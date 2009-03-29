@@ -56,6 +56,8 @@ public class JSequenceDiagramPane extends JPanel {
                     @Override
                     public void mouseMoved(MouseEvent e) {
 
+                        if (null == shapes) return;
+
                         DiagramElement selectedElement = null;
 
                         for (Paintable p : shapes) {

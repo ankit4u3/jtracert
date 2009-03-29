@@ -1,5 +1,7 @@
 package com.google.code.jtracert.client.gui.shapes;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.awt.*;
 
 public class ClassShape extends DiagramElement {
@@ -10,6 +12,8 @@ public class ClassShape extends DiagramElement {
     protected int captionHeight;
 
     private static final int CAPTION_VERTICAL_PADDING = 2;
+
+    public List<MethodShape> currentMethodsStack = new LinkedList<MethodShape>();
 
     @Override
     public void paint(Graphics g) {

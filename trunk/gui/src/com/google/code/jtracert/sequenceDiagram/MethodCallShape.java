@@ -1,8 +1,10 @@
-package com.google.code.jtracert.client.gui.shapes;
+package com.google.code.jtracert.sequenceDiagram;
+
+import com.google.code.jtracert.sequenceDiagram.DiagramElement;
 
 import java.awt.*;
 
-public class MethodCallShape extends DiagramElement {
+class MethodCallShape extends DiagramElement {
 
     protected String methodName;
 
@@ -11,7 +13,7 @@ public class MethodCallShape extends DiagramElement {
     @Override
     public void paint(Graphics g) {
 
-        g.setColor(active ? new Color(0xFF,0,0) : new Color(0,0,0));
+        g.setColor(isSelected() ? new Color(0xFF,0,0) : new Color(0,0,0));
 
         g.drawString(
                 methodName,

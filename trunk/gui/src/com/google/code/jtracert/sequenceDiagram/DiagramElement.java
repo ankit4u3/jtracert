@@ -1,25 +1,36 @@
-package com.google.code.jtracert.client.gui.shapes;
+package com.google.code.jtracert.sequenceDiagram;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
-import java.util.Set;
-import java.util.HashSet;
+import java.lang.reflect.Method;
 
-public abstract class DiagramElement implements Paintable, Serializable {
-
-    public volatile boolean active = false;
+abstract class DiagramElement implements Paintable, Serializable {
 
     protected int x;
     protected int y;
     protected int width;
     protected int height;
 
-    private Set<DiagramElement> elementsOnTheRight =
-            new HashSet<DiagramElement>();
+    private volatile boolean selected = false;
+    private boolean isContainsPointMethodOverriden;
+
+    private final static String CONTAINS_POINT_METHOD_NAME = "contains";
+
+    protected DiagramElement() {
+        try {
+            Class<? extends DiagramElement> actualClass = getClass();
+            Method containsPointMethod =
+                    actualClass.getMethod(CONTAINS_POINT_METHOD_NAME, double.class, double.class);
+            isContainsPointMethodOverriden =
+                    actualClass.equals(containsPointMethod.getDeclaringClass());
+        } catch (NoSuchMethodException e) {
+            isContainsPointMethodOverriden = false;
+        }
+    }
 
     public abstract void paint(Graphics g);
 
@@ -32,32 +43,52 @@ public abstract class DiagramElement implements Paintable, Serializable {
 
     }
 
-    public boolean contains(double x, double y, double w, double h) {
+    public boolean contains(double x, double y, double width, double height) {
 
-        for (double i = 0; i < w; i++) {
-            for (double j = 0; j < h; j++) {
-                if (!contains(x+i,y+j)) return false;
+        if (isContainsPointMethodOverriden) {
+
+            for (double i = 0; i < width; i++) {
+                for (double j = 0; j < height; j++) {
+                    if (!contains(x+i, y+j)) return false;
+                }
             }
-        }
 
-        return true;
+            return true;
+
+        } else {
+
+            return (x >= this.x &&
+                    x + width <= this.x + this.width &&
+                    y >= this.y &&
+                    y + height <= this.y + this.height);
+
+        }
 
     }
 
-    public boolean intersects(double x, double y, double w, double h) {
+    public boolean intersects(double x, double y, double width, double height) {
 
-        for (double i = 0; i < w; i++) {
-            for (double j = 0; j < h; j++) {
-                if (contains(x+i,y+j)) return true;
+        if (isContainsPointMethodOverriden) {
+
+            for (double i = 0; i < width; i++) {
+                for (double j = 0; j < height; j++) {
+                    if (contains(x+i, y+j)) return true;
+                }
             }
+
+            return false;
+
+        } else {
+
+            return contains(x, y) || contains(x + width, y + height);
+
         }
 
-        return false;
 
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
+        return new Rectangle(x, y, width + 1, height + 1);
     }
 
     public Rectangle2D getBounds2D() {
@@ -91,12 +122,8 @@ public abstract class DiagramElement implements Paintable, Serializable {
 
         DiagramElement that = (DiagramElement) o;
 
-        if (height != that.height) return false;
-        if (width != that.width) return false;
-        if (x != that.x) return false;
-        if (y != that.y) return false;
+        return height == that.height && width == that.width && x == that.x && y == that.y;
 
-        return true;
     }
 
     @Override
@@ -140,12 +167,12 @@ public abstract class DiagramElement implements Paintable, Serializable {
         this.height = height;
     }
 
-    public void addElementOnTheRight(DiagramElement diagramElement) {
-        elementsOnTheRight.add(diagramElement);
+    public boolean isSelected() {
+        return selected;
     }
 
-    public Set<DiagramElement> getElementsOnTheRight() {
-        return elementsOnTheRight;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
 }

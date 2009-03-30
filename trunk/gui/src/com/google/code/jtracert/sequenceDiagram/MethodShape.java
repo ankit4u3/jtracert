@@ -1,8 +1,10 @@
-package com.google.code.jtracert.client.gui.shapes;
+package com.google.code.jtracert.sequenceDiagram;
+
+import com.google.code.jtracert.sequenceDiagram.DiagramElement;
 
 import java.awt.*;
 
-public class MethodShape extends DiagramElement {
+class MethodShape extends DiagramElement {
 
     protected int rightSlotWidth;
     protected int rightSlotHeight;
@@ -16,7 +18,7 @@ public class MethodShape extends DiagramElement {
 
         g.fillPolygon(p);
 
-        g.setColor(active ? new Color(0xFF,0,0) : new Color(0,0,0));
+        g.setColor(isSelected() ? new Color(0xFF,0,0) : new Color(0,0,0));
 
         g.drawPolygon(p);
 

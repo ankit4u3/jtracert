@@ -1,9 +1,11 @@
 package com.google.code.jtracert.client.model;
 
-import java.util.List;
-import java.util.LinkedList;
+import com.google.code.jtracert.sequenceDiagram.MethodCall;
 
-public class MethodCall {
+import java.util.LinkedList;
+import java.util.List;
+
+public class MethodCallImpl implements MethodCall {
 
     private Class clazz;
     private Method method;
@@ -13,7 +15,7 @@ public class MethodCall {
 
     private List<MethodCall> callees;
 
-    public MethodCall(String resolvedClassName, String resolvedMethodName) {
+    public MethodCallImpl(String resolvedClassName, String resolvedMethodName) {
         this.resolvedClassName = resolvedClassName;
         this.resolvedMethodName = resolvedMethodName;
     }
@@ -54,11 +56,11 @@ public class MethodCall {
         return callees;
     }
 
-    public void setCallees(List<MethodCall> callees) {
+    public void setCallees(List<com.google.code.jtracert.sequenceDiagram.MethodCall> callees) {
         this.callees = callees;
     }
 
-    public void addCallee(MethodCall callee) {
+    public void addCallee(MethodCallImpl callee) {
         if (null == getCallees()) {
             setCallees(new LinkedList<MethodCall>());
         }

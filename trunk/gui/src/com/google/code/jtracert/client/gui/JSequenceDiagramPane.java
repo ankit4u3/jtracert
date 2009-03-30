@@ -1,19 +1,23 @@
 package com.google.code.jtracert.client.gui;
 
-import com.google.code.jtracert.client.gui.shapes.Paintable;
-import com.google.code.jtracert.client.gui.shapes.DiagramElement;
-import com.google.code.jtracert.client.model.MethodCall;
+/*
+import com.google.code.jtracert.sequenceDiagram.Paintable;
+import com.google.code.jtracert.sequenceDiagram.DiagramElement;
+import com.google.code.jtracert.sequenceDiagram.SequenceDiagramModel;
+*/
 
 import javax.swing.*;
+/*
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
+*/
 
 public class JSequenceDiagramPane extends JPanel {
 
-    private SequenceDiagramModel model;
+    /*private SequenceDiagramModel model;
     private Collection<Paintable> shapes;
 
     public JSequenceDiagramPane self() {
@@ -68,7 +72,7 @@ public class JSequenceDiagramPane extends JPanel {
                         }
 
                         if (null != previousSelectedElement) {
-                            previousSelectedElement.active = false;
+                            previousSelectedElement.setSelected(false);
                             RepaintManager.currentManager(self()).addDirtyRegion(
                                     self(),
                                     previousSelectedElement.getX(),
@@ -79,7 +83,7 @@ public class JSequenceDiagramPane extends JPanel {
                         }
 
                         if (null != selectedElement) {
-                            selectedElement.active = true;
+                            selectedElement.setSelected(true);
                             RepaintManager.currentManager(self()).addDirtyRegion(
                                     self(),
                                     selectedElement.getX(),
@@ -124,7 +128,7 @@ public class JSequenceDiagramPane extends JPanel {
     private Collection<Paintable> getShapes(Graphics2D g) {
 
         if (shapes == null) {
-            MethodCall call = getModel().getRootMethodCall();
+            com.google.code.jtracert.sequenceDiagram.MethodCall call = getModel().getRootMethodCall();
             shapes = ShapesBuilder.buildShapes(g, call);
         }
 
@@ -138,6 +142,6 @@ public class JSequenceDiagramPane extends JPanel {
 
     public void setModel(SequenceDiagramModel model) {
         this.model = model;
-    }
+    }*/
 
 }

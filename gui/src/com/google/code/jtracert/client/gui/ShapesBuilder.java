@@ -1,7 +1,6 @@
 package com.google.code.jtracert.client.gui;
 
-import com.google.code.jtracert.client.gui.shapes.*;
-import com.google.code.jtracert.client.model.MethodCall;
+import com.google.code.jtracert.sequenceDiagram.*;
 
 import java.awt.*;
 import java.awt.font.TextLayout;
@@ -10,7 +9,7 @@ import java.util.*;
 
 public class ShapesBuilder {
 
-    private Graphics2D g;
+    /*private Graphics2D g;
 
     private Collection<Paintable> shapes = new LinkedList<Paintable>();
 
@@ -25,7 +24,7 @@ public class ShapesBuilder {
         x = 10;
     }
 
-    private void buildShapes(MethodCall call, MethodShape previousMethodShape) {
+    private void buildShapes(com.google.code.jtracert.sequenceDiagram.MethodCall call, MethodShape previousMethodShape) {
 
         String className = call.getResolvedClassName();
 
@@ -110,7 +109,7 @@ public class ShapesBuilder {
         ///
 
         if (null != call.getCallees()) {
-            for (MethodCall callee : call.getCallees()) {
+            for (com.google.code.jtracert.sequenceDiagram.MethodCall callee : call.getCallees()) {
                 buildShapes(callee, methodShape);
             }
         }
@@ -210,7 +209,7 @@ public class ShapesBuilder {
 
     }
 
-    public static Collection<Paintable> buildShapes(Graphics2D g, MethodCall call){
+    public static Collection<Paintable> buildShapes(Graphics2D g, com.google.code.jtracert.sequenceDiagram.MethodCall call){
 
         ShapesBuilder shapesBuilder = new ShapesBuilder(g);
 
@@ -218,6 +217,6 @@ public class ShapesBuilder {
 
         return shapesBuilder.shapes;
 
-    }
+    }*/
 
 }

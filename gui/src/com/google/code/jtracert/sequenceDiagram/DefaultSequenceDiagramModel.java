@@ -1,6 +1,4 @@
-package com.google.code.jtracert.client.gui;
-
-import com.google.code.jtracert.client.model.MethodCall;
+package com.google.code.jtracert.sequenceDiagram;
 
 public class DefaultSequenceDiagramModel implements SequenceDiagramModel {
 

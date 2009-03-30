@@ -1,19 +1,19 @@
-package com.google.code.jtracert.client.gui.shapes;
+package com.google.code.jtracert.sequenceDiagram;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
 import java.awt.*;
 
-public class ClassShape extends DiagramElement {
+class ClassShape extends DiagramElement {
 
     protected String className;
 
     protected int captionHorizontalPadding;
     protected int captionHeight;
 
-    private static final int CAPTION_VERTICAL_PADDING = 2;
-
-    public List<MethodShape> currentMethodsStack = new LinkedList<MethodShape>();
+    public List<MethodShape> currentMethodsStack = new ArrayList<MethodShape>(5);
+    public List<MethodShape> methodShapes = new LinkedList<MethodShape>();
 
     @Override
     public void paint(Graphics g) {
@@ -26,7 +26,7 @@ public class ClassShape extends DiagramElement {
                 width,
                 captionHeight);
 
-        g.setColor(active ? new Color(0xFF,0,0) : new Color(0,0,0));
+        g.setColor(isSelected() ? new Color(0xFF,0,0) : new Color(0,0,0));
 
         g.drawRect(
                 x,
@@ -37,7 +37,7 @@ public class ClassShape extends DiagramElement {
         g.drawString(
                 className,
                 x + captionHorizontalPadding,
-                y + captionHeight - CAPTION_VERTICAL_PADDING);
+                y + captionHeight - DiagramElementsBuilder.CLASS_VERTICAL_PADDING - DiagramElementsBuilder.CLASS_BORDER_WIDTH);
         
         g.drawLine(
                 x + ( width / 2),

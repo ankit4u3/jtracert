@@ -6,10 +6,10 @@ import java.awt.geom.Point2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
+import java.util.Set;
+import java.util.HashSet;
 
 public abstract class DiagramElement implements Paintable, Serializable {
-
-    protected boolean packed;
 
     public volatile boolean active = false;
 
@@ -17,6 +17,9 @@ public abstract class DiagramElement implements Paintable, Serializable {
     protected int y;
     protected int width;
     protected int height;
+
+    private Set<DiagramElement> elementsOnTheRight =
+            new HashSet<DiagramElement>();
 
     public abstract void paint(Graphics g);
 
@@ -110,7 +113,6 @@ public abstract class DiagramElement implements Paintable, Serializable {
     }
 
     public void setX(int x) {
-        markUnPacked();
         this.x = x;
     }
 
@@ -119,7 +121,6 @@ public abstract class DiagramElement implements Paintable, Serializable {
     }
 
     public void setY(int y) {
-        markUnPacked();
         this.y = y;
     }
 
@@ -128,7 +129,6 @@ public abstract class DiagramElement implements Paintable, Serializable {
     }
 
     public void setWidth(int width) {
-        markUnPacked();
         this.width = width;
     }
 
@@ -137,16 +137,15 @@ public abstract class DiagramElement implements Paintable, Serializable {
     }
 
     public void setHeight(int height) {
-        markUnPacked();
         this.height = height;
     }
 
-    protected void markUnPacked() {
-        packed = false;
+    public void addElementOnTheRight(DiagramElement diagramElement) {
+        elementsOnTheRight.add(diagramElement);
     }
 
-    protected boolean isPacked() {
-        return packed;
+    public Set<DiagramElement> getElementsOnTheRight() {
+        return elementsOnTheRight;
     }
 
 }

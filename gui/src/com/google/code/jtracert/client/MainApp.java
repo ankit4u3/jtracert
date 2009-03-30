@@ -42,6 +42,12 @@ public class MainApp {
         mc1 = new MethodCall("Class3","method3");
         mc2.addCallee(mc1);
 
+        mc1 = new MethodCall("Class3","foo");
+        mc2.addCallee(mc1);
+
+        mc1 = new MethodCall("Class3","bar");
+        mc2.addCallee(mc1);
+
         sequenceDiagramModel.setRootMethodCall(methodCall);
 
         JSequenceDiagramPane jSequenceDiagramPane = new JSequenceDiagramPane();

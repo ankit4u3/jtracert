@@ -1,18 +1,12 @@
 package com.google.code.jtracert.client.gui;
 
-import com.google.code.jtracert.client.gui.shapes.ClassShape;
-import com.google.code.jtracert.client.gui.shapes.Paintable;
-import com.google.code.jtracert.client.gui.shapes.MethodShape;
-import com.google.code.jtracert.client.gui.shapes.MethodCallShape;
+import com.google.code.jtracert.client.gui.shapes.*;
 import com.google.code.jtracert.client.model.MethodCall;
 
 import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
-import java.util.LinkedList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class ShapesBuilder {
 
@@ -51,7 +45,6 @@ public class ShapesBuilder {
 
         ///
 
-
         String methodName = call.getResolvedMethodName();
 
         double captionWidth;
@@ -69,6 +62,8 @@ public class ShapesBuilder {
         }
 
         MethodCallShape methodCallShape = new MethodCallShape();
+
+        methodCallShape.addElementOnTheRight(methodShape);
 
         if (null == previousMethodShape) {
 
@@ -90,7 +85,16 @@ public class ShapesBuilder {
             methodCallShape.setWidth(distance);
 
             if (distance < captionWidth + 15) {
-                methodShape.setX(methodCallX + (int)captionWidth + 15);
+
+                int shift = (int)captionWidth + 15 - distance;
+
+                //methodShape.setX(methodCallX + (int)captionWidth + 15);
+
+                for (DiagramElement diagramElement :
+                        new ElementsOnTheRightExtractor().getElementsOnTheRight(methodShape)) {
+                    diagramElement.setX(diagramElement.getX() + shift);
+                }
+
                 methodCallShape.setWidth((int)captionWidth + 15);
             }
 
@@ -115,12 +119,39 @@ public class ShapesBuilder {
 
     }
 
+    private class ElementsOnTheRightExtractor {
+
+        private Set<DiagramElement> visitedElements = new HashSet<DiagramElement>();
+
+        public Set<DiagramElement> getElementsOnTheRight(DiagramElement diagramElement) {
+            visitedElements.add(diagramElement);
+
+            Set<DiagramElement> result = new HashSet<DiagramElement>();
+
+            Set<DiagramElement> elementsOnTheRight = diagramElement.getElementsOnTheRight();
+
+            result.addAll(elementsOnTheRight);
+
+            for (DiagramElement elementOnTheRight : elementsOnTheRight) {
+                if (!visitedElements.contains(elementOnTheRight)) {
+                    result.addAll(getElementsOnTheRight(elementOnTheRight));
+                }
+            }
+
+            return result;
+        }
+
+    }
+
     private MethodShape buildMethodShape(ClassShape classShape) {
 
         int width = 10;
         int height = METHOD_SHAPE_DEFAULT_HEIGHT;
 
         MethodShape methodShape = new MethodShape();
+
+        methodShape.addElementOnTheRight(classShape);
+        classShape.addElementOnTheRight(methodShape);
 
         int leftPadding = classShape.currentMethodsStack.size() * (width - 3);
 
@@ -133,13 +164,15 @@ public class ShapesBuilder {
             methodShape.setY(parentMethodShape.getY() + topPadding);
 
         } else {
-            methodShape.setY(classShape.getY() + classShape.getHeight());
+            methodShape.setY(classShape.getY() + 20 + classShape.getHeight());
         }
 
         methodShape.setX(classShape.getX() + (classShape.getWidth() / 2) - (width / 2) + leftPadding);
 
         methodShape.setWidth(width);
         methodShape.setHeight(height);
+
+        classShape.setHeight(classShape.getHeight() + height);
 
         for (MethodShape stackMethodShape : classShape.currentMethodsStack) {
             stackMethodShape.setHeight(stackMethodShape.getHeight() + height);

@@ -5,14 +5,16 @@ import java.awt.font.TextLayout;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import java.util.List;
 
 class DiagramElementsBuilder {
 
     private final Graphics g;
     private final Rectangle2D templateStringBounds;
 
-    private java.util.List<ClassShape> classShapes = new LinkedList<ClassShape>();
+    private List<ClassShape> classShapes = new LinkedList<ClassShape>();
     private Map<String, ClassShape> classShapesMap = new HashMap<String, ClassShape>();
+    private List<MethodShape> methodShapesStack = new LinkedList<MethodShape>();
 
     //private Collection<DiagramElement> paintableShapes = new LinkedList<DiagramElement>();
     private Collection<DiagramElement> paintableShapes = new TreeSet<DiagramElement>(
@@ -112,9 +114,13 @@ class DiagramElementsBuilder {
 
         // Paint callees
 
+        methodShapesStack.add(methodShape);
+
         for (MethodCall callee : methodCall.getCallees()) {
             buildPaintableShapes(methodShape, callee);
         }
+
+        methodShapesStack.remove(methodShape);
 
         return paintableShapes;
 
@@ -164,7 +170,10 @@ class DiagramElementsBuilder {
                         contextMethodShape.getY() - contextMethodShape.getHeight();
 
         if (heightDifference > 0) {
-            contextMethodShape.incrementHeight(heightDifference);
+            for (MethodShape methodShapeFromStack : methodShapesStack) {
+                methodShapeFromStack.incrementHeight(heightDifference);
+            }
+            //contextMethodShape.incrementHeight(heightDifference);
         }
 
         // set methodd call incoming
@@ -218,7 +227,10 @@ class DiagramElementsBuilder {
                         contextMethodShape.getY() - contextMethodShape.getHeight();
 
         if (heightDifference > 0) {
-            contextMethodShape.incrementHeight(heightDifference);
+            for (MethodShape methodShapeFromStack : methodShapesStack) {
+                methodShapeFromStack.incrementHeight(heightDifference);
+            }
+            //contextMethodShape.incrementHeight(heightDifference);
         }
 
         // set methodd call incoming

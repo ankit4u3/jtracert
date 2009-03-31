@@ -98,6 +98,49 @@ class DiagramElementsBuilder {
 
         paintableShapes.add(methodShape);
 
+        // Create method call shape
+
+        MethodCallShape methodCallShape = new MethodCallShape();
+
+        // Set x & y
+        methodCallShape.setX(contextMethodShape.getX() + contextMethodShape.getWidth());
+        methodCallShape.setY(contextMethodShape.getY());
+
+        // Set width & height
+
+        int methodCallWidth = methodShape.getX() - contextMethodShape.getX() - contextMethodShape.getWidth();
+        methodCallShape.setWidth(methodCallWidth);
+
+        methodCallShape.setHeight(
+                intCeil(templateStringBounds.getHeight()) +
+                2 * METHOD_NAME_VERTICAL_PADDING +
+                METHOD_CALL_ARROW_WIDTH +
+                METHOD_CALL_ARROW_SIZE +
+                2 * METHOD_CALL_VERTICAL_MARGIN
+        );
+
+        // Set caption height & method name
+
+        Rectangle methodNameBounds = getTextBounds(methodCall.getResolvedMethodName());
+
+        methodCallShape.setCaptionHeight(intCeil(methodNameBounds.getHeight()));
+
+        methodCallShape.setMethodName(methodCall.getResolvedMethodName());
+
+        // adjust width
+
+        int captionWidth = intCeil(methodNameBounds.getWidth());
+
+        if (captionWidth + METHOD_CALL_ARROW_SIZE + 5 + 5 > methodCallWidth) {
+            int widthIncrement = captionWidth + METHOD_CALL_ARROW_SIZE + 5 + 5 - methodCallWidth;
+            classShape.incrementX(widthIncrement);
+            methodCallShape.setWidth(captionWidth + METHOD_CALL_ARROW_SIZE + 5 + 5);
+        }
+
+        paintableShapes.add(methodCallShape);
+
+        // Paint callees
+
         for (MethodCall callee : methodCall.getCallees()) {
             buildPaintableShapes(methodShape, callee);
         }
@@ -120,6 +163,8 @@ class DiagramElementsBuilder {
                 2 * METHOD_CALL_VERTICAL_MARGIN);
 
         classShape.incrementHeight(methodShape.getHeight() + METHOD_SHAPE_VERTICAL_DISTANCE);
+        classShape.addMethodShape(methodShape);
+
         return methodShape;
     }
 
@@ -150,15 +195,7 @@ class DiagramElementsBuilder {
 
             // Determine class caption vertical padding
 
-            Rectangle classNameStringBounds;
-
-            TextLayout classNameTextLayout = new TextLayout(
-                    className,
-                    g.getFont(),
-                    new FontRenderContext(null, false, true));
-            Shape classNameTextShape = classNameTextLayout.getOutline(null);
-
-            classNameStringBounds = classNameTextShape.getBounds();
+            Rectangle classNameStringBounds = getTextBounds(className);
 
             int captionWidth = intCeil(classNameStringBounds.getWidth());
             int captionHeight = intCeil(classNameStringBounds.getHeight());
@@ -192,6 +229,23 @@ class DiagramElementsBuilder {
         }
 
         return classShapesMap.get(className);
+
+    }
+
+    private Rectangle getTextBounds(String text) {
+
+        Rectangle textBounds;
+
+        TextLayout textLayout = new TextLayout(
+                text,
+                g.getFont(),
+                new FontRenderContext(null, false, true));
+
+        Shape textShape = textLayout.getOutline(null);
+
+        textBounds = textShape.getBounds();
+
+        return textBounds;
 
     }
 

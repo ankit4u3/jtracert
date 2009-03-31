@@ -22,6 +22,14 @@ class ClassShape extends DiagramElement {
     }
 
     @Override
+    public void incrementX(int xIncrement) {
+        super.incrementX(xIncrement);
+        for (MethodShape methodShape : methodShapes) {
+            methodShape.incrementX(xIncrement);
+        }
+    }
+
+    @Override
     public void paint(Graphics g) {
 
         g.setColor(new Color(0xFF,0xFF,0xFF));
@@ -99,6 +107,10 @@ class ClassShape extends DiagramElement {
 
     public void setCaptionHeight(int captionHeight) {
         this.captionHeight = captionHeight;
+    }
+
+    public void addMethodShape(MethodShape methodShape) {
+        methodShapes.add(methodShape);
     }
 
 }

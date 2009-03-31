@@ -179,6 +179,10 @@ abstract class DiagramElement implements Paintable, Serializable {
         setHeight(getHeight() + heightIncrement);
     }
 
+    public void incrementWidth(int widthIncrement) {
+        setWidth(getWidth() + widthIncrement);
+    }
+
     public boolean isSelected() {
         return selected;
     }

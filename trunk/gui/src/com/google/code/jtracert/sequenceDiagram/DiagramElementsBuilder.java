@@ -100,13 +100,13 @@ class DiagramElementsBuilder {
             
         } else {
 
-            MethodCallShape methodCallShape = createMethodReturnShape(
+            MethodReturnShape methodReturnShape = createMethodReturnShape(
                     contextMethodShape,
                     methodCall,
                     classShape,
                     methodShape);
 
-            paintableShapes.add(methodCallShape);
+            paintableShapes.add(methodReturnShape);
 
         }
 
@@ -120,8 +120,8 @@ class DiagramElementsBuilder {
 
     }
 
-    private MethodCallShape createMethodReturnShape(MethodShape contextMethodShape, MethodCall methodCall, ClassShape classShape, MethodShape methodShape) {
-        MethodCallShape methodCallShape = new MethodCallShape();
+    private MethodReturnShape createMethodReturnShape(MethodShape contextMethodShape, MethodCall methodCall, ClassShape classShape, MethodShape methodShape) {
+        MethodReturnShape methodCallShape = new MethodReturnShape();
 
         // Set width & height
 

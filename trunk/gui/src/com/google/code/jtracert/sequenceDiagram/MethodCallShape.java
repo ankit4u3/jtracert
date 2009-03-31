@@ -28,15 +28,15 @@ class MethodCallShape extends DiagramElement {
                 y + captionHeight);
 
         g.drawLine(
-                x + width - 3,
-                y + captionHeight - 3,
+                x + width - DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
+                y + captionHeight - DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
                 x + width,
                 y + captionHeight
         );
 
         g.drawLine(
-                x + width - 3,
-                y + captionHeight + 3,
+                x + width - DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
+                y + captionHeight + DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
                 x + width,
                 y + captionHeight
         );

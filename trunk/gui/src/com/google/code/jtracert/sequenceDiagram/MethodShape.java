@@ -13,7 +13,7 @@ class MethodShape extends DiagramElement {
 
     protected ClassShape classShape;
 
-    private Collection<MethodCallShape> incomingMethodCallShapes = new LinkedList<MethodCallShape>();
+    private Collection<DiagramElement> incomingMethodCallShapes = new LinkedList<DiagramElement>();
 
     @Override
     public int getLevel() {
@@ -97,12 +97,12 @@ class MethodShape extends DiagramElement {
     @Override
     public void incrementX(int xIncrement) {
         super.incrementX(xIncrement);
-        for (MethodCallShape incomingMethodCallShape : incomingMethodCallShapes) {
+        for (DiagramElement incomingMethodCallShape : incomingMethodCallShapes) {
             incomingMethodCallShape.incrementWidth(xIncrement);
         }
     }
 
-    public void addIncomingMethodCallShape(MethodCallShape incomingMethodCallShape) {
+    public void addIncomingMethodCallShape(DiagramElement incomingMethodCallShape) {
         incomingMethodCallShapes.add(incomingMethodCallShape);
     }
 

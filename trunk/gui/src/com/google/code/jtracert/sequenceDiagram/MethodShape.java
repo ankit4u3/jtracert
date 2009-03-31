@@ -10,6 +10,11 @@ class MethodShape extends DiagramElement {
     protected int rightSlotHeight;
 
     @Override
+    public int getLevel() {
+        return 100;
+    }
+
+    @Override
     public void paint(Graphics g) {
 
         Polygon p = createMethodShapePolygon();

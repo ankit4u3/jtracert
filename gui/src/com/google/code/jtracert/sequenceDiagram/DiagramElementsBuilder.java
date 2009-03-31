@@ -86,6 +86,8 @@ class DiagramElementsBuilder {
 
         MethodShape methodShape = createMethodShape(classShape);
 
+        classShape.currentMethodsStack.add(methodShape);
+
         paintableShapes.add(methodShape);
 
         // Create method call shape
@@ -121,6 +123,7 @@ class DiagramElementsBuilder {
         }
 
         methodShapesStack.remove(methodShape);
+        classShape.currentMethodsStack.remove(methodShape);
 
         return paintableShapes;
 
@@ -187,7 +190,6 @@ class DiagramElementsBuilder {
         MethodCallShape methodCallShape = new MethodCallShape();
 
         // Set width & height
-
         int methodCallWidth = methodShape.getX() - contextMethodShape.getX() - contextMethodShape.getWidth();
         int methodCallHeight = intCeil(templateStringBounds.getHeight()) +
                 2 * METHOD_NAME_VERTICAL_PADDING +
@@ -243,9 +245,23 @@ class DiagramElementsBuilder {
     private MethodShape createMethodShape(ClassShape classShape) {
         MethodShape methodShape = new MethodShape();
 
-        methodShape.setX(classShape.getX() + (classShape.getWidth() - METHOD_SHAPE_WIDTH) / 2);
+        // Set X
+
+        if (classShape.currentMethodsStack.size() > 0) {
+            methodShape.setX(classShape.getX() + (classShape.getWidth() ) / 2 + classShape.currentMethodsStack.size() * 2);
+        } else {
+            methodShape.setX(classShape.getX() + (classShape.getWidth() - METHOD_SHAPE_WIDTH) / 2);
+        }
+
+        // Set Y
         methodShape.setY(classShape.getY() + classShape.getHeight() + METHOD_SHAPE_VERTICAL_DISTANCE);
+
+        // Set Width
+
         methodShape.setWidth(METHOD_SHAPE_WIDTH);
+
+        // Set Height
+
         methodShape.setHeight(
                 intCeil(templateStringBounds.getHeight()) +
                 2 * METHOD_NAME_VERTICAL_PADDING +

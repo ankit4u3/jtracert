@@ -4,10 +4,7 @@ import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 class DiagramElementsBuilder {
 
@@ -17,14 +14,30 @@ class DiagramElementsBuilder {
     private java.util.List<ClassShape> classShapes = new LinkedList<ClassShape>();
     private Map<String, ClassShape> classShapesMap = new HashMap<String, ClassShape>();
 
-    private Collection<Paintable> paintableShapes = new LinkedList<Paintable>();
+    //private Collection<DiagramElement> paintableShapes = new LinkedList<DiagramElement>();
+    private Collection<DiagramElement> paintableShapes = new TreeSet<DiagramElement>(
+
+            new Comparator<DiagramElement>() {
+
+                public int compare(DiagramElement o1, DiagramElement o2) {
+
+                    int l1 = o1.getLevel();
+                    int l2 = o2.getLevel();
+
+                    return l1 == l2 ? o1.hashCode() - o2.hashCode() : l1 - l2;
+
+                }
+
+            }
+
+    );
 
     static final int LEFT_PADDING = 5;
     static final int TOP_PADDING = 5;
 
     static final int CLASS_HORIZONTAL_MARGIN = 10;
     static final int CLASS_HORIZONTAL_PADDING = 5;
-    static final int CLASS_VERTICAL_MARGIN = 20;
+    static final int CLASS_VERTICAL_MARGIN = 5;
     static final int CLASS_VERTICAL_PADDING = 2;
 
     static final int CLASS_BORDER_WIDTH = 1;
@@ -34,18 +47,22 @@ class DiagramElementsBuilder {
     static final int METHOD_CALL_VERTICAL_MARGIN = 1;
     static final int METHOD_CALL_ARROW_SIZE = 5;
 
+    static final int METHOD_SHAPE_WIDTH = 9;
+
+    static final int METHOD_SHAPE_VERTICAL_DISTANCE = 10;
+
     DiagramElementsBuilder(Graphics g, Rectangle2D templateStringBounds) {
         this.g = g;
         this.templateStringBounds = templateStringBounds;
     }
 
-    public Collection<Paintable> buildPaintableShapes(MethodCall rootMethodCall) {
+    public Collection<? extends Paintable> buildPaintableShapes(MethodCall rootMethodCall) {
 
         ClassShape classShape = createClassShape("User");
 
         paintableShapes.add(classShape);
 
-        MethodShape methodShape = new MethodShape();
+        /*MethodShape methodShape = new MethodShape();
 
         methodShape.setX(classShape.getX() + classShape.getWidth() / 2 - 1);
         methodShape.setY(classShape.getY() + classShape.getHeight());
@@ -55,7 +72,9 @@ class DiagramElementsBuilder {
                 2 * METHOD_NAME_VERTICAL_PADDING +
                 METHOD_CALL_ARROW_WIDTH +
                 METHOD_CALL_ARROW_SIZE +
-                2 * METHOD_CALL_VERTICAL_MARGIN);
+                2 * METHOD_CALL_VERTICAL_MARGIN);*/
+
+        MethodShape methodShape = createMethodShape(classShape);
 
         paintableShapes.add(methodShape);
 
@@ -63,17 +82,73 @@ class DiagramElementsBuilder {
 
     }
 
-    private Collection<Paintable> buildPaintableShapes(
+    private Collection<DiagramElement> buildPaintableShapes(
             MethodShape contextMethodShape,
             MethodCall methodCall) {
+
+        String className = methodCall.getResolvedClassName();
+
+        ClassShape classShape = createClassShape(className);
+
+        paintableShapes.add(classShape);
+
+        // Create method shape
+
+        MethodShape methodShape = createMethodShape(classShape);
+
+        paintableShapes.add(methodShape);
+
+        for (MethodCall callee : methodCall.getCallees()) {
+            buildPaintableShapes(methodShape, callee);
+        }
 
         return paintableShapes;
 
     }
 
+    private MethodShape createMethodShape(ClassShape classShape) {
+        MethodShape methodShape = new MethodShape();
+
+        methodShape.setX(classShape.getX() + (classShape.getWidth() - METHOD_SHAPE_WIDTH) / 2);
+        methodShape.setY(classShape.getY() + classShape.getHeight() + METHOD_SHAPE_VERTICAL_DISTANCE);
+        methodShape.setWidth(METHOD_SHAPE_WIDTH);
+        methodShape.setHeight(
+                intCeil(templateStringBounds.getHeight()) +
+                2 * METHOD_NAME_VERTICAL_PADDING +
+                METHOD_CALL_ARROW_WIDTH +
+                METHOD_CALL_ARROW_SIZE +
+                2 * METHOD_CALL_VERTICAL_MARGIN);
+
+        classShape.incrementHeight(methodShape.getHeight() + METHOD_SHAPE_VERTICAL_DISTANCE);
+        return methodShape;
+    }
+
     private ClassShape createClassShape(String className) {
 
         if (!classShapesMap.containsKey(className)) {
+
+            // Create class shape
+
+            ClassShape classShape = new ClassShape();
+
+            // Set class shape x and y
+
+            int x = getNewClassShapeX();
+
+            classShape.setX(x);
+            classShape.setY(TOP_PADDING);
+
+            // Determine class caption height
+
+            int templateStringHeight = intCeil(templateStringBounds.getHeight());
+
+            classShape.setCaptionHeight(
+                    templateStringHeight +
+                    2 * CLASS_VERTICAL_PADDING +
+                    2 * CLASS_BORDER_WIDTH
+            );
+
+            // Determine class caption vertical padding
 
             Rectangle classNameStringBounds;
 
@@ -88,27 +163,16 @@ class DiagramElementsBuilder {
             int captionWidth = intCeil(classNameStringBounds.getWidth());
             int captionHeight = intCeil(classNameStringBounds.getHeight());
 
-            ClassShape classShape = new ClassShape();
-
-            int x = getNewClassShapeX();
-
-            classShape.setX(x);
-            classShape.setY(TOP_PADDING);
-
-            int templateStringHeight = intCeil(templateStringBounds.getHeight());
-
-            classShape.setCaptionHeight(
-                    templateStringHeight +
-                    2 * CLASS_VERTICAL_PADDING +
-                    2 * CLASS_BORDER_WIDTH
-            );
-
             int classVerticalPadding;
 
             classVerticalPadding = CLASS_VERTICAL_PADDING + (templateStringHeight - captionHeight) / 2;
 
-            classShape.setCaptionHorizontalPadding(CLASS_HORIZONTAL_PADDING);
+            // Set class caption paddings
+
             classShape.setCaptionVerticalPadding(classVerticalPadding);
+            classShape.setCaptionHorizontalPadding(CLASS_HORIZONTAL_PADDING);
+
+            // Set class width & height
 
             classShape.setWidth(
                     captionWidth +
@@ -116,7 +180,11 @@ class DiagramElementsBuilder {
                     2 * CLASS_BORDER_WIDTH);
             classShape.setHeight(classShape.getCaptionHeight() + CLASS_VERTICAL_MARGIN);
 
+            // Set class name
+
             classShape.setClassName(className);
+
+            // Add class shape to appropriate collections
 
             classShapes.add(classShape);
             classShapesMap.put(className, classShape);

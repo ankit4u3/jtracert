@@ -25,6 +25,9 @@ public class MainApp {
 
         MethodCallImpl methodCall = new MethodCallImpl("Class1","method1");
 
+        methodCall.addCallee(new MethodCallImpl("Class2","method1"));
+        methodCall.addCallee(new MethodCallImpl("Class2","method2"));
+
         sequenceDiagramModel.setRootMethodCall(methodCall);
 
         JSequenceDiagram jSequenceDiagram = new JSequenceDiagram(sequenceDiagramModel);

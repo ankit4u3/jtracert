@@ -53,17 +53,17 @@ public class MethodCallImpl implements MethodCall {
     }
 
     public List<MethodCall> getCallees() {
+        if (null == callees) {
+            callees = new LinkedList<MethodCall>();
+        }
         return callees;
     }
 
-    public void setCallees(List<com.google.code.jtracert.sequenceDiagram.MethodCall> callees) {
+    public void setCallees(List<MethodCall> callees) {
         this.callees = callees;
     }
 
     public void addCallee(MethodCallImpl callee) {
-        if (null == getCallees()) {
-            setCallees(new LinkedList<MethodCall>());
-        }
         getCallees().add(callee);
     }
 

@@ -32,6 +32,10 @@ abstract class DiagramElement implements Paintable, Serializable {
         }
     }
 
+    public int getLevel() {
+        return 0;
+    }
+
     public abstract void paint(Graphics g);
 
     public boolean contains(double x, double y) {
@@ -115,7 +119,7 @@ abstract class DiagramElement implements Paintable, Serializable {
         throw new UnsupportedOperationException();
     }
 
-    @Override
+   /* @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DiagramElement)) return false;
@@ -133,7 +137,7 @@ abstract class DiagramElement implements Paintable, Serializable {
         result = 31 * result + width;
         result = 31 * result + height;
         return result;
-    }
+    }*/
 
     public int getX() {
         return x;
@@ -165,6 +169,10 @@ abstract class DiagramElement implements Paintable, Serializable {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void incrementHeight(int heightIncrement) {
+        setHeight(getHeight() + heightIncrement);
     }
 
     public boolean isSelected() {

@@ -17,7 +17,7 @@ public class JSequenceDiagram extends JComponent implements MouseListener, Mouse
                     "1234567890" + "" +
                     ",():";
 
-    private Collection<Paintable> paintableShapes;
+    private Collection<? extends Paintable> paintableShapes;
     private Rectangle2D templateStringBounds;
 
     private Paintable selectedShape;
@@ -130,7 +130,7 @@ public class JSequenceDiagram extends JComponent implements MouseListener, Mouse
         }
     }
 
-    private Iterable<Paintable> getPaintalbeShapes() {
+    private Iterable<? extends Paintable> getPaintalbeShapes() {
         Graphics g = getComponentGraphics(getGraphics());
         if (null == g) {
             return Collections.emptySet();
@@ -139,7 +139,7 @@ public class JSequenceDiagram extends JComponent implements MouseListener, Mouse
         }
     }
 
-    private Iterable<Paintable> getPaintalbeShapes(Graphics g) {
+    private Iterable<? extends Paintable> getPaintalbeShapes(Graphics g) {
 
         FontMetrics fontMetrics = g.getFontMetrics();
         Rectangle2D templateStringBounds = fontMetrics.getStringBounds(TEMPLATE_STRING, g);
@@ -153,7 +153,7 @@ public class JSequenceDiagram extends JComponent implements MouseListener, Mouse
 
     }
 
-    private Collection<Paintable> createPaintableShapes(Graphics g) {
+    private Collection<? extends Paintable> createPaintableShapes(Graphics g) {
 
         if (null == getModel()) {
             return Collections.emptySet();

@@ -17,6 +17,11 @@ class ClassShape extends DiagramElement {
     public List<MethodShape> methodShapes = new LinkedList<MethodShape>();
 
     @Override
+    public int getLevel() {
+        return 10;
+    }
+
+    @Override
     public void paint(Graphics g) {
 
         g.setColor(new Color(0xFF,0xFF,0xFF));

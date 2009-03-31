@@ -17,7 +17,7 @@ class MethodReturnShape extends DiagramElement {
 
         g.drawString(
                 methodName,
-                x + 5,
+                x + DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE + 5,
                 y + captionHeight - 2
         );
 
@@ -28,16 +28,16 @@ class MethodReturnShape extends DiagramElement {
                 y + captionHeight);
 
         g.drawLine(
-                x + width - 3,
-                y + captionHeight - 3,
-                x + width,
+                x + DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
+                y + captionHeight - DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
+                x,
                 y + captionHeight
         );
 
         g.drawLine(
-                x + width - 3,
-                y + captionHeight + 3,
-                x + width,
+                x + DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
+                y + captionHeight + DiagramElementsBuilder.METHOD_CALL_ARROW_SIZE,
+                x ,
                 y + captionHeight
         );
 

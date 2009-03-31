@@ -23,7 +23,7 @@ class DiagramElementsBuilder {
     static final int TOP_PADDING = 5;
 
     static final int CLASS_HORIZONTAL_MARGIN = 10;
-    static final int CLASS_HORIZONTAL_PADDING = 2;
+    static final int CLASS_HORIZONTAL_PADDING = 5;
     static final int CLASS_VERTICAL_MARGIN = 20;
     static final int CLASS_VERTICAL_PADDING = 2;
 
@@ -49,7 +49,7 @@ class DiagramElementsBuilder {
 
         methodShape.setX(classShape.getX() + classShape.getWidth() / 2 - 1);
         methodShape.setY(classShape.getY() + classShape.getHeight());
-        methodShape.setWidth(3);
+        methodShape.setWidth(2);
         methodShape.setHeight((int)
                 templateStringBounds.getHeight() +
                 2 * METHOD_NAME_VERTICAL_PADDING +
@@ -77,8 +77,6 @@ class DiagramElementsBuilder {
 
             Rectangle classNameStringBounds;
 
-            //classNameStringBounds = g.getFontMetrics().getStringBounds(className, g);
-
             TextLayout classNameTextLayout = new TextLayout(
                     className,
                     g.getFont(),
@@ -99,12 +97,21 @@ class DiagramElementsBuilder {
             classShape.setX(x);
             classShape.setY(TOP_PADDING);
 
+            int templateStringHeight =
+                new Long(Math.round(Math.ceil(templateStringBounds.getHeight()))).intValue();
+
             classShape.setCaptionHeight(
-                    captionHeight +
+                    templateStringHeight +
                     2 * CLASS_VERTICAL_PADDING +
                     2 * CLASS_BORDER_WIDTH
             );
+
+            int classVerticalPadding;
+
+            classVerticalPadding = CLASS_VERTICAL_PADDING + (templateStringHeight - captionHeight) / 2;
+
             classShape.setCaptionHorizontalPadding(CLASS_HORIZONTAL_PADDING);
+            classShape.setCaptionVerticalPadding(classVerticalPadding);
 
             classShape.setWidth(
                     captionWidth +
@@ -132,6 +139,7 @@ class DiagramElementsBuilder {
             x += existingClassShape.getWidth();
             x += CLASS_HORIZONTAL_MARGIN;
         }
+        
         return x;
     }
 

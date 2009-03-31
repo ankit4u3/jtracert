@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.*;
+import java.awt.font.TextLayout;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 
 class ClassShape extends DiagramElement {
 
@@ -36,7 +39,7 @@ class ClassShape extends DiagramElement {
 
         g.drawString(
                 className,
-                x + captionHorizontalPadding,
+                x + captionHorizontalPadding + DiagramElementsBuilder.CLASS_BORDER_WIDTH,
                 y + captionHeight - DiagramElementsBuilder.CLASS_VERTICAL_PADDING - DiagramElementsBuilder.CLASS_BORDER_WIDTH);
         
         g.drawLine(

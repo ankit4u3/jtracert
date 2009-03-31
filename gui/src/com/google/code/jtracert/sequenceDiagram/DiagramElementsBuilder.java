@@ -2,6 +2,7 @@ package com.google.code.jtracert.sequenceDiagram;
 
 import java.awt.*;
 import java.awt.font.TextLayout;
+import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -74,27 +75,38 @@ class DiagramElementsBuilder {
 
         if (!classShapesMap.containsKey(className)) {
 
-            Rectangle2D classNameStringBounds =
-                    g.getFontMetrics().getStringBounds(className, g);
+            Rectangle classNameStringBounds;
 
-            double captionWidth = classNameStringBounds.getWidth();
-            double captionHeight = classNameStringBounds.getHeight();
+            //classNameStringBounds = g.getFontMetrics().getStringBounds(className, g);
+
+            TextLayout classNameTextLayout = new TextLayout(
+                    className,
+                    g.getFont(),
+                    new FontRenderContext(null, false, true));
+            Shape classNameTextShape = classNameTextLayout.getOutline(null);
+
+            classNameStringBounds = classNameTextShape.getBounds();
+
+            int captionWidth =
+                    new Long(Math.round(Math.ceil(classNameStringBounds.getWidth()))).intValue();
+            int captionHeight =
+                    new Long(Math.round(Math.ceil(classNameStringBounds.getHeight()))).intValue();
 
             ClassShape classShape = new ClassShape();
 
-            double x = getNewClassShapeX();
+            int x = getNewClassShapeX();
 
-            classShape.setX((int)x);
+            classShape.setX(x);
             classShape.setY(TOP_PADDING);
 
-            classShape.setCaptionHeight((int)
+            classShape.setCaptionHeight(
                     captionHeight +
                     2 * CLASS_VERTICAL_PADDING +
                     2 * CLASS_BORDER_WIDTH
             );
             classShape.setCaptionHorizontalPadding(CLASS_HORIZONTAL_PADDING);
 
-            classShape.setWidth((int)
+            classShape.setWidth(
                     captionWidth +
                     2 * CLASS_HORIZONTAL_PADDING +
                     2 * CLASS_BORDER_WIDTH);
@@ -111,8 +123,8 @@ class DiagramElementsBuilder {
 
     }
 
-    private double getNewClassShapeX() {
-        double x;
+    private int getNewClassShapeX() {
+        int x;
 
         x = LEFT_PADDING;
 

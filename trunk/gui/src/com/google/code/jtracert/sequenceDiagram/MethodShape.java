@@ -9,6 +9,8 @@ class MethodShape extends DiagramElement {
     protected int rightSlotWidth;
     protected int rightSlotHeight;
 
+    protected ClassShape classShape;
+
     @Override
     public int getLevel() {
         return 100;
@@ -72,4 +74,19 @@ class MethodShape extends DiagramElement {
         this.rightSlotHeight = rightSlotHeight;
     }
 
+    public ClassShape getClassShape() {
+        return classShape;
+    }
+
+    public void setClassShape(ClassShape classShape) {
+        this.classShape = classShape;
+    }
+
+    @Override
+    public void incrementHeight(int heightIncrement) {
+        super.incrementHeight(heightIncrement);
+        if (null != classShape) {
+            classShape.incrementHeight(heightIncrement);
+        }
+    }
 }

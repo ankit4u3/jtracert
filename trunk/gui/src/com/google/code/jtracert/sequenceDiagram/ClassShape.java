@@ -111,6 +111,7 @@ class ClassShape extends DiagramElement {
 
     public void addMethodShape(MethodShape methodShape) {
         methodShapes.add(methodShape);
+        methodShape.setClassShape(this);
     }
 
 }

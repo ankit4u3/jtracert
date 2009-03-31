@@ -135,7 +135,7 @@ class DiagramElementsBuilder {
 
         // Set x & y
         methodCallShape.setX(contextMethodShape.getX() + contextMethodShape.getWidth());
-        methodCallShape.setY(contextMethodShape.getY() + contextMethodShape.getHeight() - methodCallHeight);
+        methodCallShape.setY(methodShape.getY());
 
         // Set caption height & method name
 
@@ -157,7 +157,14 @@ class DiagramElementsBuilder {
 
         // adjust height
 
-        contextMethodShape.incrementHeight(methodCallHeight);
+        int heightDifference =
+                methodShape.getY() + methodShape.getHeight() -
+                        contextMethodShape.getY() - contextMethodShape.getHeight();
+
+        if (heightDifference > 0) {
+            contextMethodShape.incrementHeight(heightDifference);
+        }
+        
         return methodCallShape;
     }
 

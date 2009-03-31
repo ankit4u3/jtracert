@@ -164,7 +164,11 @@ class DiagramElementsBuilder {
         if (heightDifference > 0) {
             contextMethodShape.incrementHeight(heightDifference);
         }
-        
+
+        // set methodd call incoming
+
+        methodShape.addIncomingMethodCallShape(methodCallShape);
+
         return methodCallShape;
     }
 

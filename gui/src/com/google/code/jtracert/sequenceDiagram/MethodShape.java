@@ -3,6 +3,8 @@ package com.google.code.jtracert.sequenceDiagram;
 import com.google.code.jtracert.sequenceDiagram.DiagramElement;
 
 import java.awt.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 class MethodShape extends DiagramElement {
 
@@ -10,6 +12,8 @@ class MethodShape extends DiagramElement {
     protected int rightSlotHeight;
 
     protected ClassShape classShape;
+
+    private Collection<MethodCallShape> incomingMethodCallShapes = new LinkedList<MethodCallShape>();
 
     @Override
     public int getLevel() {
@@ -89,4 +93,17 @@ class MethodShape extends DiagramElement {
             classShape.incrementHeight(heightIncrement);
         }
     }
+
+    @Override
+    public void incrementX(int xIncrement) {
+        super.incrementX(xIncrement);
+        for (MethodCallShape incomingMethodCallShape : incomingMethodCallShapes) {
+            incomingMethodCallShape.incrementWidth(xIncrement);
+        }
+    }
+
+    public void addIncomingMethodCallShape(MethodCallShape incomingMethodCallShape) {
+        incomingMethodCallShapes.add(incomingMethodCallShape);
+    }
+
 }

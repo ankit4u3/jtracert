@@ -147,6 +147,10 @@ abstract class DiagramElement implements Paintable, Serializable {
         this.x = x;
     }
 
+    public void incrementX(int xIncrement) {
+        setX(getX() + xIncrement);
+    }
+
     public int getY() {
         return y;
     }

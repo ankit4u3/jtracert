@@ -248,7 +248,7 @@ class DiagramElementsBuilder {
         // Set X
 
         if (classShape.currentMethodsStack.size() > 0) {
-            methodShape.setX(classShape.getX() + (classShape.getWidth() ) / 2 + classShape.currentMethodsStack.size() * 2);
+            methodShape.setX(classShape.getX() + (classShape.getWidth() ) / 2 + classShape.currentMethodsStack.size() * 1);
         } else {
             methodShape.setX(classShape.getX() + (classShape.getWidth() - METHOD_SHAPE_WIDTH) / 2);
         }
@@ -269,7 +269,14 @@ class DiagramElementsBuilder {
                 METHOD_CALL_ARROW_SIZE +
                 2 * METHOD_CALL_VERTICAL_MARGIN);
 
-        classShape.incrementHeight(methodShape.getHeight() + METHOD_SHAPE_VERTICAL_DISTANCE);
+        if (classShape.currentMethodsStack.size() > 0) {
+            for (MethodShape currentMethodsStackMethodShape : classShape.currentMethodsStack) {
+                currentMethodsStackMethodShape.incrementHeight(3);
+            }
+        } else {
+            classShape.incrementHeight(methodShape.getHeight() + METHOD_SHAPE_VERTICAL_DISTANCE);
+        }
+
         classShape.addMethodShape(methodShape);
 
         return methodShape;

@@ -50,8 +50,8 @@ class DiagramElementsBuilder {
         methodShape.setX(classShape.getX() + classShape.getWidth() / 2 - 1);
         methodShape.setY(classShape.getY() + classShape.getHeight());
         methodShape.setWidth(2);
-        methodShape.setHeight((int)
-                templateStringBounds.getHeight() +
+        methodShape.setHeight(
+                intCeil(templateStringBounds.getHeight()) +
                 2 * METHOD_NAME_VERTICAL_PADDING +
                 METHOD_CALL_ARROW_WIDTH +
                 METHOD_CALL_ARROW_SIZE +
@@ -85,10 +85,8 @@ class DiagramElementsBuilder {
 
             classNameStringBounds = classNameTextShape.getBounds();
 
-            int captionWidth =
-                    new Long(Math.round(Math.ceil(classNameStringBounds.getWidth()))).intValue();
-            int captionHeight =
-                    new Long(Math.round(Math.ceil(classNameStringBounds.getHeight()))).intValue();
+            int captionWidth = intCeil(classNameStringBounds.getWidth());
+            int captionHeight = intCeil(classNameStringBounds.getHeight());
 
             ClassShape classShape = new ClassShape();
 
@@ -97,8 +95,7 @@ class DiagramElementsBuilder {
             classShape.setX(x);
             classShape.setY(TOP_PADDING);
 
-            int templateStringHeight =
-                new Long(Math.round(Math.ceil(templateStringBounds.getHeight()))).intValue();
+            int templateStringHeight = intCeil(templateStringBounds.getHeight());
 
             classShape.setCaptionHeight(
                     templateStringHeight +
@@ -128,6 +125,10 @@ class DiagramElementsBuilder {
 
         return classShapesMap.get(className);
 
+    }
+
+    private static int intCeil(double value) {
+        return new Long(Math.round(Math.ceil(value))).intValue();
     }
 
     private int getNewClassShapeX() {

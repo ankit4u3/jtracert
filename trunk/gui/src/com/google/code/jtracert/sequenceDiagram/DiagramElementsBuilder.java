@@ -62,18 +62,6 @@ class DiagramElementsBuilder {
 
         paintableShapes.add(classShape);
 
-        /*MethodShape methodShape = new MethodShape();
-
-        methodShape.setX(classShape.getX() + classShape.getWidth() / 2 - 1);
-        methodShape.setY(classShape.getY() + classShape.getHeight());
-        methodShape.setWidth(2);
-        methodShape.setHeight(
-                intCeil(templateStringBounds.getHeight()) +
-                2 * METHOD_NAME_VERTICAL_PADDING +
-                METHOD_CALL_ARROW_WIDTH +
-                METHOD_CALL_ARROW_SIZE +
-                2 * METHOD_CALL_VERTICAL_MARGIN);*/
-
         MethodShape methodShape = createMethodShape(classShape);
 
         paintableShapes.add(methodShape);
@@ -100,13 +88,27 @@ class DiagramElementsBuilder {
 
         // Create method call shape
 
-        MethodCallShape methodCallShape = createMethodCallShape(
-                contextMethodShape,
-                methodCall,
-                classShape,
-                methodShape);
+        if (contextMethodShape.getX() < methodShape.getX()) {
 
-        paintableShapes.add(methodCallShape);
+            MethodCallShape methodCallShape = createMethodCallShape(
+                    contextMethodShape,
+                    methodCall,
+                    classShape,
+                    methodShape);
+
+            paintableShapes.add(methodCallShape);
+            
+        } else {
+
+            MethodCallShape methodCallShape = createMethodReturnShape(
+                    contextMethodShape,
+                    methodCall,
+                    classShape,
+                    methodShape);
+
+            paintableShapes.add(methodCallShape);
+
+        }
 
         // Paint callees
 
@@ -116,6 +118,60 @@ class DiagramElementsBuilder {
 
         return paintableShapes;
 
+    }
+
+    private MethodCallShape createMethodReturnShape(MethodShape contextMethodShape, MethodCall methodCall, ClassShape classShape, MethodShape methodShape) {
+        MethodCallShape methodCallShape = new MethodCallShape();
+
+        // Set width & height
+
+        int methodCallWidth = contextMethodShape.getX() - methodShape.getX() - methodShape.getWidth();
+        int methodCallHeight = intCeil(templateStringBounds.getHeight()) +
+                2 * METHOD_NAME_VERTICAL_PADDING +
+                METHOD_CALL_ARROW_WIDTH +
+                METHOD_CALL_ARROW_SIZE +
+                2 * METHOD_CALL_VERTICAL_MARGIN;
+
+        methodCallShape.setWidth(methodCallWidth);
+        methodCallShape.setHeight(methodCallHeight);
+
+        // Set x & y
+        methodCallShape.setX(methodShape.getX() + methodShape.getWidth());
+        methodCallShape.setY(methodShape.getY());
+
+        // Set caption height & method name
+
+        Rectangle methodNameBounds = getTextBounds(methodCall.getResolvedMethodName());
+
+        methodCallShape.setCaptionHeight(intCeil(methodNameBounds.getHeight()));
+
+        methodCallShape.setMethodName(methodCall.getResolvedMethodName());
+
+        // adjust width
+
+        int captionWidth = intCeil(methodNameBounds.getWidth());
+
+        if (captionWidth + METHOD_CALL_ARROW_SIZE + 5 + 5 > methodCallWidth) {
+            int widthIncrement = captionWidth + METHOD_CALL_ARROW_SIZE + 5 + 5 - methodCallWidth;
+            classShape.incrementX(widthIncrement);
+            methodCallShape.setWidth(captionWidth + METHOD_CALL_ARROW_SIZE + 5 + 5);
+        }
+
+        // adjust height
+
+        int heightDifference =
+                methodShape.getY() + methodShape.getHeight() -
+                        contextMethodShape.getY() - contextMethodShape.getHeight();
+
+        if (heightDifference > 0) {
+            contextMethodShape.incrementHeight(heightDifference);
+        }
+
+        // set methodd call incoming
+
+        methodShape.addIncomingMethodCallShape(methodCallShape);
+
+        return methodCallShape;
     }
 
     private MethodCallShape createMethodCallShape(MethodShape contextMethodShape, MethodCall methodCall, ClassShape classShape, MethodShape methodShape) {

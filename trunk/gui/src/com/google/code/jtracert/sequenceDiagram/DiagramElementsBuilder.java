@@ -176,7 +176,6 @@ class DiagramElementsBuilder {
             for (MethodShape methodShapeFromStack : methodShapesStack) {
                 methodShapeFromStack.incrementHeight(heightDifference);
             }
-            //contextMethodShape.incrementHeight(heightDifference);
         }
 
         // set methodd call incoming
@@ -232,7 +231,6 @@ class DiagramElementsBuilder {
             for (MethodShape methodShapeFromStack : methodShapesStack) {
                 methodShapeFromStack.incrementHeight(heightDifference);
             }
-            //contextMethodShape.incrementHeight(heightDifference);
         }
 
         // set methodd call incoming

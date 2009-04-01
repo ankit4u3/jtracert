@@ -11,6 +11,11 @@ class MethodCallShape extends DiagramElement {
     protected int captionHeight;
 
     @Override
+    public int getLevel() {
+        return 1000;
+    }
+
+    @Override
     public void paint(Graphics g) {
 
         g.setColor(isSelected() ? new Color(0xFF,0,0) : new Color(0,0,0));

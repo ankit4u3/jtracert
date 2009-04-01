@@ -31,6 +31,8 @@ public class MainApp {
         MethodCallImpl mc2 = new MethodCallImpl("Class1", "methodXYZ");
         mc1.addCallee(mc2);
 
+        mc2.addCallee(new MethodCallImpl("Class2","foobar"));
+
         methodCall.addCallee(new MethodCallImpl("Class2","foo"));
         methodCall.addCallee(new MethodCallImpl("Class2","bar"));
 

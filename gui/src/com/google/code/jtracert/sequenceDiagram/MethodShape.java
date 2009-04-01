@@ -90,6 +90,7 @@ class MethodShape extends DiagramElement {
     public void incrementHeight(int heightIncrement) {
         super.incrementHeight(heightIncrement);
         if (null != classShape) {
+            heightIncrement = y + height- classShape.getY() - classShape.getHeight();
             classShape.incrementHeight(heightIncrement);
         }
     }

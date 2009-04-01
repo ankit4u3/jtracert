@@ -35,6 +35,7 @@ public class MainApp {
 
         methodCall.addCallee(new MethodCallImpl("Class2","foo"));
         methodCall.addCallee(new MethodCallImpl("Class2","bar"));
+        methodCall.addCallee(new MethodCallImpl("Class1","innerMethod"));
 
         sequenceDiagramModel.setRootMethodCall(methodCall);
 

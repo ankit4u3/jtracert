@@ -92,7 +92,17 @@ class DiagramElementsBuilder {
 
         // Create method call shape
 
-        if (contextMethodShape.getX() < methodShape.getX()) {
+        if (classShape == contextMethodShape.getClassShape()) {
+
+            MethodSelfCallShape methodSelfCallShape = createMethodSelfCallShape(
+                    contextMethodShape,
+                    methodCall,
+                    classShape,
+                    methodShape);
+
+            paintableShapes.add(methodSelfCallShape);
+
+        } else if (contextMethodShape.getX() < methodShape.getX()) {
 
             MethodCallShape methodCallShape = createMethodCallShape(
                     contextMethodShape,
@@ -101,7 +111,7 @@ class DiagramElementsBuilder {
                     methodShape);
 
             paintableShapes.add(methodCallShape);
-            
+
         } else {
 
             MethodReturnShape methodReturnShape = createMethodReturnShape(
@@ -127,6 +137,58 @@ class DiagramElementsBuilder {
 
         return paintableShapes;
 
+    }
+
+    private MethodSelfCallShape createMethodSelfCallShape(MethodShape contextMethodShape, MethodCall methodCall, ClassShape classShape, MethodShape methodShape) {
+        MethodSelfCallShape methodCallShape = new MethodSelfCallShape();
+
+        methodCallShape.setSelfCallHeight(10);
+        methodCallShape.setSelfCallLeftMargin(3);
+
+        // Set width & height
+
+        Rectangle methodNameBounds = getTextBounds(methodCall.getResolvedMethodName());
+
+        methodCallShape.setCaptionHeight(intCeil(methodNameBounds.getHeight()));
+        methodCallShape.setMethodName(methodCall.getResolvedMethodName());
+
+        int captionWidth = intCeil(methodNameBounds.getWidth());
+
+        //int methodCallWidth = methodShape.getX() - contextMethodShape.getX() - contextMethodShape.getWidth();
+
+        int methodCallWidth = captionWidth + METHOD_CALL_ARROW_SIZE + 5 + 5; 
+
+        int methodCallHeight =
+                intCeil(templateStringBounds.getHeight()) +
+                2 * METHOD_NAME_VERTICAL_PADDING +
+                METHOD_CALL_ARROW_WIDTH +
+                METHOD_CALL_ARROW_SIZE +
+                2 * METHOD_CALL_VERTICAL_MARGIN;
+
+        methodCallShape.setWidth(methodCallWidth);
+        methodCallShape.setHeight(methodCallHeight + 20);
+
+        // Set x & y
+        methodCallShape.setX(contextMethodShape.getX() + contextMethodShape.getWidth());
+        methodCallShape.setY(methodShape.getY());
+
+        // adjust height
+
+        methodShape.setY(methodShape.getY() + methodCallHeight);
+
+        int heightDifference = methodCallHeight;
+
+        if (heightDifference > 0) {
+            for (MethodShape methodShapeFromStack : methodShapesStack) {
+                methodShapeFromStack.incrementHeight(100);
+            }
+        }
+
+        // set methodd call incoming
+
+        methodShape.addIncomingMethodCallShape(methodCallShape);
+
+        return methodCallShape;
     }
 
     private MethodReturnShape createMethodReturnShape(MethodShape contextMethodShape, MethodCall methodCall, ClassShape classShape, MethodShape methodShape) {
@@ -262,10 +324,10 @@ class DiagramElementsBuilder {
 
         methodShape.setHeight(
                 intCeil(templateStringBounds.getHeight()) +
-                2 * METHOD_NAME_VERTICAL_PADDING +
-                METHOD_CALL_ARROW_WIDTH +
-                METHOD_CALL_ARROW_SIZE +
-                2 * METHOD_CALL_VERTICAL_MARGIN);
+                        2 * METHOD_NAME_VERTICAL_PADDING +
+                        METHOD_CALL_ARROW_WIDTH +
+                        METHOD_CALL_ARROW_SIZE +
+                        2 * METHOD_CALL_VERTICAL_MARGIN);
 
         if (classShape.currentMethodsStack.size() > 0) {
             for (MethodShape currentMethodsStackMethodShape : classShape.currentMethodsStack) {
@@ -301,8 +363,8 @@ class DiagramElementsBuilder {
 
             classShape.setCaptionHeight(
                     templateStringHeight +
-                    2 * CLASS_VERTICAL_PADDING +
-                    2 * CLASS_BORDER_WIDTH
+                            2 * CLASS_VERTICAL_PADDING +
+                            2 * CLASS_BORDER_WIDTH
             );
 
             // Determine class caption vertical padding
@@ -325,8 +387,8 @@ class DiagramElementsBuilder {
 
             classShape.setWidth(
                     captionWidth +
-                    2 * CLASS_HORIZONTAL_PADDING +
-                    2 * CLASS_BORDER_WIDTH);
+                            2 * CLASS_HORIZONTAL_PADDING +
+                            2 * CLASS_BORDER_WIDTH);
             classShape.setHeight(classShape.getCaptionHeight() + CLASS_VERTICAL_MARGIN);
 
             // Set class name
@@ -374,7 +436,7 @@ class DiagramElementsBuilder {
             x += existingClassShape.getWidth();
             x += CLASS_HORIZONTAL_MARGIN;
         }
-        
+
         return x;
     }
 

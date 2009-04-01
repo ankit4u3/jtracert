@@ -142,8 +142,8 @@ class DiagramElementsBuilder {
     private MethodSelfCallShape createMethodSelfCallShape(MethodShape contextMethodShape, MethodCall methodCall, ClassShape classShape, MethodShape methodShape) {
         MethodSelfCallShape methodCallShape = new MethodSelfCallShape();
 
-        methodCallShape.setSelfCallHeight(10);
-        methodCallShape.setSelfCallLeftMargin(3);
+        methodCallShape.setSelfCallHeight(25);
+        methodCallShape.setSelfCallLeftMargin(6);
 
         // Set width & height
 
@@ -166,7 +166,7 @@ class DiagramElementsBuilder {
                 2 * METHOD_CALL_VERTICAL_MARGIN;
 
         methodCallShape.setWidth(methodCallWidth);
-        methodCallShape.setHeight(methodCallHeight + 20);
+        methodCallShape.setHeight(methodCallHeight);
 
         // Set x & y
         methodCallShape.setX(contextMethodShape.getX() + contextMethodShape.getWidth());
@@ -180,7 +180,7 @@ class DiagramElementsBuilder {
 
         if (heightDifference > 0) {
             for (MethodShape methodShapeFromStack : methodShapesStack) {
-                methodShapeFromStack.incrementHeight(100);
+                methodShapeFromStack.incrementHeight(methodCallHeight + 50);
             }
         }
 

@@ -64,7 +64,7 @@ class DiagramElementsBuilder {
 
         paintableShapes.add(classShape);
 
-        MethodShape methodShape = createMethodShape(classShape);
+        MethodShape methodShape = createMethodShape(classShape, null);
 
         paintableShapes.add(methodShape);
 
@@ -84,7 +84,7 @@ class DiagramElementsBuilder {
 
         // Create method shape
 
-        MethodShape methodShape = createMethodShape(classShape);
+        MethodShape methodShape = createMethodShape(classShape, contextMethodShape);
 
         classShape.currentMethodsStack.add(methodShape);
 
@@ -302,7 +302,7 @@ class DiagramElementsBuilder {
         return methodCallShape;
     }
 
-    private MethodShape createMethodShape(ClassShape classShape) {
+    private MethodShape createMethodShape(ClassShape classShape, MethodShape contextMethodShape) {
         MethodShape methodShape = new MethodShape();
 
         // Set X

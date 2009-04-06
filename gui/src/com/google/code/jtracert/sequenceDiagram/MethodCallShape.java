@@ -1,7 +1,5 @@
 package com.google.code.jtracert.sequenceDiagram;
 
-import com.google.code.jtracert.sequenceDiagram.DiagramElement;
-
 import java.awt.*;
 
 class MethodCallShape extends DiagramElement {

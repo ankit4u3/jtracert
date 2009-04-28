@@ -1,14 +1,13 @@
 package com.google.code.jtracert.samples;
 
 import com.google.code.jtracert.model.MethodCall;
+import com.google.code.jtracert.config.InstrumentationProperties;
 import junit.framework.TestCase;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Arrays;
+import java.util.*;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
@@ -21,27 +20,41 @@ public abstract class JTracertTestCase extends TestCase {
         return startJavaProcessWithJTracert(jarFileName, false);
     }
 
-    protected Process startJavaProcessWithJTracert(String jarFileName, boolean verbose) throws IOException {
+    protected Process startJavaProcessWithJTracert(String jarFileName, String classNameRegEx) throws IOException {
+        return startJavaProcessWithJTracert(jarFileName, false, classNameRegEx);
+    }
 
-        String[] commands =
-                verbose ?
-                        new String[]{
-                                getJava(),
-                                "-DanalyzerOutput=serializableTcpClient",
-                                "-DdumpTransformedClasses",
-                                "-DverboseInstrumentation=true",
-                                "-DverboseAnalyze=true",
-                                "-javaagent:../../deploy/jTracert.jar",
-                                "-jar",jarFileName
-                        }
-                        :
-                        new String[]{
-                                getJava(),
-                                "-DanalyzerOutput=serializableTcpClient",
-                                "-DdumpTransformedClasses",
-                                "-javaagent:../../deploy/jTracert.jar",
-                                "-jar",jarFileName
-                        };
+    protected Process startJavaProcessWithJTracert(String jarFileName, boolean verbose) throws IOException {
+        return startJavaProcessWithJTracert(jarFileName, verbose, null);
+    }
+
+    protected Process startJavaProcessWithJTracert(String jarFileName, boolean verbose, String classNameRegEx) throws IOException {
+
+
+        int argumentsCount = 6 +
+                (verbose ? 2 : 0) +
+                (null == classNameRegEx ? 0 : 1);
+
+        List<String> commandsList = new ArrayList<String>(argumentsCount);
+
+        commandsList.add(getJava());
+        commandsList.add("-DanalyzerOutput=serializableTcpClient");
+        commandsList.add("-DdumpTransformedClasses");
+
+        if (verbose) {
+            commandsList.add("-DverboseInstrumentation=true");
+            commandsList.add("-DverboseAnalyze=true");
+        }
+
+        if (null != classNameRegEx) {
+            commandsList.add("-D" + InstrumentationProperties.CLASS_NAME_REGEX + "=" + classNameRegEx);
+        }
+
+        commandsList.add("-javaagent:../../deploy/jTracert.jar");
+        commandsList.add("-jar");
+        commandsList.add(jarFileName);
+
+        String[] commands = commandsList.toArray(new String[argumentsCount]);
 
         if (verbose) {
             System.out.println(Arrays.toString(commands));
@@ -69,7 +82,7 @@ public abstract class JTracertTestCase extends TestCase {
         if (null == javaHome) {
             return "java";
         } else {
-            return javaHome + FILE_SEPARATOR + "bin" + FILE_SEPARATOR + "java"; 
+            return javaHome + FILE_SEPARATOR + "bin" + FILE_SEPARATOR + "java";
         }
     }
 
@@ -157,7 +170,7 @@ public abstract class JTracertTestCase extends TestCase {
             processBuilder.environment().put("CLASSPATH",classpathString);
 
         } else {
-            
+
             String[] commands;
 
             if (verbose) {
@@ -181,7 +194,7 @@ public abstract class JTracertTestCase extends TestCase {
             if (verbose) {
                 System.out.println(Arrays.toString(commands));
             }
-            
+
             processBuilder = new ProcessBuilder(commands);
         }
 

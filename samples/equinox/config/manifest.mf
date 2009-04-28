@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: HelloWorld OSGi
+Bundle-SymbolicName: com.google.code.jtracert.samples.Equinox
+Bundle-Version: 1.0.0
+Bundle-Activator: com.google.code.jtracert.samples.Equinox
+Import-Package: org.osgi.framework

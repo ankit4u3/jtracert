@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class InstrumentationProperties implements Serializable {
 
-    private final static String CLASS_NAME_REGEX = "classNameRegEx";
+    public final static String CLASS_NAME_REGEX = "classNameRegEx";
     private final static String VERBOSE = "verboseInstrumentation";
     private final static String DUMP_TRANSFORMED_CLASSES = "dumpTransformedClasses";
 

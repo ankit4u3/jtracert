@@ -12,9 +12,12 @@ public class EquinoxTest extends JTracertTestCase {
 
         JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
 
-        final Process process = startJavaProcessWithJTracert(
+        /*final Process process = startJavaProcessWithJTracert(
                 "deploy/org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar",
-                "com\\.google\\.code\\.jtracert.*");
+                "com\\.google\\.code\\.jtracert.*");*/
+
+        final Process process = startJavaProcessWithJTracert(
+                "deploy/org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar");
         try {
             Integer exitCode = null;
 

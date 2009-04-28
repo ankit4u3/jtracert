@@ -140,6 +140,7 @@ Author: Dmitry.Bedrin@gmail.com
         <ant dir="samples/bootStrapClassConstructor"/>
         <ant dir="samples/issue13"/>
         <ant dir="samples/issue15"/>
+        <ant dir="samples/equinox"/>
 
     </target>
 

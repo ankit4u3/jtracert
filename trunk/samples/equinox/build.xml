@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="simpleApp1" default="all">
+
+    <path id="build.classpath">
+        <fileset dir="../../lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="../../deploy/jTracert.jar"/>
+        <pathelement location="../jTracertTestCase/deploy/jTracertTestCase.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="classes/project"/>
+        <delete dir="classes/test"/>
+        <delete dir="classes"/>
+        <delete dir="deploy/plugins"/>
+        <delete dir="deploy/configuration"/>
+        <delete dir="deploy"/>
+        <delete dir="junit"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="classes"/>
+        <mkdir dir="classes/project"/>
+        <mkdir dir="classes/test"/>
+        <mkdir dir="deploy"/>
+        <mkdir dir="deploy/plugins"/>
+        <mkdir dir="deploy/configuration"/>
+        <mkdir dir="junit"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="classes/project" target="1.5">
+            <src path="src"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="compile.test" depends="init">
+        <javac destdir="classes/test" target="1.5">
+            <src path="test"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="jar,compile.test">
+        <junit printsummary="yes" haltonerror="yes" showoutput="yes" dir="." fork="true">
+            <classpath path="classes/project"/>
+            <classpath path="classes/test"/>
+            <classpath refid="build.classpath"/>
+
+            <batchtest todir="junit">
+                <fileset dir="test">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+
+            <formatter type="plain" />
+
+        </junit>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="deploy/plugins/equinox.jar" manifest="config/manifest.mf">
+            <fileset dir="classes/project"/>
+        </jar>
+        <copy todir="deploy">
+            <fileset file="lib/org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar"/>
+        </copy>
+        <copy todir="deploy/configuration">
+            <fileset file="config/config.ini"/>
+        </copy>
+    </target>
+
+    <target name="all" depends="clean,test"/>
+
+</project>

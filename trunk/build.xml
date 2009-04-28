@@ -53,6 +53,15 @@ Author: Dmitry.Bedrin@gmail.com
         </javac>
     </target>
 
+    <target name="asm" depends="compile.test">
+        <java classname="org.objectweb.asm.util.ASMifierClassVisitor" fork="true">
+            <arg value="com.google.code.jtracert.instrument.impl.asm.InstrumentedClassLoader"/>
+            <classpath location="lib/runtime/asm-3.1.jar"/>
+            <classpath location="lib/runtime/asm-util-3.1.jar"/>
+            <classpath path="${classes.test.dir}"/>
+        </java>
+    </target>
+
     <target name="test" depends="compile.test">
 
         <mkdir dir="junit"/>
@@ -130,7 +139,7 @@ Author: Dmitry.Bedrin@gmail.com
     <target name="integration.test" depends="jar">
         <ant dir="samples/jTracertTestCase"/>
         
-        <ant dir="samples/simpleApp1"/>
+        <!--<ant dir="samples/simpleApp1"/>
         <ant dir="samples/simpleApp2"/>
         <ant dir="samples/jaxbApplication"/>
         <ant dir="samples/issue8"/>
@@ -139,7 +148,7 @@ Author: Dmitry.Bedrin@gmail.com
         <ant dir="samples/constructor"/>
         <ant dir="samples/bootStrapClassConstructor"/>
         <ant dir="samples/issue13"/>
-        <ant dir="samples/issue15"/>
+        <ant dir="samples/issue15"/>-->
         <ant dir="samples/equinox"/>
 
     </target>

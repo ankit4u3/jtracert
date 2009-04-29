@@ -143,11 +143,15 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                     )
                     ) {
 
-                if (null != getInstrumentationProperties() && getInstrumentationProperties().isVerbose()) {
-                    System.out.println("Instrumenting class loader method: " + getClassName() + "." + name + " " + desc);
-                }
 
-                parentMethodVisitor = new InstrumentClassLoaderMethodVisitor(parentMethodVisitor);
+                if (0 == (access & Opcodes.ACC_STATIC)) {
+                    if (null != getInstrumentationProperties() && getInstrumentationProperties().isVerbose()) {
+                        System.out.println("Instrumenting class loader method: " + getClassName() + "." + name + " " + desc);
+                    }
+
+                    parentMethodVisitor = new InstrumentClassLoaderMethodVisitor(parentMethodVisitor);
+                }
+                
             }
 
             if (isInstrumentClass()) {

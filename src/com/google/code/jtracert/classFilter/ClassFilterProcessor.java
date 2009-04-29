@@ -31,6 +31,7 @@ public class ClassFilterProcessor {
             addFilter(new DenyBootstrapAndExtensionsClassLoaders());
         }
         addFilter(new DenyClassByPackageNameFilter("sun.reflect"));
+        //addFilter(new DenyClassByPackageNameFilter("org.apache.log4j"));
     }
 
     /**

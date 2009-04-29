@@ -159,6 +159,7 @@ Author: Dmitry.Bedrin@gmail.com
         <ant dir="samples/issue13"/>
         <ant dir="samples/issue15"/>
         <ant dir="samples/equinox"/>
+        <ant dir="samples/log4j"/>
 
     </target>
 

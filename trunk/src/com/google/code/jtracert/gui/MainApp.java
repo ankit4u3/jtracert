@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.io.*;
 import java.util.*;
 import java.beans.PropertyChangeListener;
 
@@ -69,14 +69,58 @@ public class MainApp {
 
         try {
 
-            final AgentConnectionDialog agentConnectionDialog = new AgentConnectionDialog();
+            // Load Settings
+
+            AgentConnectionSettings agentConnectionSettings = null;
+            String workingFolder = null;
+
+            File userSettingsFile = getUserSettingsFile();
+            if (userSettingsFile.exists()) {
+
+                ObjectInputStream serializableSettingsInputStream = null;
+                try {
+                    serializableSettingsInputStream = new ObjectInputStream(new FileInputStream(userSettingsFile));
+                    agentConnectionSettings = (AgentConnectionSettings) serializableSettingsInputStream.readObject();
+                    workingFolder = (String) serializableSettingsInputStream.readObject();
+                } catch (Exception e) {
+                    processException(e);
+                } finally {
+                    if (null != serializableSettingsInputStream) {
+                        serializableSettingsInputStream.close();
+                    }
+                }
+
+            } else {
+                userSettingsFile.createNewFile();
+            }
+
+            // Show dialog
+
+            final AgentConnectionDialog agentConnectionDialog = new AgentConnectionDialog(agentConnectionSettings, workingFolder);
             agentConnectionDialog.setVisible(true);
 
-            final AgentConnectionSettings agentConnectionSettings =
+            agentConnectionSettings =
                     agentConnectionDialog.getAgentConnectionSettings();
+
+            workingFolder = agentConnectionDialog.getFolder();
 
             final AgentConnection agentConnection = new AgentConnection(agentConnectionSettings);
             agentConnection.connect();
+
+            // Save settings
+
+            ObjectOutputStream serializeSettingsStream = null;
+            try {
+                serializeSettingsStream = new ObjectOutputStream(new FileOutputStream(getUserSettingsFile()));
+                serializeSettingsStream.writeObject(agentConnectionSettings);
+                serializeSettingsStream.writeObject(workingFolder);
+            } finally {
+                if (null != serializeSettingsStream) {
+                    serializeSettingsStream.close();
+                }
+            }
+
+            //
 
             agentConnection.addMethodCallListener(new MethodCallListener() {
 
@@ -317,6 +361,12 @@ public class MainApp {
             processException(e);
         }
 
+    }
+
+    private static File getUserSettingsFile() {
+        String homeDir = System.getProperty("user.home");
+        String fileSeparator = System.getProperty("file.separator");
+        return new File(homeDir + fileSeparator + ".jtracert");
     }
 
     /**

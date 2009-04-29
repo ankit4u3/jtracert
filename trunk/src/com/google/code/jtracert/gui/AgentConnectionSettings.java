@@ -1,11 +1,12 @@
 package com.google.code.jtracert.gui;
 
 import java.net.InetAddress;
+import java.io.Serializable;
 
 /**
  *
  */
-public class AgentConnectionSettings {
+public class AgentConnectionSettings implements Serializable {
 
     private InetAddress inetAddress;
     private int port;

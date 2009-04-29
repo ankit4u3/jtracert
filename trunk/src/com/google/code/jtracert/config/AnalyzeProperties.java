@@ -32,6 +32,7 @@ public class AnalyzeProperties implements Serializable {
     private final static String VERBOSE = "verboseAnalyze";
     private final static String SERIALIZABLE_TCP_SERVER_HOST = "serializableTcpServerHost";
     private final static String SERIALIZABLE_TCP_SERVER_PORT = "serializableTcpServerPort";
+    private final static String MINIMAL_TRACE_LENGTH = "minimalTraceLength";
 
     private String sdEditHost;
     private int sdEditPort;
@@ -42,6 +43,8 @@ public class AnalyzeProperties implements Serializable {
 
     private String serializableTcpServerHost;
     private int serializableTcpServerPort;
+
+    private int minimalTraceLength;
 
     /**
      *
@@ -110,6 +113,13 @@ public class AnalyzeProperties implements Serializable {
             analyzeProperties.setShortenClassNames(Boolean.valueOf(shortenClassNames));
         } else {
             analyzeProperties.setShortenClassNames(true);
+        }
+
+        String minimalTraceLength = System.getProperty(MINIMAL_TRACE_LENGTH);
+        if (null != minimalTraceLength) {
+            analyzeProperties.setMinimalTraceLength(Integer.parseInt(minimalTraceLength));
+        } else {
+            analyzeProperties.setMinimalTraceLength(3);
         }
 
 
@@ -227,5 +237,19 @@ public class AnalyzeProperties implements Serializable {
      */
     public void setShortenClassNames(boolean shortenClassNames) {
         this.shortenClassNames = shortenClassNames;
+    }
+
+    /**
+     * @return
+     */
+    public int getMinimalTraceLength() {
+        return minimalTraceLength;
+    }
+
+    /**
+     * @param minimalTraceLength
+     */
+    public void setMinimalTraceLength(int minimalTraceLength) {
+        this.minimalTraceLength = minimalTraceLength;
     }
 }

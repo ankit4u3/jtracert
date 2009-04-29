@@ -156,7 +156,7 @@ public class JTracertClassLoader
         try {
             byteCodeInputStream = parentClassLoader.getResourceAsStream(
                     ClassUtils.convertClassNameToResourceName(name));
-            transformedByteArray = jTracertByteCodeTransformerAdapter.transform(byteCodeInputStream);
+            transformedByteArray = jTracertByteCodeTransformerAdapter.transform(byteCodeInputStream, true);
         } catch (ByteCodeTransformException e) {
             throw new ClassNotFoundException("Error while instrumenting class " + name, e);
         } finally {

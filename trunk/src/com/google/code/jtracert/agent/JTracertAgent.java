@@ -34,14 +34,14 @@ public class JTracertAgent {
         System.out.println();
         System.out.println("jTracert agent started");
 
-        try {
+        /*try {
             URL agentJarLocation = JTracertAgent.class.getProtectionDomain().getCodeSource().getLocation();
             instrumentation.appendToBootstrapClassLoaderSearch(new JarFile(agentJarLocation.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NoSuchMethodError r) {
             System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
-        }
+        }*/
 
         InstrumentationProperties instrumentationProperties =
                 InstrumentationProperties.loadFromSystemProperties();
@@ -78,13 +78,13 @@ public class JTracertAgent {
         instrumentation.
                 addTransformer(jTracertClassFileTransformer);
 
-        try {
+        /*try {
             if (instrumentation.isNativeMethodPrefixSupported()) {
                 instrumentation.setNativeMethodPrefix(jTracertClassFileTransformer, "$jTracert$");
             }
         } catch (NoSuchMethodError r) {
             System.err.println("WARNING - Cannot set native method prefix; native methods will be absent in jTracet diagrams; use JRE 1.6+");
-        }
+        }*/
 
         System.out.println();
 

@@ -36,6 +36,7 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
         this.port = port;
 
         Thread serverThread = new Thread(this);
+        serverThread.setDaemon(true);
         serverThread.start();
 
     }
@@ -100,7 +101,7 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
 
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            while (running) {
+            while (running || methodCallQueue.size() > 0) {
 
                 MethodCall methodCall = methodCallQueue.take();
 

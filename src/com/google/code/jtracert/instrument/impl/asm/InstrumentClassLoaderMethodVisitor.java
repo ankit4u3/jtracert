@@ -14,6 +14,7 @@ public class InstrumentClassLoaderMethodVisitor extends MethodAdapter implements
     @Override
     public void visitCode() {
         super.visitCode();
+
         mv.visitVarInsn(ALOAD, 1);
         mv.visitLdcInsn("com.google.code.jtracert");
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/String", "startsWith", "(Ljava/lang/String;)Z");
@@ -23,6 +24,13 @@ public class InstrumentClassLoaderMethodVisitor extends MethodAdapter implements
         mv.visitLdcInsn("com.google.code.jtracert.samples");
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/String", "startsWith", "(Ljava/lang/String;)Z");
         mv.visitJumpInsn(IFNE, l0);
+        mv.visitVarInsn(ALOAD, 0);
+        mv.visitTypeInsn(INSTANCEOF, "java/lang/ClassLoader");
+        mv.visitJumpInsn(IFEQ, l0);
+        /*mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+        mv.visitVarInsn(ALOAD, 1);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Thread", "dumpStack", "()V");*/
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/ClassLoader", "getSystemClassLoader", "()Ljava/lang/ClassLoader;");
         mv.visitVarInsn(ALOAD, 1);
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/ClassLoader", "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");

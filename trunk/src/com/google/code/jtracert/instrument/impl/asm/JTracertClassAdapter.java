@@ -20,6 +20,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
     private InstrumentationProperties instrumentationProperties;
 
     private boolean isInterface;
+    private boolean instrumentClass;
 
     /**
      * @return
@@ -63,19 +64,29 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
         this.instrumentationProperties = instrumentationProperties;
     }
 
+    public boolean isInstrumentClass() {
+        return instrumentClass;
+    }
+
+    public void setInstrumentClass(boolean instrumentClass) {
+        this.instrumentClass = instrumentClass;
+    }
+
     /**
      * @param visitor
+     * @param instrumentClass
      */
-    public JTracertClassAdapter(ClassVisitor visitor) {
+    public JTracertClassAdapter(ClassVisitor visitor, boolean instrumentClass) {
         super(visitor);
+        setInstrumentClass(instrumentClass);
     }
 
     /**
      * @param visitor
      * @param instrumentationProperties
      */
-    public JTracertClassAdapter(ClassVisitor visitor, InstrumentationProperties instrumentationProperties) {
-        super(visitor);
+    public JTracertClassAdapter(ClassVisitor visitor, InstrumentationProperties instrumentationProperties, boolean instrumentClass) {
+        this(visitor, instrumentClass);
         this.instrumentationProperties = instrumentationProperties;
     }
 
@@ -130,22 +141,28 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                             ("(Ljava/lang/String;)Ljava/lang/Class;".equals(desc) ||
                                     "(Ljava/lang/String;Z)Ljava/lang/Class;".equals(desc))
                     )
-                            ||
-                            ( "findClass".equals(name) &&
-                                    "(Ljava/lang/String;)Ljava/lang/Class;".equals(desc) )
                     ) {
+
+                if (null != getInstrumentationProperties() && getInstrumentationProperties().isVerbose()) {
+                    System.out.println("Instrumenting class loader method: " + getClassName() + "." + name + " " + desc);
+                }
+
                 parentMethodVisitor = new InstrumentClassLoaderMethodVisitor(parentMethodVisitor);
             }
 
-            return new JTracertMethodAdapter(
-                    parentMethodVisitor,
-                    access,
-                    name,
-                    desc,
-                    getClassName(),
-                    getInstrumentationProperties(),
-                    getParentClassName()
-            );
+            if (isInstrumentClass()) {
+                return new JTracertMethodAdapter(
+                        parentMethodVisitor,
+                        access,
+                        name,
+                        desc,
+                        getClassName(),
+                        getInstrumentationProperties(),
+                        getParentClassName()
+                );
+            } else {
+                return parentMethodVisitor;
+            }
 
         } else {
 

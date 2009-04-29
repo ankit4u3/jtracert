@@ -87,9 +87,7 @@ public class JTracertClassFileTransformer
                 classFilterProcessor.addFilter(new AllowClassByNameRegExFilter(classNameRegEx));
             }
 
-            if (!classFilterProcessor.processClass(className, loader)) {
-                return null;
-            }
+            boolean instrumentClass = classFilterProcessor.processClass(className, loader);
 
             if (getInstrumentationProperties().isVerbose()) {
                 System.out.println("Transforming " + className);
@@ -102,7 +100,7 @@ public class JTracertClassFileTransformer
                     new JTracertByteCodeTransformerAdapter(jTracertByteCodeTransformer);
 
             try {
-                byte[] transformedData = jTracertByteCodeTransformerAdapter.transform(classfileBuffer);
+                byte[] transformedData = jTracertByteCodeTransformerAdapter.transform(classfileBuffer, instrumentClass);
                 if (getInstrumentationProperties().isDumpTransformedClasses()) {
                     dumpTransformedClass(className, transformedData);
                 }

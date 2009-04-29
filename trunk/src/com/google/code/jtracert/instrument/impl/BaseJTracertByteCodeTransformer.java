@@ -49,6 +49,6 @@ public abstract class BaseJTracertByteCodeTransformer implements JTracertByteCod
      * @return
      * @throws ByteCodeTransformException
      */
-    public abstract byte[] transform(byte[] originalBytes, int offset, int length) throws ByteCodeTransformException;
+    public abstract byte[] transform(byte[] originalBytes, int offset, int length, boolean instrumentClass) throws ByteCodeTransformException;
 
 }

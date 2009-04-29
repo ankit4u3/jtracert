@@ -24,7 +24,7 @@ public class JTracertASMByteCodeTransformer extends BaseJTracertByteCodeTransfor
      * @throws ByteCodeTransformException
      */
     @Override
-    public byte[] transform(byte[] originalBytes, int offset, int length) throws ByteCodeTransformException {
+    public byte[] transform(byte[] originalBytes, int offset, int length, boolean instrumentClass) throws ByteCodeTransformException {
 
         try {
 
@@ -32,7 +32,7 @@ public class JTracertASMByteCodeTransformer extends BaseJTracertByteCodeTransfor
 
             ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
 
-            ClassVisitor classVisitor = new JTracertClassAdapter(classWriter);
+            ClassVisitor classVisitor = new JTracertClassAdapter(classWriter, getInstrumentationProperties(), instrumentClass);
 
             classReader.accept(classVisitor, ClassReader.SKIP_FRAMES);
 

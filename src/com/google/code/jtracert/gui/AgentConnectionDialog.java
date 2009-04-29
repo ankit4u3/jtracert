@@ -1,6 +1,8 @@
 package com.google.code.jtracert.gui;
 
 import javax.swing.*;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,14 +25,20 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     private JTextField agentAddressTextField;
     private JTextField agentPortTextField;
     private JTextField classNameRegExTextField;
+    private JTextArea jvmArgumentsTextField;
 
     private AgentConnectionSettings agentConnectionSettings;
+
 
     /**
      * @return
      */
     public String getFolder() {
         return folderTextField.getText();
+    }
+
+    public void setFolder(String folder) {
+        folderTextField.setText(folder);
     }
 
     /**
@@ -87,6 +95,13 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         return agentConnectionSettings;
     }
 
+    public void setAgentConnectionSettings(AgentConnectionSettings agentConnectionSettings) {
+        this.agentConnectionSettings = agentConnectionSettings;
+        agentAddressTextField.setText(agentConnectionSettings.getInetAddress().getHostAddress());
+        agentPortTextField.setText(Integer.toString(agentConnectionSettings.getPort()));
+        classNameRegExTextField.setText(agentConnectionSettings.getClassNamePattern());
+    }
+
     /**
      * @throws HeadlessException
      */
@@ -94,13 +109,39 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
 
         super();
 
-        setSize(400, 250);
+        setSize(400, 325);
         setTitle("jTracert Connection Wizard");
         setResizable(false);
         setModal(true);
         setBounds(getFrameBounds());
 
         createGUI();
+
+    }
+
+    /**
+     * @throws HeadlessException
+     */
+    public AgentConnectionDialog(AgentConnectionSettings agentConnectionSettings) throws HeadlessException {
+
+        this();
+
+        if (null != agentConnectionSettings) {
+            setAgentConnectionSettings(agentConnectionSettings);
+        }
+
+    }
+
+    /**
+     * @throws HeadlessException
+     */
+    public AgentConnectionDialog(AgentConnectionSettings agentConnectionSettings, String workingFolder) throws HeadlessException {
+
+        this(agentConnectionSettings);
+
+        if (null != workingFolder) {
+            setFolder(workingFolder);
+        }
 
     }
 
@@ -133,62 +174,90 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         classNameRegExTextField = createClassNameRegExTextField();
         classNameRegExLabel.setLabelFor(classNameRegExTextField);
 
+        jvmArgumentsTextField = new JTextArea();
+        jvmArgumentsTextField.setBorder(new JTextField().getBorder());
+        jvmArgumentsTextField.setEditable(false);
+        jvmArgumentsTextField.setLineWrap(true);
+
+        int y = 0;
+
         // Header
 
-        contentPane.add(headerLabel, new GridBagConstraints(0, 0, 2, 1, 0, 0,
+        contentPane.add(headerLabel, new GridBagConstraints(0, y, 2, 1, 0, 0,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(0, 10, 0, 10), 0, 0
         ));
 
         // Folder
 
-        contentPane.add(folderLabel, new GridBagConstraints(0, 1, 2, 1, 1, 0,
+        y++;
+        contentPane.add(folderLabel, new GridBagConstraints(0, y, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
                 new Insets(10, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(folderTextField, new GridBagConstraints(0, 2, 1, 1, 1, 0,
+        y++;
+        contentPane.add(folderTextField, new GridBagConstraints(0, y, 1, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
                 new Insets(0, 5, 0, 0), 0, 0
         ));
 
-        contentPane.add(browseFolderButton, new GridBagConstraints(1, 2, 1, 1, 0, 0,
+        contentPane.add(browseFolderButton, new GridBagConstraints(1, y, 1, 1, 0, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+                new Insets(0, 5, 0, 5), 0, 0
+        ));
+
+        // Class name pattern
+
+        y++;
+        contentPane.add(classNameRegExLabel, new GridBagConstraints(0, y, 2, 1, 1, 0,
+                GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+                new Insets(0, 5, 0, 5), 0, 0
+        ));
+
+        y++;
+        contentPane.add(classNameRegExTextField, new GridBagConstraints(0, y, 2, 1, 1, 0,
+                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
                 new Insets(0, 5, 0, 5), 0, 0
         ));
 
         // Agent address
 
-        contentPane.add(agentAddressLabel, new GridBagConstraints(0, 3, 2, 1, 1, 0,
+        y++;
+        contentPane.add(agentAddressLabel, new GridBagConstraints(0, y, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
                 new Insets(0, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(agentAddressTextField, new GridBagConstraints(0, 4, 2, 1, 1, 0,
+        y++;
+        contentPane.add(agentAddressTextField, new GridBagConstraints(0, y, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
                 new Insets(0, 5, 0, 5), 0, 0
         ));
 
         // Agent label
 
-        contentPane.add(agentPortLabel, new GridBagConstraints(0, 5, 2, 1, 1, 0,
+        y++;
+        contentPane.add(agentPortLabel, new GridBagConstraints(0, y, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
                 new Insets(0, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(agentPortTextField, new GridBagConstraints(0, 6, 2, 1, 1, 0,
+        y++;
+        contentPane.add(agentPortTextField, new GridBagConstraints(0, y, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
                 new Insets(0, 5, 0, 5), 0, 0
         ));
 
-        // Class name pattern
-
-        contentPane.add(classNameRegExLabel, new GridBagConstraints(0, 7, 2, 1, 1, 0,
+        y++;
+        contentPane.add(new JLabel("<html>Use the following command line arguments for running<br/> your application with jTracert"), new GridBagConstraints(0, y, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
                 new Insets(0, 5, 0, 5), 0, 0
         ));
 
-        contentPane.add(classNameRegExTextField, new GridBagConstraints(0, 8, 2, 1, 1, 0,
+        y++;
+
+        contentPane.add(jvmArgumentsTextField, new GridBagConstraints(0, y, 2, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
                 new Insets(0, 5, 0, 5), 0, 0
         ));
@@ -198,16 +267,19 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
         JButton cancelButton = createCancelButton();
         JButton connectButton = createConnectButton();
 
-        contentPane.add(cancelButton, new GridBagConstraints(0, 9, 1, 1, 1, 1,
+        y++;
+        contentPane.add(cancelButton, new GridBagConstraints(0, y, 1, 1, 1, 1,
                 GridBagConstraints.EAST, GridBagConstraints.NONE,
                 new Insets(0, 0, 0, 0), 0, 0));
 
 
-        contentPane.add(connectButton, new GridBagConstraints(1, 9, 1, 1, 0, 1,
+        contentPane.add(connectButton, new GridBagConstraints(1, y, 1, 1, 0, 1,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                 new Insets(0, 5, 0, 5), 0, 0));
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        updateJvmArgumentsTextField();
 
     }
 
@@ -259,7 +331,33 @@ public class AgentConnectionDialog extends JDialog implements ActionListener {
     private JTextField createAgentPortTextField() {
         JTextField agentPortTextField = new JTextField();
         agentPortTextField.setText("7007");
+        agentPortTextField.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void insertUpdate(DocumentEvent e) {
+                updateJvmArgumentsTextField();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                updateJvmArgumentsTextField();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                updateJvmArgumentsTextField();
+            }
+
+        });
         return agentPortTextField;
+    }
+
+    private void updateJvmArgumentsTextField() {
+        jvmArgumentsTextField.setText("-javaagent:" + getJTracertAgentJar() + "=" + agentPortTextField.getText());
+    }
+
+    private String getJTracertAgentJar() {
+        String folder = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath()).getParent();
+        String fileSeparator = System.getProperty("file.separator");
+        File jTracertAgentJarFile = new File(folder + fileSeparator + "jTracert.jar");
+        return jTracertAgentJarFile.getAbsolutePath();
     }
 
     /**

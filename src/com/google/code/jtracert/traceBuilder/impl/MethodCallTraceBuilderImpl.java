@@ -477,7 +477,13 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                         System.out.println("Too large trace detected - will not be processed");
                     }
                 } else {
-                    graphFinished(contextMethodCall);
+                    if (state.count < getAnalyzeProperties().getMinimalTraceLength()) {
+                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            System.out.println("Too short trace detected - will not be processed");
+                        }
+                    } else {
+                        graphFinished(contextMethodCall);
+                    }
                 }
                 traceBuilderState.remove();
             } else {

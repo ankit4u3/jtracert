@@ -53,14 +53,14 @@ public class JTracertAgent {
 
 
 
-        if (isRetransformSystemClasses()) {
+        /*if (isRetransformSystemClasses()) {
             try {
                 retransformSystemClasses(instrumentation, jTracertClassFileTransformer);
                 //retransformSystemClasses(instrumentation);
             } catch (UnmodifiableClassException e) {
                 e.printStackTrace(System.err); // todo refactor this line
             }
-        }
+        }*/
 
         instrumentation.
                 addTransformer(jTracertClassFileTransformer);
@@ -77,10 +77,12 @@ public class JTracertAgent {
 
     }
 
+    @Deprecated
     public static boolean isRetransformSystemClasses() {
         return false;
     }
 
+    @Deprecated
     private static void retransformSystemClasses(Instrumentation instrumentation,
                                                  JTracertClassFileTransformer jTracertClassFileTransformer)
             throws UnmodifiableClassException {

@@ -10,13 +10,9 @@ import com.google.code.jtracert.util.ClassUtils;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.lang.instrument.ClassDefinition;
-import java.util.jar.JarFile;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
-import java.net.URL;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -33,15 +29,6 @@ public class JTracertAgent {
 
         System.out.println();
         System.out.println("jTracert agent started");
-
-        /*try {
-            URL agentJarLocation = JTracertAgent.class.getProtectionDomain().getCodeSource().getLocation();
-            instrumentation.appendToBootstrapClassLoaderSearch(new JarFile(agentJarLocation.getPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodError r) {
-            System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
-        }*/
 
         InstrumentationProperties instrumentationProperties =
                 InstrumentationProperties.loadFromSystemProperties();

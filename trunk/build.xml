@@ -95,7 +95,16 @@ Author: Dmitry.Bedrin@gmail.com
             name="jarjar"
             classname="com.tonicsystems.jarjar.JarJarTask"
             classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
-        <jarjar destfile="${deploy.dir}/jTracert.jar" manifest="${config.dir}/manifest.mf">
+        <jarjar destfile="${deploy.dir}/jTracert.jar">
+            <manifest>
+                <attribute name="Premain-Class" value="com.google.code.jtracert.agent.JTracertAgent"/>
+                <attribute name="Can-Set-Native-Method-Prefix" value="true"/>
+                <attribute name="Can-Retransform-Classes" value="true"/>
+                <attribute name="Can-Redefine-Classes" value="true"/>
+                <attribute name="Implementation-Vendor" value="Dmitry Bedrin"/>
+                <attribute name="Implementation-Title" value="jTracert"/>
+                <attribute name="Implementation-Version" value="${release.version}"/>
+            </manifest>
             <fileset dir="${classes.project.dir}" includes="com/google/code/jtracert/**">
                 <exclude name="com/google/code/jtracert/gui/**"/> 
             </fileset>
@@ -107,21 +116,20 @@ Author: Dmitry.Bedrin@gmail.com
     </target>
 
     <target name="gui.jar" depends="jar">
-        <taskdef
-            name="jarjar"
-            classname="com.tonicsystems.jarjar.JarJarTask"
-            classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
-        <jarjar destfile="${deploy.dir}/jTracert-gui.jar">
 
-            <fileset dir="${classes.project.dir}" includes="com/google/code/jtracert/**"/>
+        <jar destfile="${deploy.dir}/jTracert-gui.jar">
+
+            <fileset dir="${classes.project.dir}" includes="com/google/code/jtracert/gui/**"/>
 
             <manifest>
                 <attribute name="Main-Class" value="com.google.code.jtracert.gui.MainApp"/>
+                <attribute name="Implementation-Vendor" value="Dmitry Bedrin"/>
+                <attribute name="Implementation-Title" value="jTracert"/>
+                <attribute name="Implementation-Version" value="${release.version}"/>
+                <attribute name="Class-Path" value="sdedit-3.0.5.jar jTracert.jar"/>
             </manifest>
 
-            <zipfileset src="${lib.gui.dir}/sdedit-3.0.5.jar"/>
-
-        </jarjar>
+        </jar>
 
         <copy todir="deploy">
 
@@ -129,6 +137,7 @@ Author: Dmitry.Bedrin@gmail.com
             <fileset file="readme.txt"/>
             <fileset file="license.txt"/>
             <fileset dir="." includes="3ppLicense/*.txt"/>
+            <fileset dir="${lib.gui.dir}" includes="sdedit-3.0.5.jar"/>
 
         </copy>
 

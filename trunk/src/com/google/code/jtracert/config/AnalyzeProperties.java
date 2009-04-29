@@ -106,7 +106,7 @@ public class AnalyzeProperties implements Serializable {
         }
 
         String shortenClassNames = System.getProperty(SHORTEN_CLASS_NAMES);
-        if (null != verboseAnalyze) {
+        if (null != shortenClassNames) {
             analyzeProperties.setShortenClassNames(Boolean.valueOf(shortenClassNames));
         } else {
             analyzeProperties.setShortenClassNames(true);

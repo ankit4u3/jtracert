@@ -83,6 +83,10 @@ public class JTracertClassFileTransformer
 
             String classNameRegEx = getInstrumentationProperties().getClassNameRegEx();
 
+            /*if (!classFilterProcessor.processClass(className, loader)) {
+                return null;
+            }*/
+
             if (null != classNameRegEx) {
                 classFilterProcessor.addFilter(new AllowClassByNameRegExFilter(classNameRegEx));
             }

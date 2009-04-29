@@ -43,11 +43,11 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
      * @return
      * @throws ByteCodeTransformException
      */
-    public byte[] transform(byte[] originalBytes, int offset, int length) throws ByteCodeTransformException {
+    public byte[] transform(byte[] originalBytes, int offset, int length, boolean instrumentClass) throws ByteCodeTransformException {
 
         assert null != getByteCodeTransformer();
 
-        return getByteCodeTransformer().transform(originalBytes, offset, length);
+        return getByteCodeTransformer().transform(originalBytes, offset, length, instrumentClass);
 
     }
 
@@ -56,11 +56,11 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
      * @return
      * @throws ByteCodeTransformException
      */
-    public byte[] transform(byte[] originalBytes) throws ByteCodeTransformException {
+    public byte[] transform(byte[] originalBytes, boolean instrumentClass) throws ByteCodeTransformException {
 
         assert null != originalBytes;
 
-        return transform(originalBytes, 0, originalBytes.length);
+        return transform(originalBytes, 0, originalBytes.length, instrumentClass);
 
     }
 
@@ -69,12 +69,12 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
      * @param outputStream
      * @throws ByteCodeTransformException
      */
-    public void transform(InputStream inputStream, OutputStream outputStream) throws ByteCodeTransformException {
+    public void transform(InputStream inputStream, OutputStream outputStream, boolean instrumentClass) throws ByteCodeTransformException {
 
         assert null != inputStream;
         assert null != outputStream;
 
-        byte[] transformedByteArray = transform(inputStream);
+        byte[] transformedByteArray = transform(inputStream, instrumentClass);
 
         if (null != transformedByteArray) {
 
@@ -103,7 +103,7 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
      * @return
      * @throws ByteCodeTransformException
      */
-    public byte[] transform(InputStream inputStream) throws ByteCodeTransformException {
+    public byte[] transform(InputStream inputStream, boolean instrumentClass) throws ByteCodeTransformException {
 
         assert null != inputStream;
 
@@ -117,7 +117,7 @@ public class ByteCodeTransformerAdapter implements ByteCodeTransformer {
                 originalByteArrayOutputStream.write(inputStream.read());
             }
 
-            return transform(originalByteArrayOutputStream.toByteArray());
+            return transform(originalByteArrayOutputStream.toByteArray(), instrumentClass);
 
         } catch (IOException e) {
             throw new ByteCodeTransformException(e);

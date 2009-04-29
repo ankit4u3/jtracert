@@ -14,6 +14,6 @@ public interface ByteCodeTransformer {
      * @return
      * @throws ByteCodeTransformException
      */
-    byte[] transform(byte[] originalBytes, int offset, int length) throws ByteCodeTransformException;
+    byte[] transform(byte[] originalBytes, int offset, int length, boolean instrumentClass) throws ByteCodeTransformException;
 
 }

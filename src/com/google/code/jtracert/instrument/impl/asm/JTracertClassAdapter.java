@@ -125,7 +125,15 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                     exceptions
             );
 
-            if ("loadClass".equals(name)) {
+            if (
+                    ( "loadClass".equals(name) &&
+                            ("(Ljava/lang/String;)Ljava/lang/Class;".equals(desc) ||
+                                    "(Ljava/lang/String;Z)Ljava/lang/Class;".equals(desc))
+                    )
+                            ||
+                            ( "findClass".equals(name) &&
+                                    "(Ljava/lang/String;)Ljava/lang/Class;".equals(desc) )
+                    ) {
                 parentMethodVisitor = new InstrumentClassLoaderMethodVisitor(parentMethodVisitor);
             }
 

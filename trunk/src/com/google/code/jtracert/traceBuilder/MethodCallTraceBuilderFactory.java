@@ -57,4 +57,29 @@ public class MethodCallTraceBuilderFactory {
         return methodCallTraceBuilderFactoryMethod;
     }
 
+    public static Object[] objects = new Object[100];
+    public static int i = 0;
+
+    /**
+     * This method is called from java.lang.Object constructor and hence cannot create new objects
+     * creating arrays is permitted however
+     *
+     * @todo imlement double buffer and process created objects in a separate thread
+     *
+     * when jTracert is working, this method shouldn't be called for jTracert internal classes
+     * @todo implement a thread local boolean flag using java.lang.Thread class instrumentation and
+     * @todo handling an arrays of boolean flags in this method
+     *
+     * The class, this method belongs to, must be loaded by bootstrap constructor
+     * @todo instrument class like java.lang.System and add this method to System class using instrumentation
+     *
+     * @param o
+     */
+    public synchronized static void constructor(Object o) {
+        if (o instanceof String) {
+            i++;
+            objects[i % 100] = o;
+        }
+    }
+
 }

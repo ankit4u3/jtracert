@@ -130,6 +130,7 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
             if (opcode == ATHROW) {
 
+                System.out.println(getClassName() + "." + getMethodName());
                 super.visitInsn(DUP);
 
                 int exceptionVar = newLocal(Type.getType(Throwable.class));

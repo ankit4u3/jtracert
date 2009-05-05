@@ -73,6 +73,10 @@ public class JTracertClassFileTransformer
 
         try {
 
+            if (className.equals("java/lang/Object")) {
+                System.out.println("Instrumenting java.lang.Object");
+            }
+
             if (getInstrumentationProperties().isVerbose()) {
                 System.out.println("Checking filters for " + className);
             }
@@ -83,9 +87,9 @@ public class JTracertClassFileTransformer
 
             String classNameRegEx = getInstrumentationProperties().getClassNameRegEx();
 
-            /*if (!classFilterProcessor.processClass(className, loader)) {
+            if (!classFilterProcessor.processClass(className, loader)) {
                 return null;
-            }*/
+            }
 
             if (null != classNameRegEx) {
                 classFilterProcessor.addFilter(new AllowClassByNameRegExFilter(classNameRegEx));

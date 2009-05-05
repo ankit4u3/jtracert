@@ -6,6 +6,10 @@ import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 import com.google.code.jtracert.util.ClassUtils;
+import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
+import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
+import com.google.code.jtracert.instrument.ByteCodeTransformException;
+import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
@@ -13,6 +17,9 @@ import java.lang.instrument.ClassDefinition;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.jar.JarFile;
+import java.util.LinkedList;
+import java.net.URL;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -26,6 +33,61 @@ public class JTracertAgent {
      * @param instrumentation
      */
     public static void premain(final String arg, Instrumentation instrumentation) {
+
+        /*System.out.println(instrumentation.isModifiableClass(Object.class));
+        //System.out.println(MethodCallTraceBuilderFactory.i);
+
+        try {
+            URL agentJarLocation = JTracertAgent.class.getProtectionDomain().getCodeSource().getLocation();
+            instrumentation.appendToBootstrapClassLoaderSearch(new JarFile(agentJarLocation.getPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodError r) {
+            System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
+        }
+
+        InstrumentationProperties ipr =
+                InstrumentationProperties.loadFromSystemProperties();
+
+        InputStream objectClassInputStream =
+                ClassLoader.getSystemResourceAsStream("java/lang/Object.class");
+
+        InputStream systemClassInputStream =
+                ClassLoader.getSystemResourceAsStream("java/lang/System.class");
+
+        JTracertByteCodeTransformer jTracertByteCodeTransformer =
+                JTracertByteCodeTransformerFactory.getJTracertByteCodeTransformer(
+                        ipr);
+
+        JTracertByteCodeTransformerAdapter jTracertByteCodeTransformerAdapter =
+                new JTracertByteCodeTransformerAdapter(jTracertByteCodeTransformer);
+
+        try {
+            byte[] transformedByteCode =
+                    jTracertByteCodeTransformerAdapter.transform(objectClassInputStream, true);
+
+            byte[] transformedSystemByteCode =
+                    jTracertByteCodeTransformerAdapter.transform(systemClassInputStream, true);
+
+            ClassDefinition cd = new ClassDefinition(Object.class, transformedByteCode);
+
+            instrumentation.redefineClasses(
+                    cd
+                    //, new ClassDefinition(System.class, transformedSystemByteCode)
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Runtime.getRuntime().halt(-1);
+        }
+
+        System.out.println(MethodCallTraceBuilderFactory.i);
+
+        for (int i =0; i < 100; i++) {
+            System.out.println(MethodCallTraceBuilderFactory.objects[i]);
+        }
+
+        if (true) return;*/
 
         System.out.println();
         System.out.println("jTracert agent started");
@@ -150,7 +212,7 @@ public class JTracertAgent {
                         ClassDefinition retransformedClassDefinition = new ClassDefinition(clazz, transformedBytes);
                         instrumentation.redefineClasses(retransformedClassDefinition);
                     }
-                    
+
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }

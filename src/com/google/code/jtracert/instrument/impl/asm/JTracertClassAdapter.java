@@ -136,6 +136,35 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                     exceptions
             );
 
+            if ("java.lang.Object".equals(getClassName()) || "java/lang/Object".equals(getClassName())) {
+
+                if (!"<init>".equals(name)) return parentMethodVisitor;
+                
+                System.out.println(getClassName() + "." + name);
+
+                return new JTracertSystemMethodAdapter(
+                        parentMethodVisitor
+                );
+            }
+
+            if ("java.lang.System".equals(getClassName()) || "java/lang/System".equals(getClassName())) {
+
+                if (!"gc".equals(name)) return parentMethodVisitor;
+
+                System.out.println(getClassName() + "." + name);
+
+                return new JTracertMethodAdapter(
+                        parentMethodVisitor,
+                        access,
+                        name,
+                        desc,
+                        getClassName(),
+                        getInstrumentationProperties(),
+                        getParentClassName()
+                );
+                
+            }
+
             if (
                     ( "loadClass".equals(name) &&
                             ("(Ljava/lang/String;)Ljava/lang/Class;".equals(desc) ||

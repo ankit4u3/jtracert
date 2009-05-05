@@ -111,7 +111,7 @@ Author: Dmitry.Bedrin@gmail.com
             <zipfileset src="${lib.runtime.dir}/asm-3.1.jar"/>
             <zipfileset src="${lib.runtime.dir}/asm-commons-3.1.jar"/>
             <zipfileset src="${lib.runtime.dir}/asm-tree-3.1.jar"/>
-            <rule pattern="org.objectweb.asm.**" result="com.google.code.jTracert.org.objectweb.asm.@1"/>
+            <rule pattern="org.objectweb.asm.**" result="com.google.code.jtracert.org.objectweb.asm.@1"/>
         </jarjar>
     </target>
 

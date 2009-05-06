@@ -1,10 +1,17 @@
 package com.google.code.jtracert.sequenceDiagram;
 
+import java.awt.*;
+import java.awt.font.TextLayout;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import java.util.*;
+import java.util.List;
+
 class DiagramElementsBuilder {
 
     
 
-    /*
+
     private final Graphics g;
     private final Rectangle2D templateStringBounds;
 
@@ -435,6 +442,6 @@ class DiagramElementsBuilder {
 
         return x;
     }
-    */
+
 
 }

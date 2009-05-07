@@ -11,9 +11,9 @@ import org.objectweb.asm.commons.AdviceAdapter;
  *
  * @author Dmitry.Bedrin@gmail.com
  */
-public class JTracertSystemMethodAdapter extends MethodAdapter implements Opcodes {
+public class JTracertObjectConstructorAdapter extends MethodAdapter implements Opcodes {
 
-    public JTracertSystemMethodAdapter(MethodVisitor methodVisitor) {
+    public JTracertObjectConstructorAdapter(MethodVisitor methodVisitor) {
         super(methodVisitor);
     }
 
@@ -25,6 +25,7 @@ public class JTracertSystemMethodAdapter extends MethodAdapter implements Opcode
         mv.visitMethodInsn(
                 INVOKESTATIC,
                 "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                //"java/lang/System",
                 "constructor",
                 "(Ljava/lang/Object;)V"
         );

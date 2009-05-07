@@ -415,6 +415,10 @@ public class JTracertClassLoaderTest extends TestCase {
 
         }
 
+        public void newObject(Object object) {
+            
+        }
+
         /**
          *
          * @return

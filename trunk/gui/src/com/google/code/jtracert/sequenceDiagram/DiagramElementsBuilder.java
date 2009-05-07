@@ -19,7 +19,6 @@ class DiagramElementsBuilder {
     private Map<String, ClassShape> classShapesMap = new HashMap<String, ClassShape>();
     private List<MethodShape> methodShapesStack = new LinkedList<MethodShape>();
 
-    //private Collection<DiagramElement> paintableShapes = new LinkedList<DiagramElement>();
     private Collection<DiagramElement> paintableShapes = new TreeSet<DiagramElement>(
 
             new Comparator<DiagramElement>() {

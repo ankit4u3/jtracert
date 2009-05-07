@@ -55,7 +55,8 @@ Author: Dmitry.Bedrin@gmail.com
 
     <target name="asm" depends="compile.test">
         <java classname="org.objectweb.asm.util.ASMifierClassVisitor" fork="true">
-            <arg value="com.google.code.jtracert.instrument.impl.asm.InstrumentedClassLoader"/>
+            <!--<arg value="com.google.code.jtracert.instrument.impl.asm.InstrumentedClassLoader"/>-->
+            <arg value="com.google.code.jtracert.instrument.impl.asm.HandleObjectConstructor"/>
             <classpath location="lib/runtime/asm-3.1.jar"/>
             <classpath location="lib/runtime/asm-util-3.1.jar"/>
             <classpath path="${classes.test.dir}"/>
@@ -111,6 +112,8 @@ Author: Dmitry.Bedrin@gmail.com
             <zipfileset src="${lib.runtime.dir}/asm-3.1.jar"/>
             <zipfileset src="${lib.runtime.dir}/asm-commons-3.1.jar"/>
             <zipfileset src="${lib.runtime.dir}/asm-tree-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-util-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-analysis-3.1.jar"/>
             <rule pattern="org.objectweb.asm.**" result="com.google.code.jtracert.org.objectweb.asm.@1"/>
         </jarjar>
     </target>

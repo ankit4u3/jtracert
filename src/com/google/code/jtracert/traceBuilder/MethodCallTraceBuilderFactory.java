@@ -82,4 +82,9 @@ public class MethodCallTraceBuilderFactory {
         }
     }
 
+    public static Object newObject(Object object) {
+        System.out.println(object.getClass());
+        return object;
+    }
+
 }

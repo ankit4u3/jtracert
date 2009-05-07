@@ -6,7 +6,11 @@ import com.google.code.jtracert.util.ClassUtils;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.AdviceAdapter;
+
+import java.util.Queue;
+import java.util.LinkedList;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -94,9 +98,9 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
         if (isConstructor && name.equals(ClassUtils.CONSTRUCTOR_METHOD_NAME) && (owner.equals(parentClassName) || ClassUtils.getFullyQualifiedName(owner).equals(getClassName()))) {
 
-            if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
+            /*if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
                 System.out.println("Instrumenting constructor " + getClassName() + ".<init>" + getMethodDescriptor());
-            }
+            }*/
 
             super.visitMethodInsn(
                     INVOKESTATIC,
@@ -119,7 +123,57 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
         super.visitMethodInsn(opcode, owner, name, desc);
 
+        /*if (Opcodes.INVOKESPECIAL == opcode) {
+
+            if (!owner.equals(parentClassName) && !ClassUtils.getFullyQualifiedName(owner).equals(getClassName())) {
+
+                System.out.println("Instrumenting constructor " + owner + "." + name + getMethodDescriptor() + " inside " + getClassName() + "." + getMethodName());
+
+                Integer variable = objects.poll();
+
+                if (null != variable) {
+
+                    super.visitMethodInsn(
+                            INVOKESTATIC,
+                            "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",
+                            "getMethodCallTraceBuilder",
+                            "()Lcom/google/code/jtracert/traceBuilder/MethodCallTraceBuilder;"
+                    );
+
+                    super.visitVarInsn(ALOAD, variable);
+
+                    super.visitMethodInsn(
+                            INVOKEINTERFACE,
+                            "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilder",
+                            "newObject",
+                            "(Ljava/lang/Object;)V"
+                    );
+
+                } else {
+                    System.err.println("Variable is null");
+                }
+
+            }
+
+        }*/
+
     }
+
+    /*private Queue<Integer> objects = new LinkedList<Integer>();
+
+    @Override
+    public void visitTypeInsn(int i, String s) {
+        super.visitTypeInsn(i, s);
+        if (Opcodes.NEW == i) {
+
+            mv.visitInsn(Opcodes.DUP);
+            int objectVar = newLocal(Type.getType(Object.class));
+            super.visitVarInsn(ASTORE, objectVar);
+            objects.offer(objectVar);
+
+            System.out.println("Newly created object is stored in local variable");
+        }
+    }*/
 
     /**
      * @param opcode
@@ -130,7 +184,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
             if (opcode == ATHROW) {
 
-                System.out.println(getClassName() + "." + getMethodName());
                 super.visitInsn(DUP);
 
                 int exceptionVar = newLocal(Type.getType(Throwable.class));

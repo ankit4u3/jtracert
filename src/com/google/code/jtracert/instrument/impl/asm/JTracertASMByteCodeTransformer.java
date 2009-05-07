@@ -6,8 +6,10 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.ASMifierClassVisitor;
+import org.objectweb.asm.util.CheckClassAdapter;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -32,7 +34,8 @@ public class JTracertASMByteCodeTransformer extends BaseJTracertByteCodeTransfor
 
             ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
 
-            ClassVisitor classVisitor = new JTracertClassAdapter(classWriter, getInstrumentationProperties(), instrumentClass);
+            ClassVisitor classVisitor;
+            classVisitor = new JTracertClassAdapter(classWriter, getInstrumentationProperties(), instrumentClass);
 
             classReader.accept(classVisitor, ClassReader.SKIP_FRAMES);
 

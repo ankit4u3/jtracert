@@ -31,17 +31,19 @@ public abstract class JTracertTestCase extends TestCase {
     protected Process startJavaProcessWithJTracert(String jarFileName, boolean verbose, String classNameRegEx) throws IOException {
 
 
-        int argumentsCount = 6 +
-                (verbose ? 2 : 0) +
+        int argumentsCount = 5 +
+//                1 +
+                (verbose ? 3 : 0) +
                 (null == classNameRegEx ? 0 : 1);
 
         List<String> commandsList = new ArrayList<String>(argumentsCount);
 
         commandsList.add(getJava());
         commandsList.add("-DanalyzerOutput=serializableTcpClient");
-        commandsList.add("-DdumpTransformedClasses");
+        //commandsList.add("-noverify");
 
         if (verbose) {
+            commandsList.add("-DdumpTransformedClasses=true");
             commandsList.add("-DverboseInstrumentation=true");
             commandsList.add("-DverboseAnalyze=true");
         }
@@ -133,6 +135,7 @@ public abstract class JTracertTestCase extends TestCase {
                         "-DanalyzerOutput=serializableTcpClient",
                         "-DverboseInstrumentation=true",
                         "-DverboseAnalyze=true",
+                        "-DdumpTransformedClasses=true",
                         "-javaagent:../../deploy/jTracert.jar",
                         className
                 };
@@ -179,6 +182,7 @@ public abstract class JTracertTestCase extends TestCase {
                         "-DanalyzerOutput=serializableTcpClient",
                         "-DverboseInstrumentation=true",
                         "-DverboseAnalyze=true",
+                        "-DdumpTransformedClasses=true",
                         "-javaagent:../../deploy/jTracert.jar",
                         "-jar",jarFileName
                 };

@@ -21,7 +21,7 @@
     </target>
 
     <target name="compile.test" depends="init">
-        <javac destdir="classes/test" target="1.5">
+        <javac destdir="classes/test" target="1.5" debug="on">
             <src path="test"/>
             <classpath refid="build.classpath"/>
         </javac>

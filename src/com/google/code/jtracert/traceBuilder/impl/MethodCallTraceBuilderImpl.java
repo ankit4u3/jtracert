@@ -211,6 +211,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                     contextMethodCall.setObjectHashCode(System.identityHashCode(object));
                 }
 
+                newObject(object);
+
             } else {
 
                 state.level++;
@@ -549,6 +551,14 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             System.out.println("Pre entering constructor " + className + ".<init>" + methodDescriptor);
         }
         enter(className, ClassUtils.CONSTRUCTOR_METHOD_NAME, methodDescriptor, null, null);
+    }
+
+    /**
+     * @param object a newly instantiated object
+     * @todo add these objects to ReferenceQueue in order to enable heap profiling
+     */
+    public void newObject(Object object) {
+        System.out.println(object.getClass());
     }
 
 

@@ -136,34 +136,20 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                     exceptions
             );
 
+            // instrument java.lang.Object default constructor
+
             if ("java.lang.Object".equals(getClassName()) || "java/lang/Object".equals(getClassName())) {
 
                 if (!"<init>".equals(name)) return parentMethodVisitor;
                 
                 System.out.println(getClassName() + "." + name);
 
-                return new JTracertSystemMethodAdapter(
+                return new JTracertObjectConstructorAdapter(
                         parentMethodVisitor
                 );
             }
 
-            if ("java.lang.System".equals(getClassName()) || "java/lang/System".equals(getClassName())) {
-
-                if (!"gc".equals(name)) return parentMethodVisitor;
-
-                System.out.println(getClassName() + "." + name);
-
-                return new JTracertMethodAdapter(
-                        parentMethodVisitor,
-                        access,
-                        name,
-                        desc,
-                        getClassName(),
-                        getInstrumentationProperties(),
-                        getParentClassName()
-                );
-                
-            }
+            // instrumenting loadClass method
 
             if (
                     ( "loadClass".equals(name) &&
@@ -171,7 +157,6 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                                     "(Ljava/lang/String;Z)Ljava/lang/Class;".equals(desc))
                     )
                     ) {
-
 
                 if (0 == (access & Opcodes.ACC_STATIC)) {
                     if (null != getInstrumentationProperties() && getInstrumentationProperties().isVerbose()) {
@@ -182,6 +167,8 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                 }
                 
             }
+
+            // instrumenting other methods
 
             if (isInstrumentClass()) {
                 return new JTracertMethodAdapter(
@@ -223,6 +210,14 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
         if (!isInterface) {
             // Apply class transformations
+        }
+
+        if ("java.lang.System".equals(getClassName()) || "java/lang/System".equals(getClassName())) {
+            MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_SYNCHRONIZED, "constructor", "(Ljava/lang/Object;)V", null, null);
+            mv.visitCode();
+            mv.visitInsn(Opcodes.RETURN);
+            mv.visitMaxs(0, 1);
+            mv.visitEnd();
         }
 
         super.visitEnd();

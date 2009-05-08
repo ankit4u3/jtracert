@@ -1,5 +1,7 @@
 package com.google.code.jtracert.traceBuilder;
 
+import java.lang.instrument.Instrumentation;
+
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
  *
@@ -51,5 +53,9 @@ public interface MethodCallTraceBuilder extends ConfigurableAnalyzer {
     void preEnterConstructor(String className, String methodDescriptor);
 
     void newObject(Object object);
+
+    Instrumentation getInstrumentation();
+
+    void setInstrumentation(Instrumentation instrumentation);
 
 }

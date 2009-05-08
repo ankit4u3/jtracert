@@ -30,6 +30,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.security.ProtectionDomain;
 import java.security.CodeSource;
+import java.lang.instrument.Instrumentation;
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -117,6 +121,8 @@ class JTracertThreadFactory implements ThreadFactory {
  */
 public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
+    private Instrumentation instrumentation;
+
     private static MethodCallTraceBuilderStateThreadLocal traceBuilderState = new MethodCallTraceBuilderStateThreadLocal();
 
     private ThreadPoolExecutor executorService;
@@ -170,6 +176,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                             System.out.println("Shut down");
                             System.out.println("Active tasks count: " + executorService.getActiveCount());
                         }
+
+                        printMemoryHeap();
 
                     }
                 }
@@ -558,8 +566,26 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
      * @todo add these objects to ReferenceQueue in order to enable heap profiling
      */
     public void newObject(Object object) {
-        System.out.println(object.getClass());
+        System.out.println("Created " + object.getClass() + " object ID=" + System.identityHashCode(object) + " ; size = " + getInstrumentation().getObjectSize(object));
+        objectReferences.add(new WeakReference<Object>(object));
     }
 
+    public void printMemoryHeap() {
+        for (Reference<Object> objectReference : objectReferences) {
+            Object object = objectReference.get();
+            if (null != object) {
+                System.out.println(object.getClass() + " object ID=" + System.identityHashCode(object) + " is on stack; size = " + getInstrumentation().getObjectSize(object));
+            }
+        }
+    }
 
+    private List<Reference<Object>> objectReferences = new LinkedList<Reference<Object>>();
+
+    public Instrumentation getInstrumentation() {
+        return instrumentation;
+    }
+
+    public void setInstrumentation(Instrumentation instrumentation) {
+        this.instrumentation = instrumentation;
+    }
 }

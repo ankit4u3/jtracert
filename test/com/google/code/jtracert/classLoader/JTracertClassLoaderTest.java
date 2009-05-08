@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.instrument.Instrumentation;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -449,6 +450,14 @@ public class JTracertClassLoaderTest extends TestCase {
          */
         public int getLeaveOnThrowExceptionValueCount() {
             return leaveOnThrowExceptionValueCount;
+        }
+
+        public Instrumentation getInstrumentation() {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        public void setInstrumentation(Instrumentation instrumentation) {
+            //To change body of implemented methods use File | Settings | File Templates.
         }
 
         /**

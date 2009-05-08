@@ -170,19 +170,38 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
             // instrumenting other methods
 
+
             if (isInstrumentClass()) {
-                return new JTracertMethodAdapter(
-                        parentMethodVisitor,
-                        access,
-                        name,
-                        desc,
-                        getClassName(),
-                        getInstrumentationProperties(),
-                        getParentClassName()
-                );
+
+                if (getClassName().startsWith("java") || getClassName().startsWith("sun")) {
+                    if (!name.equals("<init>") && !(name.equals("<clinit>")) && !("java.util.AbstractList$Itr".equals(getClassName()))) {
+                        System.out.println("Instrumenting system method " + name + desc);
+                        return new JTracertSystemMethodAdapter(
+                                parentMethodVisitor,
+                                access,
+                                name,
+                                desc,
+                                getClassName()
+                        );
+                    } else {
+                        return parentMethodVisitor;
+                    }
+                } else {
+                    return new JTracertMethodAdapter(
+                            parentMethodVisitor,
+                            access,
+                            name,
+                            desc,
+                            getClassName(),
+                            getInstrumentationProperties(),
+                            getParentClassName()
+                    );
+                }
+
             } else {
                 return parentMethodVisitor;
             }
+
 
         } else {
 

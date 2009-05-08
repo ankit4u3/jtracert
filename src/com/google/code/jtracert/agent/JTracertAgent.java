@@ -9,6 +9,9 @@ import java.lang.instrument.Instrumentation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.jar.JarFile;
+import java.net.URL;
+import java.io.IOException;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3

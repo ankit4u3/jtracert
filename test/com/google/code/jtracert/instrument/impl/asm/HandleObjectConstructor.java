@@ -4,16 +4,24 @@ import java.lang.reflect.Method;
 
 public class HandleObjectConstructor {
 
-    public void method() {
-        /*ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-        try {
-            Class<?> mctbfClass = systemClassLoader.loadClass("com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory");
-            Method method = mctbfClass.getMethod("test");
-            method.invoke(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Done!");*/
+    /**
+     * @todo add code below to classes loaded by bootstrap class loader 
+     */
+    public void method() throws Exception {
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+
+        Class<?> mctbfClass = systemClassLoader.loadClass("com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory");
+
+            ThreadLocal<Boolean> instrumenting = (ThreadLocal<Boolean>) mctbfClass.getField("instrumenting").get(null);
+
+            if (!instrumenting.get()) {
+                instrumenting.set(Boolean.TRUE);
+                Method method = mctbfClass.getMethod("test");
+                method.invoke(null);
+                instrumenting.set(Boolean.FALSE);
+            }
+
+        System.out.println("Done!");
     }
 
 }

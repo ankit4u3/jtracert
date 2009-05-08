@@ -6,6 +6,9 @@ import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -22,12 +25,6 @@ public class JTracertAgent {
 
         System.out.println();
         System.out.println("jTracert agent started");
-
-
-        for (Class clazz : instrumentation.getAllLoadedClasses()) {
-            System.out.println(clazz);
-        }
-
 
         /*try {
             URL agentJarLocation = JTracertAgent.class.getProtectionDomain().getCodeSource().getLocation();

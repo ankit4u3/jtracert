@@ -27,10 +27,6 @@ public class InstrumentClassLoaderMethodVisitor extends MethodAdapter implements
         mv.visitVarInsn(ALOAD, 0);
         mv.visitTypeInsn(INSTANCEOF, "java/lang/ClassLoader");
         mv.visitJumpInsn(IFEQ, l0);
-        /*mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        mv.visitVarInsn(ALOAD, 1);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
-        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Thread", "dumpStack", "()V");*/
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/ClassLoader", "getSystemClassLoader", "()Ljava/lang/ClassLoader;");
         mv.visitVarInsn(ALOAD, 1);
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/ClassLoader", "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");

@@ -84,8 +84,16 @@ public class MethodCallTraceBuilderFactory {
         }
     }
 
+    public static ThreadLocal<Boolean> instrumenting = new ThreadLocal<Boolean>() {
+
+        @Override
+        protected Boolean initialValue() {
+            return Boolean.FALSE;
+        }
+
+    };
+
     public static void test() {
-        //System.out.println("Profiling..........");
     }
 
     public static Object newObject(Object object) {

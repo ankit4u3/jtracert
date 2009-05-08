@@ -151,7 +151,7 @@ Author: Dmitry.Bedrin@gmail.com
     <target name="integration.test" depends="jar">
         <ant dir="samples/jTracertTestCase"/>
         
-        <!--<ant dir="samples/simpleApp1"/>
+        <ant dir="samples/simpleApp1"/>
         <ant dir="samples/simpleApp2"/>
         <ant dir="samples/jaxbApplication"/>
         <ant dir="samples/issue8"/>
@@ -162,7 +162,7 @@ Author: Dmitry.Bedrin@gmail.com
         <ant dir="samples/issue13"/>
         <ant dir="samples/issue15"/>
         <ant dir="samples/equinox"/>
-        <ant dir="samples/log4j"/>-->
+        <ant dir="samples/log4j"/>
         <ant dir="samples/heap"/>
 
     </target>

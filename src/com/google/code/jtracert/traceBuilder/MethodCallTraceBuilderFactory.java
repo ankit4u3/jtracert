@@ -85,7 +85,7 @@ public class MethodCallTraceBuilderFactory {
     }
 
     public static void test() {
-        System.out.println("Profiling..........");
+        //System.out.println("Profiling..........");
     }
 
     public static Object newObject(Object object) {

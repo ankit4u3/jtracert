@@ -40,7 +40,7 @@ public abstract class JTracertTestCase extends TestCase {
 
         commandsList.add(getJava());
         commandsList.add("-DanalyzerOutput=serializableTcpClient");
-        //commandsList.add("-noverify");
+//        commandsList.add("-verbose");
 
         if (verbose) {
             commandsList.add("-DdumpTransformedClasses=true");

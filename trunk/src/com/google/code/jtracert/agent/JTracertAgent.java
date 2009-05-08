@@ -4,14 +4,8 @@ import com.google.code.jtracert.config.AnalyzeProperties;
 import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
-import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
-import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
-import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
 
 import java.lang.instrument.Instrumentation;
-import java.lang.instrument.ClassDefinition;
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -21,16 +15,33 @@ import java.net.URL;
 public class JTracertAgent {
 
     /**
-     * @param arg
-     * @param instrumentation
+     * @param arg arguments passed to the agent; port address currently
+     * @param instrumentation instrumentation instance
      */
     public static void premain(final String arg, Instrumentation instrumentation) {
 
         System.out.println();
         System.out.println("jTracert agent started");
 
+
+        for (Class clazz : instrumentation.getAllLoadedClasses()) {
+            System.out.println(clazz);
+        }
+
+
+        /*try {
+            URL agentJarLocation = JTracertAgent.class.getProtectionDomain().getCodeSource().getLocation();
+            instrumentation.appendToBootstrapClassLoaderSearch(new JarFile(agentJarLocation.getPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodError r) {
+            System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
+        }*/
+
         InstrumentationProperties instrumentationProperties =
                 InstrumentationProperties.loadFromSystemProperties();
+
+        // Commented code below is for transforming already loaded bootstrap classes
 
         /*InputStream objectClassInputStream =
                 ClassLoader.getSystemResourceAsStream("java/lang/Object.class");
@@ -78,21 +89,12 @@ public class JTracertAgent {
         }
 
         MethodCallTraceBuilderFactory.
-                configureMethodCallTraceBuilder(analyzeProperties);
-
-
-
-        /*if (isRetransformSystemClasses()) {
-            try {
-                retransformSystemClasses(instrumentation, jTracertClassFileTransformer);
-                //retransformSystemClasses(instrumentation);
-            } catch (UnmodifiableClassException e) {
-                e.printStackTrace(System.err); // todo refactor this line
-            }
-        }*/
+                configureMethodCallTraceBuilder(analyzeProperties, instrumentation);
 
         instrumentation.
                 addTransformer(jTracertClassFileTransformer);
+
+        // todo we need to add some tests for the native methods support below
 
         /*try {
             if (instrumentation.isNativeMethodPrefixSupported()) {
@@ -104,11 +106,6 @@ public class JTracertAgent {
 
         System.out.println();
 
-    }
-
-    @Deprecated
-    public static boolean isRetransformSystemClasses() {
-        return false;
     }
 
     /**

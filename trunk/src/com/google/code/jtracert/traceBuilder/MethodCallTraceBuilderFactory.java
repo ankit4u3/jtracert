@@ -4,6 +4,7 @@ import com.google.code.jtracert.config.AnalyzeProperties;
 import com.google.code.jtracert.traceBuilder.impl.MethodCallTraceBuilderImpl;
 
 import java.lang.reflect.Method;
+import java.lang.instrument.Instrumentation;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -30,8 +31,9 @@ public class MethodCallTraceBuilderFactory {
     /**
      * @param analyzeProperties
      */
-    public static void configureMethodCallTraceBuilder(AnalyzeProperties analyzeProperties) {
+    public static void configureMethodCallTraceBuilder(AnalyzeProperties analyzeProperties, Instrumentation instrumentation) {
         getMethodCallTraceBuilder().setAnalyzeProperties(analyzeProperties);
+        getMethodCallTraceBuilder().setInstrumentation(instrumentation);
     }
 
     /**
@@ -80,6 +82,10 @@ public class MethodCallTraceBuilderFactory {
             i++;
             objects[i % 100] = o;
         }
+    }
+
+    public static void test() {
+        System.out.println("Profiling..........");
     }
 
     public static Object newObject(Object object) {

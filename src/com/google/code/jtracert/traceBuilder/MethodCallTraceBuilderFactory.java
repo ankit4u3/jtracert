@@ -75,6 +75,9 @@ public class MethodCallTraceBuilderFactory {
      * The class, this method belongs to, must be loaded by bootstrap constructor
      * @todo instrument class like java.lang.System and add this method to System class using instrumentation
      *
+     * @todo statement above is wrong - we cannot add new methods to java.lang.System class
+     * @todo instead we should use ClassLoader.getSystemClassLoader() class and reflection
+     *
      * @param o
      */
     public synchronized static void constructor(Object o) {

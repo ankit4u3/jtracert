@@ -101,4 +101,17 @@ public class MethodCallTraceBuilderFactory {
         return object;
     }
 
+    private static long[] threadIds = new long[100];
+    private static boolean[] threadStates = new boolean[100];
+    private static int threadsArraySize;
+
+    public static void processObjectConstructor(Object object) {
+        long currentThreadId = Thread.currentThread().getId();
+        for (int i = 0; i < threadsArraySize; i++) {
+            if (threadIds[i] == currentThreadId) {
+                
+            }
+        }
+    }
+
 }

@@ -16,6 +16,9 @@
             workingDirectory="$INSTALL_PATH"
             target="$INSTALL_PATH\jTracert.exe"
 
+            iconFile="$INSTALL_PATH/jTracert.ico"
+            iconIndex="0"
+
             programGroup="yes"
             desktop="yes"
 
@@ -60,7 +63,7 @@
             programGroup="yes"
             desktop="no"
 
-            iconFile="trashcan_full"
+            iconFile="$INSTALL_PATH/setup.ico"
             iconIndex="0"
 
             encoding="UTF-8"

@@ -12,6 +12,7 @@
     <currentDirectory>${EXECUTABLEPATH}</currentDirectory>
     <embeddedJar>false</embeddedJar>
     <executableName>deploy/jTracert.exe</executableName>
+    <iconLocation>jTracert.ico</iconLocation>
     <initialMemoryHeap>-1</initialMemoryHeap>
     <mainClassName>com.google.code.jtracert.gui.MainApp</mainClassName>
     <maximumMemoryHeap>-1</maximumMemoryHeap>

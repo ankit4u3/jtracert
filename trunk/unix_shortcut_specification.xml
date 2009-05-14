@@ -17,6 +17,9 @@
             workingDirectory="$INSTALL_PATH"
             target="$INSTALL_PATH/jtracert.sh"
 
+            iconFile="$INSTALL_PATH/jTracert.png"
+            iconIndex="0"
+
             programGroup="yes"
             desktop="yes"
 
@@ -40,6 +43,9 @@
 
             programGroup="yes"
             desktop="no"
+
+            iconFile="firefox"
+            iconIndex="0"
 
             encoding="UTF-8"
             terminal="false"

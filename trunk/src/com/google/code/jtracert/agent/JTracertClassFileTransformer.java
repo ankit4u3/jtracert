@@ -139,7 +139,16 @@ public class JTracertClassFileTransformer
     @Deprecated
     private void dumpTransformedClass(String className, byte[] transformedData) {
         try {
-            File debugFile = new File("/tmp/" + className + ".class");
+
+            String tmpDir = System.getProperty("java.io.tmpdir");
+            String dumpDirPath = tmpDir + "/jTracertDumps";
+
+            File dumpDir = new File(dumpDirPath);
+            if (!dumpDir.exists()) {
+                dumpDir.mkdir();
+            }
+
+            File debugFile = new File(dumpDirPath + "/" + className + ".class");
             OutputStream outputStream = new FileOutputStream(debugFile);
             outputStream.write(transformedData);
             outputStream.close();

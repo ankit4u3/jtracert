@@ -62,6 +62,11 @@
         </jar>
     </target>
 
-    <target name="all" depends="clean,test"/>
+    <target name="check.java.version" if="java.1.6.higher">
+        <antcall target="clean"/>
+        <antcall target="test"/>
+    </target>
+
+    <target name="all" depends="check.java.version"/>
 
 </project>

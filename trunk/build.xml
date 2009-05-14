@@ -144,6 +144,7 @@ Author: Dmitry.Bedrin@gmail.com
 
         </copy>
 
+        <chmod file="bin/jtracert.sh" perm="+x"/>
         <chmod file="deploy/jtracert.sh" perm="+x"/>
 
     </target>
@@ -181,6 +182,25 @@ Author: Dmitry.Bedrin@gmail.com
         <zip
             destfile="${release.dir}/jTracert-${release.version}.zip"
             basedir="${deploy.dir}"/>
+    </target>
+
+    <target name="izpack" depends="all">
+
+        <mkdir dir="izpack"/>
+
+        <taskdef
+                name="izpack"
+                classpath="lib/izpack/standalone-compiler.jar"
+                classname="com.izforge.izpack.ant.IzPackTask"/>
+
+        <izpack
+                input="install.xml"
+                output="${release.dir}/jTracert-${release.version}-setup.jar"
+                basedir="."
+                installerType="standard"
+                inheritAll="true"
+                />
+
     </target>
 
 </project>

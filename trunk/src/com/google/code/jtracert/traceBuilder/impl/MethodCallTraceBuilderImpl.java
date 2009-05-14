@@ -566,17 +566,17 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
      * @todo add these objects to ReferenceQueue in order to enable heap profiling
      */
     public void newObject(Object object) {
-        System.out.println("Created " + object.getClass() + " object ID=" + System.identityHashCode(object) + " ; size = " + getInstrumentation().getObjectSize(object));
-        objectReferences.add(new WeakReference<Object>(object));
+        /*System.out.println("Created " + object.getClass() + " object ID=" + System.identityHashCode(object) + " ; size = " + getInstrumentation().getObjectSize(object));
+        objectReferences.add(new WeakReference<Object>(object));*/
     }
 
     public void printMemoryHeap() {
-        for (Reference<Object> objectReference : objectReferences) {
+        /*for (Reference<Object> objectReference : objectReferences) {
             Object object = objectReference.get();
             if (null != object) {
                 System.out.println(object.getClass() + " object ID=" + System.identityHashCode(object) + " is on stack; size = " + getInstrumentation().getObjectSize(object));
             }
-        }
+        }*/
     }
 
     private List<Reference<Object>> objectReferences = new LinkedList<Reference<Object>>();

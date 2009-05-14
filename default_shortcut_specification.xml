@@ -14,7 +14,7 @@
             initialState="noShow"
 
             workingDirectory="$INSTALL_PATH"
-            target="$INSTALL_PATH\jtracert.cmd"
+            target="$INSTALL_PATH\jTracert.exe"
 
             programGroup="yes"
             desktop="yes"

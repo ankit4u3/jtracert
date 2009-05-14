@@ -147,6 +147,15 @@ Author: Dmitry.Bedrin@gmail.com
         <chmod file="bin/jtracert.sh" perm="+x"/>
         <chmod file="deploy/jtracert.sh" perm="+x"/>
 
+        <taskdef
+                name="jsmoothgen"
+                classname="net.charabia.jsmoothgen.ant.JSmoothGen"
+                classpath="lib/izpack/jsmoothgen-ant.jar"/>
+
+        <jsmoothgen
+                project="wrapper.jsmooth"
+                skeletonroot="lib/izpack/skeletons"/>
+
     </target>
 
     <target name="integration.test" depends="jar">
@@ -170,23 +179,7 @@ Author: Dmitry.Bedrin@gmail.com
 
     <target name="all" depends="jar,gui.jar"/>
 
-    <target name="release" depends="all,test,integration.test">
-        <zip
-            destfile="${release.dir}/jTracert-${release.version}-src.zip"
-            basedir="."
-            excludes="samples/**, classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
-        <zip
-            destfile="${release.dir}/jTracert-${release.version}-samples-src.zip"
-            basedir="."
-            excludes="classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
-        <zip
-            destfile="${release.dir}/jTracert-${release.version}.zip"
-            basedir="${deploy.dir}"/>
-    </target>
-
     <target name="izpack" depends="all">
-
-        <mkdir dir="izpack"/>
 
         <taskdef
                 name="izpack"
@@ -201,6 +194,24 @@ Author: Dmitry.Bedrin@gmail.com
                 inheritAll="true"
                 />
 
+        <jsmoothgen
+                project="exe.jsmooth"
+                skeletonroot="lib/izpack/skeletons"/>
+
+    </target>
+
+    <target name="release" depends="all,test,integration.test,izpack">
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}-src.zip"
+            basedir="."
+            excludes="samples/**, classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}-samples-src.zip"
+            basedir="."
+            excludes="classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}.zip"
+            basedir="${deploy.dir}"/>
     </target>
 
 </project>

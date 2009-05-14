@@ -41,7 +41,8 @@
             <description>jTracert base package - contains all required binaries</description>
             <file src="readme.txt" targetdir="$INSTALL_PATH"/>
             <file src="license.txt" targetdir="$INSTALL_PATH"/>
-            <file src="bin/jtracert.cmd" targetdir="$INSTALL_PATH"/>
+            <file src="bin/jtracert.cmd" targetdir="$INSTALL_PATH"/> <!-- make win32 only -->
+            <file src="deploy/jTracert.exe" targetdir="$INSTALL_PATH"/> <!-- make win32 only -->
             <file src="bin/jtracert.sh" targetdir="$INSTALL_PATH"/>
             <file src="deploy/jTracert.jar" targetdir="$INSTALL_PATH"/>
             <file src="deploy/jTracert-gui.jar" targetdir="$INSTALL_PATH"/>

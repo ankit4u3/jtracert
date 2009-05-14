@@ -10,6 +10,7 @@
     <path id="build.classpath">
         <fileset dir="../../lib">
             <include name="**/*.jar"/>
+            <exclude name="izpack/*.jar"/>
         </fileset>
         <pathelement location="../../deploy/jTracert.jar"/>
         <pathelement location="../jTracertTestCase/deploy/jTracertTestCase.jar"/>

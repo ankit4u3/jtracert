@@ -59,9 +59,6 @@ public class MethodCallTraceBuilderFactory {
         return methodCallTraceBuilderFactoryMethod;
     }
 
-    public static Object[] objects = new Object[100];
-    public static int i = 0;
-
     /**
      * This method is called from java.lang.Object constructor and hence cannot create new objects
      * creating arrays is permitted however
@@ -81,10 +78,7 @@ public class MethodCallTraceBuilderFactory {
      * @param o
      */
     public synchronized static void constructor(Object o) {
-        if (o instanceof String) {
-            i++;
-            objects[i % 100] = o;
-        }
+        return; //todo implement
     }
 
     public static ThreadLocal<Boolean> instrumenting = new ThreadLocal<Boolean>() {
@@ -97,24 +91,7 @@ public class MethodCallTraceBuilderFactory {
     };
 
     public static void test() {
-    }
-
-    public static Object newObject(Object object) {
-        System.out.println(object.getClass());
-        return object;
-    }
-
-    private static long[] threadIds = new long[100];
-    private static boolean[] threadStates = new boolean[100];
-    private static int threadsArraySize;
-
-    public static void processObjectConstructor(Object object) {
-        long currentThreadId = Thread.currentThread().getId();
-        for (int i = 0; i < threadsArraySize; i++) {
-            if (threadIds[i] == currentThreadId) {
-                
-            }
-        }
+        // Called by JTracertSystemMethodAdapter instrumented classes
     }
 
 }

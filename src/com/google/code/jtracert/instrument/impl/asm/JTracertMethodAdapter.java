@@ -98,10 +98,6 @@ public class JTracertMethodAdapter extends AdviceAdapter implements Configurable
 
         if (isConstructor && name.equals(ClassUtils.CONSTRUCTOR_METHOD_NAME) && (owner.equals(parentClassName) || ClassUtils.getFullyQualifiedName(owner).equals(getClassName()))) {
 
-            /*if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
-                System.out.println("Instrumenting constructor " + getClassName() + ".<init>" + getMethodDescriptor());
-            }*/
-
             super.visitMethodInsn(
                     INVOKESTATIC,
                     "com/google/code/jtracert/traceBuilder/MethodCallTraceBuilderFactory",

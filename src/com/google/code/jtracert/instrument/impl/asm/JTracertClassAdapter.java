@@ -141,8 +141,10 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
             if ("java.lang.Object".equals(getClassName())) {
 
                 if (!"<init>".equals(name)) return parentMethodVisitor;
-                
-                System.out.println(getClassName() + "." + name);
+
+                if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
+                    System.out.println("Instrumenting java.lang.Object constructor: " + getClassName() + "." + name);
+                }
 
                 return new JTracertObjectConstructorAdapter(
                         parentMethodVisitor
@@ -202,7 +204,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
         } else {
 
             if ((null != getInstrumentationProperties()) && (getInstrumentationProperties().isVerbose())) {
-                System.out.println("Skiping syntetic method " + name);
+                System.out.println("Skiping syntetic method " + getClassName() + "." + name);
             }
 
             return super.visitMethod(

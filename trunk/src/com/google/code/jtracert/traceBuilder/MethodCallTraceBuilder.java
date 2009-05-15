@@ -52,8 +52,6 @@ public interface MethodCallTraceBuilder extends ConfigurableAnalyzer {
      */
     void preEnterConstructor(String className, String methodDescriptor);
 
-    void newObject(Object object);
-
     Instrumentation getInstrumentation();
 
     void setInstrumentation(Instrumentation instrumentation);

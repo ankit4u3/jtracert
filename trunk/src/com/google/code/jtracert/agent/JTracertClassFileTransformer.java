@@ -73,14 +73,6 @@ public class JTracertClassFileTransformer
 
         try {
 
-            if (className.equals("java/lang/Object")) {
-                System.out.println("Instrumenting java.lang.Object");
-            }
-
-            if (getInstrumentationProperties().isVerbose()) {
-                System.out.println("Checking filters for " + className);
-            }
-
             className = ClassUtils.getFullyQualifiedName(className);
 
             ClassFilterProcessor classFilterProcessor = new ClassFilterProcessor();

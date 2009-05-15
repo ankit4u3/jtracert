@@ -4,14 +4,16 @@ import com.google.code.jtracert.config.AnalyzeProperties;
 import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
+import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
+import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
+import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
 
 import java.lang.instrument.Instrumentation;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.lang.instrument.ClassDefinition;
 import java.util.jar.JarFile;
 import java.net.URL;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -28,22 +30,65 @@ public class JTracertAgent {
 
         System.out.println();
         System.out.println("jTracert agent started");
+        System.out.println("agent version: " + getAgentVersion());
 
-        /*try {
-            URL agentJarLocation = JTracertAgent.class.getProtectionDomain().getCodeSource().getLocation();
-            instrumentation.appendToBootstrapClassLoaderSearch(new JarFile(agentJarLocation.getPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodError r) {
-            System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
-        }*/
+        //appendJTracertToBootstrapClassLoaderSearch(instrumentation);
 
         InstrumentationProperties instrumentationProperties =
                 InstrumentationProperties.loadFromSystemProperties();
 
-        // Commented code below is for transforming already loaded bootstrap classes
+        //redefineLoadedClasses(instrumentation, instrumentationProperties);
 
-        /*InputStream objectClassInputStream =
+        JTracertClassFileTransformer jTracertClassFileTransformer =
+                new JTracertClassFileTransformer(instrumentationProperties);
+
+        AnalyzeProperties analyzeProperties =
+                AnalyzeProperties.loadFromSystemProperties();
+
+        switch (analyzeProperties.getAnalyzerOutput()) {
+            case sdEditOut:
+            case sdEditRtClient:
+            case sdEditFileSystem:
+            case sequenceOut:
+            case sequenceFileSystem:
+            case webSequenceDiagramsOut:
+            case webSequenceDiagramsFileSystem:
+                System.out.println();
+                System.out.println("WARNING! You have selected deprecated analyzer output format!");
+                System.out.println("It will be removed in further versions of jTracert!");
+                System.out.println();
+                break;
+        }
+
+        if ((null != arg) && (!"".equals(arg))) {
+
+            try {
+                processJTracertGuiConnection(arg, instrumentationProperties, analyzeProperties);
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
+            }
+        }
+
+        MethodCallTraceBuilderFactory.
+                configureMethodCallTraceBuilder(analyzeProperties, instrumentation);
+
+        instrumentation.
+                addTransformer(jTracertClassFileTransformer);
+
+        //setNativeMethodPrefix(instrumentation, jTracertClassFileTransformer);
+
+
+        System.out.println();
+
+    }
+
+    private static String getAgentVersion() {
+        return "0.1.1";
+    }
+
+    @Deprecated
+    private static void redefineLoadedClasses(Instrumentation instrumentation, InstrumentationProperties instrumentationProperties) {
+        InputStream objectClassInputStream =
                 ClassLoader.getSystemResourceAsStream("java/lang/Object.class");
 
         InputStream systemClassInputStream =
@@ -71,41 +116,30 @@ public class JTracertAgent {
         } catch (Exception e) {
             e.printStackTrace();
             Runtime.getRuntime().halt(-1);
-        }*/
-
-        JTracertClassFileTransformer jTracertClassFileTransformer =
-                new JTracertClassFileTransformer(instrumentationProperties);
-
-        AnalyzeProperties analyzeProperties =
-                AnalyzeProperties.loadFromSystemProperties();
-
-        if ((null != arg) && (!"".equals(arg))) {
-
-            try {
-                processJTracertGuiConnection(arg, instrumentationProperties, analyzeProperties);
-            } catch (Exception e) {
-                e.printStackTrace(System.err);
-            }
         }
+    }
 
-        MethodCallTraceBuilderFactory.
-                configureMethodCallTraceBuilder(analyzeProperties, instrumentation);
-
-        instrumentation.
-                addTransformer(jTracertClassFileTransformer);
-
-        // todo we need to add some tests for the native methods support below
-
-        /*try {
+    @Deprecated
+    private static void setNativeMethodPrefix(Instrumentation instrumentation, JTracertClassFileTransformer jTracertClassFileTransformer) {
+        try {
             if (instrumentation.isNativeMethodPrefixSupported()) {
                 instrumentation.setNativeMethodPrefix(jTracertClassFileTransformer, "$jTracert$");
             }
         } catch (NoSuchMethodError r) {
             System.err.println("WARNING - Cannot set native method prefix; native methods will be absent in jTracet diagrams; use JRE 1.6+");
-        }*/
+        }
+    }
 
-        System.out.println();
-
+    @Deprecated
+    private static void appendJTracertToBootstrapClassLoaderSearch(Instrumentation instrumentation) {
+        try {
+            URL agentJarLocation = JTracertAgent.class.getProtectionDomain().getCodeSource().getLocation();
+            instrumentation.appendToBootstrapClassLoaderSearch(new JarFile(agentJarLocation.getPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodError r) {
+            System.err.println("WARNING - Cannot append jTracert agent to bootstrap class loader class path; some applications (OSGi for example) can be instrumented incorectly; use JRE 1.6+");
+        }
     }
 
     /**

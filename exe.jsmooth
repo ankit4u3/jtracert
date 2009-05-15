@@ -9,10 +9,10 @@
     <arguments></arguments>
     <currentDirectory>${EXECUTABLEPATH}</currentDirectory>
     <embeddedJar>true</embeddedJar>
-    <executableName>release/jTracert-0.1.1-setup.exe</executableName>
+    <executableName>release/jTracert-0.1.2-setup.exe</executableName>
     <iconLocation>setup.ico</iconLocation>
     <initialMemoryHeap>-1</initialMemoryHeap>
-    <jarLocation>release/jTracert-0.1.1-setup.jar</jarLocation>
+    <jarLocation>release/jTracert-0.1.2-setup.jar</jarLocation>
     <mainClassName>com.izforge.izpack.installer.Installer</mainClassName>
     <maximumMemoryHeap>-1</maximumMemoryHeap>
     <maximumVersion></maximumVersion>

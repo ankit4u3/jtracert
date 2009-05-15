@@ -83,7 +83,7 @@ public class JTracertAgent {
     }
 
     private static String getAgentVersion() {
-        return "0.1.1";
+        return "0.1.2";
     }
 
     @Deprecated

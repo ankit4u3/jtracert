@@ -225,7 +225,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 state.level++;
                 state.count++;
 
-                if (state.count > getAnalyzeProperties().getMaximalTraceLength()) return;
+                if (null != getAnalyzeProperties() && state.count > getAnalyzeProperties().getMaximalTraceLength()) return;
 
                 MethodCall currentMethodCall = new MethodCall();
 

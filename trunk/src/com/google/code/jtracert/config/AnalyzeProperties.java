@@ -33,6 +33,7 @@ public class AnalyzeProperties implements Serializable {
     private final static String SERIALIZABLE_TCP_SERVER_HOST = "serializableTcpServerHost";
     private final static String SERIALIZABLE_TCP_SERVER_PORT = "serializableTcpServerPort";
     private final static String MINIMAL_TRACE_LENGTH = "minimalTraceLength";
+    private final static String MAXIMAL_TRACE_LENGTH = "maximalTraceLength";
 
     private String sdEditHost;
     private int sdEditPort;
@@ -45,6 +46,7 @@ public class AnalyzeProperties implements Serializable {
     private int serializableTcpServerPort;
 
     private int minimalTraceLength;
+    private int maximalTraceLength;
 
     /**
      *
@@ -122,6 +124,12 @@ public class AnalyzeProperties implements Serializable {
             analyzeProperties.setMinimalTraceLength(3);
         }
 
+        String maximalTraceLength = System.getProperty(MAXIMAL_TRACE_LENGTH);
+        if (null != maximalTraceLength) {
+            analyzeProperties.setMaximalTraceLength(Integer.parseInt(maximalTraceLength));
+        } else {
+            analyzeProperties.setMaximalTraceLength(1000);
+        }
 
         return analyzeProperties;
     }
@@ -252,4 +260,19 @@ public class AnalyzeProperties implements Serializable {
     public void setMinimalTraceLength(int minimalTraceLength) {
         this.minimalTraceLength = minimalTraceLength;
     }
+
+    /**
+     * @return
+     */
+    public int getMaximalTraceLength() {
+        return maximalTraceLength;
+    }
+
+    /**
+     * @param maximalTraceLength
+     */
+    public void setMaximalTraceLength(int maximalTraceLength) {
+        this.maximalTraceLength = maximalTraceLength;
+    }
+
 }

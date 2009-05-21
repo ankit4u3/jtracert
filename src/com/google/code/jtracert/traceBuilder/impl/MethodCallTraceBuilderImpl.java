@@ -46,7 +46,7 @@ class MethodCallTraceBuilderState {
     public boolean buildingTrace = false;
     //    public int graphHashCode = 17;
     public int level = 1;
-    public int count = 1;
+    public int count = 0;
 
     /**
      * @return
@@ -127,7 +127,6 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
-    private static final int MAX_COUNT = 10000;
 
     /**
      *
@@ -226,7 +225,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 state.level++;
                 state.count++;
 
-                if (state.count > MAX_COUNT) return;
+                if (state.count > getAnalyzeProperties().getMaximalTraceLength()) return;
 
                 MethodCall currentMethodCall = new MethodCall();
 
@@ -480,16 +479,22 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 System.out.println(contextMethodCall.getRealClassName() + "." + contextMethodCall.getMethodName() + contextMethodCall.getMethodSignature() + " >>>");
             }
 
+            if (null != getAnalyzeProperties() && state.count == getAnalyzeProperties().getMaximalTraceLength()) {
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Too large trace detected - trimmed to " + getAnalyzeProperties().getMaximalTraceLength() + " method calls");
+                }
+                graphFinished(contextMethodCall);
+            }
+
             if (1 == state.level) {
 
-                if (state.count > MAX_COUNT) {
-                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                        System.out.println("Too large trace detected - will not be processed");
-                    }
+                if (null == getAnalyzeProperties()) {
+                    graphFinished(contextMethodCall);
                 } else {
-                    if (null == getAnalyzeProperties()) {
-                        graphFinished(contextMethodCall);
-                    } else {
+                    if (state.count < getAnalyzeProperties().getMaximalTraceLength()) {
+                        if (getAnalyzeProperties().isVerbose()) {
+                            System.out.println("state.count=" + state.count);
+                        }
                         if (state.count < getAnalyzeProperties().getMinimalTraceLength()) {
                             // do nothing - just log if possible
                             if (getAnalyzeProperties().isVerbose()) {
@@ -499,12 +504,12 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                             graphFinished(contextMethodCall);
                         }
                     }
-
                 }
+
                 traceBuilderState.remove();
             } else {
 
-                if (state.count > MAX_COUNT) return;
+                if (state.count > getAnalyzeProperties().getMaximalTraceLength()) return;
 
                 state.methodCall = contextMethodCall.getCalleer();
             }

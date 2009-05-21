@@ -111,6 +111,10 @@ public abstract class JTracertTestCase extends TestCase {
     }
 
     protected Process startJavaProcessWithJTracert(String jarFileName, Collection<String> classpath, boolean verbose) throws IOException {
+        return startJavaProcessWithJTracert(jarFileName, classpath, Collections.<String>emptyList(), false);
+    }
+
+    protected Process startJavaProcessWithJTracert(String jarFileName, Collection<String> classpath, Collection<String> vmOptions, boolean verbose) throws IOException {
 
         boolean classpathSpecified = false;
 
@@ -146,6 +150,14 @@ public abstract class JTracertTestCase extends TestCase {
                         "-javaagent:../../deploy/jTracert.jar",
                         className
                 };
+            }
+
+            if (null != vmOptions) {
+                String[] fullCommands = new String[commands.length + vmOptions.size()];
+                System.arraycopy(commands,0,fullCommands,0,1);
+                System.arraycopy(vmOptions.toArray(new String[vmOptions.size()]),0,fullCommands,1,vmOptions.size());
+                System.arraycopy(commands,1,fullCommands,1 + vmOptions.size(),commands.length - 1);
+                commands = fullCommands;
             }
 
             if (verbose) {
@@ -193,6 +205,14 @@ public abstract class JTracertTestCase extends TestCase {
                         "-javaagent:../../deploy/jTracert.jar",
                         "-jar",jarFileName
                 };
+            }
+
+            if (null != vmOptions) {
+                String[] fullCommands = new String[commands.length + vmOptions.size()];
+                System.arraycopy(commands,0,fullCommands,0,1);
+                System.arraycopy(vmOptions.toArray(new String[vmOptions.size()]),0,fullCommands,1,vmOptions.size());
+                System.arraycopy(commands,1,fullCommands,1 + vmOptions.size(),commands.length - 1);
+                commands = fullCommands;
             }
 
             if (verbose) {

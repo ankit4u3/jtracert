@@ -13,7 +13,11 @@ public class XercesTest extends JTracertTestCase {
         try {
             JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
 
-            Process process = startJavaProcessWithJTracert("deploy/xerces.jar", Arrays.asList("lib/xercesImpl-2.4.0.jar"), true);
+            Process process = startJavaProcessWithJTracert(
+                    "deploy/xerces.jar",
+                    Arrays.asList("lib/xercesImpl-2.4.0.jar"),
+                    Arrays.asList("-DmaximalTraceLength=10000"),
+                    false);
 
             int exitCode = process.waitFor();
 
@@ -24,6 +28,7 @@ public class XercesTest extends JTracertTestCase {
             assertNotNull(methodCall);
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
 
     }

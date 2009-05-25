@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jTracert" default="all">
+
+<!--
+Distributed under GNU GENERAL PUBLIC LICENSE Version 3
+Author: Dmitry.Bedrin@gmail.com
+-->
+
+    <property file="build.properties"/>
+
+    <property name="compile.debug" value="true" />
+
+    <property name="src.dir" value="src"/>
+    <property name="src.test.dir" value="test"/>
+    <property name="config.dir" value="config"/>
+    <property name="classes.dir" value="classes"/>
+    <property name="classes.project.dir" value="${classes.dir}/project"/>
+    <property name="classes.test.dir" value="${classes.dir}/test"/>
+    <property name="deploy.dir" value="deploy"/>
+    <property name="release.dir" value="release"/>
+    <property name="release.version" value="0.1.2"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="lib.build.dir" value="lib/build"/>
+    <property name="lib.runtime.dir" value="lib/runtime"/>
+    <property name="lib.gui.dir" value="lib/gui"/>
+
+    <path id="build.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${classes.dir}"/>
+        <delete dir="${deploy.dir}"/>
+        <delete dir="${release.dir}"/>
+        <delete dir="junit"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${classes.project.dir}"/>
+        <mkdir dir="${classes.test.dir}"/>
+        <mkdir dir="${deploy.dir}"/>
+        <mkdir dir="${release.dir}"/>
+    </target>
+
+    <target name="compile.test" depends="compile">
+        <javac destdir="${classes.test.dir}" debug="${compile.debug}">
+            <src path="${src.test.dir}"/>
+            <classpath refid="build.classpath"/>
+            <classpath path="${classes.project.dir}"/>
+        </javac>
+    </target>
+
+    <target name="asm" depends="compile.test">
+        <java classname="org.objectweb.asm.util.ASMifierClassVisitor" fork="true">
+            <!--<arg value="com.google.code.jtracert.instrument.impl.asm.InstrumentedClassLoader"/>-->
+            <arg value="com.google.code.jtracert.instrument.impl.asm.HandleObjectConstructor"/>
+            <classpath location="lib/runtime/asm-3.1.jar"/>
+            <classpath location="lib/runtime/asm-util-3.1.jar"/>
+            <classpath path="${classes.test.dir}"/>
+        </java>
+    </target>
+
+    <target name="test" depends="compile.test">
+
+        <mkdir dir="junit"/>
+
+        <junit printsummary="yes" haltonerror="yes" showoutput="yes">
+
+            <classpath path="${classes.project.dir}"/>
+            <classpath path="${classes.test.dir}"/>
+            <classpath refid="build.classpath"/>
+            
+            <batchtest todir="junit">
+                <fileset dir="${src.test.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+
+            <formatter type="plain" />
+
+        </junit>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="${classes.project.dir}" debug="${compile.debug}" target="1.5" deprecation="on">
+            <src path="${src.dir}"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <taskdef
+            name="jarjar"
+            classname="com.tonicsystems.jarjar.JarJarTask"
+            classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
+        <jarjar destfile="${deploy.dir}/jTracert.jar">
+            <manifest>
+                <attribute name="Premain-Class" value="com.google.code.jtracert.agent.JTracertAgent"/>
+                <attribute name="Can-Set-Native-Method-Prefix" value="true"/>
+                <attribute name="Can-Retransform-Classes" value="true"/>
+                <attribute name="Can-Redefine-Classes" value="true"/>
+                <attribute name="Implementation-Vendor" value="Dmitry Bedrin"/>
+                <attribute name="Implementation-Title" value="jTracert"/>
+                <attribute name="Implementation-Version" value="${release.version}"/>
+            </manifest>
+            <fileset dir="${classes.project.dir}" includes="com/google/code/jtracert/**">
+                <exclude name="com/google/code/jtracert/gui/**"/> 
+            </fileset>
+            <zipfileset src="${lib.runtime.dir}/asm-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-commons-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-tree-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-util-3.1.jar"/>
+            <zipfileset src="${lib.runtime.dir}/asm-analysis-3.1.jar"/>
+            <rule pattern="org.objectweb.asm.**" result="com.google.code.jtracert.org.objectweb.asm.@1"/>
+        </jarjar>
+    </target>
+
+    <target name="gui.jar" depends="jar">
+
+        <jar destfile="${deploy.dir}/jTracert-gui.jar">
+
+            <fileset dir="${classes.project.dir}" includes="com/google/code/jtracert/gui/**"/>
+
+            <manifest>
+                <attribute name="Main-Class" value="com.google.code.jtracert.gui.MainApp"/>
+                <attribute name="Implementation-Vendor" value="Dmitry Bedrin"/>
+                <attribute name="Implementation-Title" value="jTracert"/>
+                <attribute name="Implementation-Version" value="${release.version}"/>
+                <attribute name="Class-Path" value="sdedit-3.0.5.jar jTracert.jar"/>
+            </manifest>
+
+        </jar>
+
+        <copy todir="deploy">
+
+            <fileset dir="bin" includes="*.cmd,*.sh"/>
+            <fileset file="readme.txt"/>
+            <fileset file="license.txt"/>
+            <fileset dir="." includes="3ppLicense/*.txt"/>
+            <fileset dir="${lib.gui.dir}" includes="sdedit-3.0.5.jar"/>
+
+        </copy>
+
+        <chmod file="bin/jtracert.sh" perm="+x"/>
+        <chmod file="deploy/jtracert.sh" perm="+x"/>
+
+        <taskdef
+                name="jsmoothgen"
+                classname="net.charabia.jsmoothgen.ant.JSmoothGen"
+                classpath="lib/izpack/jsmoothgen-ant.jar"/>
+
+        <jsmoothgen
+                project="wrapper.jsmooth"
+                skeletonroot="lib/izpack/skeletons"/>
+
+    </target>
+
+    <target name="integration.test" depends="jar">
+        <ant dir="samples/jTracertTestCase"/>
+        
+        <ant dir="samples/simpleApp1"/>
+        <ant dir="samples/simpleApp2"/>
+        <ant dir="samples/jaxbApplication"/>
+        <ant dir="samples/issue8"/>
+        <ant dir="samples/xerces"/>
+        <ant dir="samples/issue9"/>
+        <ant dir="samples/constructor"/>
+        <ant dir="samples/bootStrapClassConstructor"/>
+        <ant dir="samples/issue13"/>
+        <ant dir="samples/issue15"/>
+        <ant dir="samples/equinox"/>
+        <ant dir="samples/log4j"/>
+        <ant dir="samples/heap"/>
+        <ant dir="samples/callTraceSize"/>
+
+    </target>
+
+    <target name="all" depends="jar,gui.jar"/>
+
+    <target name="izpack" depends="all">
+
+        <taskdef
+                name="izpack"
+                classpath="lib/izpack/standalone-compiler.jar"
+                classname="com.izforge.izpack.ant.IzPackTask"/>
+
+        <izpack
+                input="install.xml"
+                output="${release.dir}/jTracert-${release.version}-setup.jar"
+                basedir="."
+                installerType="standard"
+                inheritAll="true"
+                />
+
+        <jsmoothgen
+                project="exe.jsmooth"
+                skeletonroot="lib/izpack/skeletons"/>
+
+    </target>
+
+    <target name="release" depends="all,test,integration.test,izpack">
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}-src.zip"
+            basedir="."
+            excludes="samples/**, classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}-samples-src.zip"
+            basedir="."
+            excludes="classes/**, deploy/**, release/**, *.iml, *.ipr, *.iws"/>
+        <zip
+            destfile="${release.dir}/jTracert-${release.version}.zip"
+            basedir="${deploy.dir}"/>
+    </target>
+
+</project>

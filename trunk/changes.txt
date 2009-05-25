@@ -4,7 +4,7 @@ jTracert Changes List
 
 jTracert 0.1.2
 
-Released on xx May 2009
+Released on 25 May 2009
 
     * Bugfixing - Issue 15, Issue 14 is now fixed completely
     * jTracert GUI now remembers the connection settings

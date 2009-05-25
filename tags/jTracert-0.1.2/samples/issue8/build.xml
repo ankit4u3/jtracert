@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="simpleApp1" default="all">
+
+    <condition property="java.1.6.higher">
+        <not>
+            <matches pattern="^1\.[2-5]$" string="${ant.java.version}"/>
+        </not>
+    </condition>
+
+    <path id="build.classpath">
+        <fileset dir="../../lib">
+            <include name="**/*.jar"/>
+            <exclude name="izpack/*.jar"/>
+        </fileset>
+        <pathelement location="../../deploy/jTracert.jar"/>
+        <pathelement location="../jTracertTestCase/deploy/jTracertTestCase.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="classes/project"/>
+        <delete dir="classes/test"/>
+        <delete dir="classes"/>
+        <delete dir="deploy"/>
+        <delete dir="junit"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="classes"/>
+        <mkdir dir="classes/project"/>
+        <mkdir dir="classes/test"/>
+        <mkdir dir="deploy"/>
+        <mkdir dir="junit"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="classes/project" target="1.6">
+            <src path="src"/>
+        </javac>
+    </target>
+
+    <target name="compile.test" depends="init">
+        <javac destdir="classes/test" target="1.5">
+            <src path="test"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="jar,compile.test">
+        <junit printsummary="yes" haltonerror="yes" showoutput="yes" dir="." fork="true">
+            <classpath path="classes/project"/>
+            <classpath path="classes/test"/>
+            <classpath refid="build.classpath"/>
+
+            <batchtest todir="junit" >
+                <fileset dir="test">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+
+            <formatter type="plain" />
+            
+        </junit>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="deploy/issue8.jar" manifest="config/manifest.mf">
+            <fileset dir="classes/project"/>
+        </jar>
+    </target>
+
+    <target name="check.java.version" if="java.1.6.higher">
+        <antcall target="clean"/>
+        <antcall target="test"/>
+    </target>
+
+    <target name="all" depends="check.java.version"/>
+
+</project>

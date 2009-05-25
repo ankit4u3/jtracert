@@ -1,6 +1,21 @@
 #summary Archive of jTracert related news and updated
 #labels Deprecated
 
+== 25 May 2009 - jTracert is one year old; new version is released ==
+
+The first version of jTracert was released one year ago, on the 31st of May. We've made a lot of work since this first version, and there're a lot of plans for the next year.
+
+A new version of jTracert is also released.
+Changes in release 0.1.2:
+
+  * Bugfixing - Issue 15, Issue 14 is now fixed completely
+  * jTracert GUI now remembers the connection settings
+  * Fixed possible issue with jTracert preventing the application under test to stop
+  * Show short class name feature improved
+  * jTracert now omits the short method call traces (-!DminimalTraceLength parameter)
+  * Added graphical installer
+  * Added [http://jtracert.googlecode.com/files/jTracert-0.1.2-setup.exe .exe wrapper] for [http://www.microsoft.com/WINDOWS/ Microsoft Windows] (c) platform
+
 == 17 March 2009 - jTracert 0.1.1 released ==
 
 We're glad to announce a new version of jTracert - 0.1.1

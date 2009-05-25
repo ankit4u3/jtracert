@@ -78,7 +78,7 @@ public class MethodCallTraceBuilderFactory {
      * @param o
      */
     public synchronized static void constructor(Object o) {
-        return; //todo implement
+        // Called by JTracertObjectConstructorAdapter instrumented classes
     }
 
     public static ThreadLocal<Boolean> instrumenting = new ThreadLocal<Boolean>() {

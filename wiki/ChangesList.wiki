@@ -1,5 +1,17 @@
 #summary jTracert Changes List
 
+=0.1.2=
+
+Released on 25 May 2009
+
+  * Bugfixing - Issue 15, Issue 14 is now fixed completely
+  * jTracert GUI now remembers the connection settings
+  * Fixed possible issue with jTracert preventing the application under test to stop
+  * Show short class name feature improved
+  * jTracert now omits the short method call traces (-DminimalTraceLength parameter)
+  * Added graphical installer
+  * Added .exe wrapper for Microsoft Windows (c) platform
+
 =0.1.1=
 
 Released on 17 March 2009

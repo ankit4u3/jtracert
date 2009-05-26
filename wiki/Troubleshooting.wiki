@@ -46,3 +46,8 @@ jTracert currently doesn't support Eclipse integration. You should use it as a s
 == Is there any tutorial for using jTracert? ==
 
 Yes, you can find a simple tutorial here: http://code.google.com/p/jtracert/#Quick_Start
+
+== Does jTracert support J2EE applications? ==
+
+Sure, it does - HowToAnalyzeJ2EEApplication
+jTracert actually can be used to analyze any java application running on JRE 1.5 or higher

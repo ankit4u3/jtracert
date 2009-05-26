@@ -25,6 +25,12 @@ For example it can be /home/dmitrybedrin/java/jTracert.jar, but not just jTracer
 
 See also Issue 2
 
+== java.lang.noclassdeffounderror: com/google/code/jtracert/tracebuilder/methodcalltracebuilderfactory ==
+
+You can get this error when your application is using custom classloaders, for example OSGi framework. Custom class loaders support was greatly improved in jTracert version 0.1.2 - please update jTracert to the latest version.
+
+If it doesn't help, please [http://code.google.com/p/jtracert/issues/entry submit an issue report] or ask for help is [http://groups.google.com/group/jtracert jTracert mailing list].
+
 == Other issues ==
 
 If you're experiencing issues with using jTracert, please [http://code.google.com/p/jtracert/issues/entry submit an issue report] or ask for help is [http://groups.google.com/group/jtracert jTracert mailing list]

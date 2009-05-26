@@ -42,3 +42,7 @@ Do not forget to specify the jTracert version, your operation system and java ve
 == Where can I find jTracert Eclipse plugin? ==
 
 jTracert currently doesn't support Eclipse integration. You should use it as a standalone tool.
+
+== Is there any tutorial for using jTracert? ==
+
+Yes, you can find a simple tutorial here: http://code.google.com/p/jtracert/#Quick_Start

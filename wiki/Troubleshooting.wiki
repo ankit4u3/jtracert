@@ -7,6 +7,10 @@ Some common problems reported by jTracert users and resolution for these problem
 
 = Troubles =
 
+== I'm running Microsoft Windows (c) and cannot execute jTracert exe files ==
+
+.exe wrappers are an experimental feature in jTracert. If you're experiencing any issues with using them, please download archive with jTracert binaries (i.e. jTracert-0.1.2.zip) and use jtracert.cmd script instead of .exe files
+
 == jTracert show no errors, but at the same time no data is generated ==
 
 The most probable reason is that you have set incorrect class file filter. Please note that this filter is a regular expression. If you want to analyze classes from package com.foo, you need to set this filter to the following value:

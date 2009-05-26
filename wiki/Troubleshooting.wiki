@@ -51,5 +51,6 @@ Yes, you can find a simple tutorial here: http://code.google.com/p/jtracert/#Qui
 
 Sure, it does - [HowToAnalyzeJ2EEApplication]
 
-jTracert actually can be used to analyze any java application running on JRE 1.5 or higher
+jTracert actually can be used to analyze any java application running on JRE 1.5 or higher. 
+
 You can add jTracert parameters to applet viewer and analyze applets, and so on...

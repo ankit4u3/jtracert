@@ -31,6 +31,12 @@ You can get this error when your application is using custom classloaders, for e
 
 If it doesn't help, please [http://code.google.com/p/jtracert/issues/entry submit an issue report] or ask for help is [http://groups.google.com/group/jtracert jTracert mailing list].
 
+== warning - cannot append jtracert agent to bootstrap class  ==
+
+This warning message was shown by previous versions jTracert  you shouldn't see it in jTracert 0.1.2 and higher.
+
+It was concerned to analyzing classes loaded by bootstrap class loader. This feature is not implemented completely and still under development.
+
 == Other issues ==
 
 If you're experiencing issues with using jTracert, please [http://code.google.com/p/jtracert/issues/entry submit an issue report] or ask for help is [http://groups.google.com/group/jtracert jTracert mailing list]

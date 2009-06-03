@@ -13,9 +13,10 @@ Some common problems reported by jTracert users and resolution for these problem
 
 == jTracert show no errors, but at the same time no data is generated ==
 
-The most probable reason is that you have set incorrect class file filter. Please note that this filter is a regular expression. If you want to analyze classes from package com.foo, you need to set this filter to the following value:
-
+The most probable reason is that you have set incorrect class file filter. Please note that this filter is a regular expression. If you want to analyze classes from package _com.foo_, you need to set this filter to the following value:
+{{{
 com\.foo.*
+}}}
 
 The other possible reason is that you're using too old JVM. One of jTracert users has faced this problem on 1.5.0_01 JVM. Update to a newer version has solved the issue.
 

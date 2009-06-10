@@ -42,7 +42,7 @@ This warning message was shown by previous versions jTracert  you shouldn't see 
 
 It was concerned to analyzing classes loaded by bootstrap class loader. This feature is not implemented completely and still under development.
 
-== java.net.BindException: Address already in use: JVM_Bind  ==
+== java.net.!BindException: Address already in use: JVM_Bind  ==
 
 If you're getting this exception, it looks like you already have a Java process running with jTracert agent.
 

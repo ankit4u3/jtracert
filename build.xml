@@ -175,6 +175,7 @@ Author: Dmitry.Bedrin@gmail.com
         <ant dir="samples/log4j"/>
         <ant dir="samples/heap"/>
         <ant dir="samples/callTraceSize"/>
+        <ant dir="samples/xalan"/>
 
     </target>
 

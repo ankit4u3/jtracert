@@ -30,11 +30,6 @@ public class JTracertAgent {
      */
     public static void premain(final String arg, Instrumentation instrumentation) {
 
-        System.out.println(JTracertAgent.class.getClassLoader());
-        System.out.println(MethodCallTraceBuilderFactory.class.getClassLoader());
-
-        if (true) System.exit(0);
-
         System.out.println();
         System.out.println("jTracert agent started");
         System.out.println("agent version: " + getAgentVersion());

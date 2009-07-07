@@ -1,7 +1,15 @@
 package com.google.code.jtracert.samples;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.logging.Logger;
+
+class A {
+
+    void operation1() {}
+
+}
 
 public class SimpleApp1 {
 
@@ -9,6 +17,7 @@ public class SimpleApp1 {
         method1();
         method2();
         Logger.getAnonymousLogger();
+        method3();
     }
 
     private static void method1() {
@@ -18,6 +27,15 @@ public class SimpleApp1 {
 
     private static void method2() {
         new ArrayList<SimpleApp1>();
+    }
+
+    private static A method3() {
+        return new A() {
+            @Override
+            public void operation1() {
+
+            }
+        };
     }
 
 }

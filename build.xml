@@ -165,7 +165,7 @@ Author: Dmitry.Bedrin@gmail.com
         
         <ant dir="samples/simpleApp1"/>
         <ant dir="samples/simpleApp2"/>
-        <!--<ant dir="samples/jaxbApplication"/>
+        <ant dir="samples/jaxbApplication"/>
         <ant dir="samples/issue8"/>
         <ant dir="samples/xerces"/>
         <ant dir="samples/issue9"/>
@@ -177,7 +177,7 @@ Author: Dmitry.Bedrin@gmail.com
         <ant dir="samples/log4j"/>
         <ant dir="samples/heap"/>
         <ant dir="samples/callTraceSize"/>
-        <ant dir="samples/xalan"/>-->
+        <ant dir="samples/xalan"/>
 
     </target>
 

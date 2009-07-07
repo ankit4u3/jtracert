@@ -12,10 +12,12 @@ public class InstrumentationProperties implements Serializable {
     public final static String CLASS_NAME_REGEX = "classNameRegEx";
     private final static String VERBOSE = "verboseInstrumentation";
     private final static String DUMP_TRANSFORMED_CLASSES = "dumpTransformedClasses";
+    private final static String TRANSFORM_SYSTEM_CLASSES = "transformSystemClasses";
 
     private String classNameRegEx;
     private boolean verbose;
     private boolean dumpTransformedClasses;
+    private boolean transformSystemClasses;
 
     static final long serialVersionUID = -2208856375496944037L;
 
@@ -50,6 +52,13 @@ public class InstrumentationProperties implements Serializable {
             instrumentationProperties.setDumpTransformedClasses(Boolean.valueOf(dumpTransformedClasses));
         } else {
             instrumentationProperties.setDumpTransformedClasses(false);
+        }
+
+        String transformSystemClasses = System.getProperty(TRANSFORM_SYSTEM_CLASSES);
+        if (null != transformSystemClasses) {
+            instrumentationProperties.setTransformSystemClasses(Boolean.valueOf(transformSystemClasses));
+        } else {
+            instrumentationProperties.setTransformSystemClasses(false);
         }
 
         return instrumentationProperties;
@@ -96,6 +105,14 @@ public class InstrumentationProperties implements Serializable {
      */
     public void setDumpTransformedClasses(boolean dumpTransformedClasses) {
         this.dumpTransformedClasses = dumpTransformedClasses;
+    }
+
+    public boolean isTransformSystemClasses() {
+        return transformSystemClasses;
+    }
+
+    public void setTransformSystemClasses(boolean transformSystemClasses) {
+        this.transformSystemClasses = transformSystemClasses;
     }
 
 }

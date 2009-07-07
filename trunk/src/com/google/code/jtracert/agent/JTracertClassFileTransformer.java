@@ -10,6 +10,7 @@ import com.google.code.jtracert.instrument.JTracertByteCodeTransformer;
 import com.google.code.jtracert.instrument.JTracertByteCodeTransformerFactory;
 import com.google.code.jtracert.instrument.impl.adapter.JTracertByteCodeTransformerAdapter;
 import com.google.code.jtracert.util.ClassUtils;
+import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,6 +74,8 @@ public class JTracertClassFileTransformer
 
         try {
 
+            MethodCallTraceBuilderFactory.getMethodCallTraceBuilder().setBuildingTrace(true);
+
             className = ClassUtils.getFullyQualifiedName(className);
 
             ClassFilterProcessor classFilterProcessor = new ClassFilterProcessor();
@@ -118,6 +121,8 @@ public class JTracertClassFileTransformer
         } catch (Throwable e) {
             e.printStackTrace();
             throw new IllegalClassFormatException(e.getMessage());
+        } finally {
+            MethodCallTraceBuilderFactory.getMethodCallTraceBuilder().setBuildingTrace(false);
         }
 
     }

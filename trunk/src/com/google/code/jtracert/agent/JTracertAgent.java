@@ -14,6 +14,8 @@ import java.util.jar.JarFile;
 import java.net.URL;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -28,6 +30,11 @@ public class JTracertAgent {
      */
     public static void premain(final String arg, Instrumentation instrumentation) {
 
+        System.out.println(JTracertAgent.class.getClassLoader());
+        System.out.println(MethodCallTraceBuilderFactory.class.getClassLoader());
+
+        if (true) System.exit(0);
+
         System.out.println();
         System.out.println("jTracert agent started");
         System.out.println("agent version: " + getAgentVersion());
@@ -36,6 +43,8 @@ public class JTracertAgent {
 
         InstrumentationProperties instrumentationProperties =
                 InstrumentationProperties.loadFromSystemProperties();
+
+        retransformSystemClasses = instrumentationProperties.isTransformSystemClasses();
 
         //redefineLoadedClasses(instrumentation, instrumentationProperties);
 

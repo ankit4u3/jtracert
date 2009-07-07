@@ -58,4 +58,5 @@ public interface MethodCallTraceBuilder extends ConfigurableAnalyzer {
 
     void setInstrumentation(Instrumentation instrumentation);
 
+    void setBuildingTrace(boolean buildingTrace);
 }

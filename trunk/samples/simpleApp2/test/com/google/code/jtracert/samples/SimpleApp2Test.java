@@ -3,6 +3,9 @@ package com.google.code.jtracert.samples;
 import com.google.code.jtracert.model.MethodCall;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.Arrays;
+
 public class SimpleApp2Test extends JTracertTestCase {
 
     @Test
@@ -11,7 +14,11 @@ public class SimpleApp2Test extends JTracertTestCase {
         try {
             JTracertSerializableTcpServer tcpServer = startJTracertTcpServer(60002);
 
-            Process process = startJavaProcessWithJTracert("deploy/simpleApp2.jar", true);
+            Process process = startJavaProcessWithJTracert(
+                    "deploy/simpleApp2.jar",
+                    Collections.<String>emptyList(),
+                    Arrays.asList("-DtransformSystemClasses=true"),
+                    true);
 
             int exitCode = process.waitFor();
 

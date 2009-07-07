@@ -9,6 +9,8 @@ import java.lang.instrument.Instrumentation;
  */
 public interface MethodCallTraceBuilder extends ConfigurableAnalyzer {
 
+    void enter(String className, String methodName, String methodDescriptor, Object object);
+
     /**
      * @param className
      * @param methodName

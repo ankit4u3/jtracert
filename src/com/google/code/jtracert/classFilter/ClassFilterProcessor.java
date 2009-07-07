@@ -28,7 +28,7 @@ public class ClassFilterProcessor {
         addFilter(new AllowClassFilter());
         addFilter(new DenyJTracertClassesFilter());
         //if (!JTracertAgent.isRetransformSystemClasses()) {
-            //addFilter(new DenyBootstrapAndExtensionsClassLoaders());
+            addFilter(new DenyBootstrapAndExtensionsClassLoaders());
         //}
         addFilter(new DenyClassByPackageNameFilter("sun.reflect")); // todo investigate why this filter is necessary
         //addFilter(new DenyClassByPackageNameFilter("org.apache.log4j"));

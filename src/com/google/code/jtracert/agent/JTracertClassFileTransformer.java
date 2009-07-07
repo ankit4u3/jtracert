@@ -90,7 +90,7 @@ public class JTracertClassFileTransformer
             boolean instrumentClass = classFilterProcessor.processClass(className, loader);
 
             if (getInstrumentationProperties().isVerbose()) {
-                System.out.println("Transforming " + className);
+                System.out.println("Transforming " + className + "; instrumentClass = " + instrumentClass);
             }
 
             JTracertByteCodeTransformer jTracertByteCodeTransformer =

@@ -184,6 +184,9 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     }
 
+    public void enter(String className, String methodName, String methodDescriptor, Object object) {
+        enter(className, methodName, methodDescriptor, object, null);
+    }
     /**
      * @param className
      * @param methodName
@@ -213,7 +216,8 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                     System.out.println("contextMethodCall=" + contextMethodCall);
                 }
 
-                if (ClassUtils.CONSTRUCTOR_METHOD_NAME.equals(contextMethodCall.getMethodName()) &&
+                if (null != contextMethodCall &&
+                        ClassUtils.CONSTRUCTOR_METHOD_NAME.equals(contextMethodCall.getMethodName()) &&
                         className.equals(contextMethodCall.getRealClassName())) {
                     contextMethodCall.setObjectHashCode(System.identityHashCode(object));
                 }

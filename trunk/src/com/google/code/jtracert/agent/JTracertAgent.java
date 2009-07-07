@@ -82,6 +82,12 @@ public class JTracertAgent {
 
     }
 
+    private static boolean retransformSystemClasses;
+
+    public static boolean isRetransformSystemClasses() {
+        return retransformSystemClasses;
+    }
+
     private static String getAgentVersion() {
         return "0.1.2";
     }

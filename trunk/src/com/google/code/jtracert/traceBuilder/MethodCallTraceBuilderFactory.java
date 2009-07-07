@@ -91,7 +91,7 @@ public class MethodCallTraceBuilderFactory {
     };
 
     public static void test() {
-        // Called by JTracertSystemMethodAdapter instrumented classes
+        System.out.println("test");
     }
 
 }

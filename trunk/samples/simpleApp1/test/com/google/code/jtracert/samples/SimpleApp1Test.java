@@ -22,6 +22,8 @@ public class SimpleApp1Test extends JTracertTestCase {
 
         assertEquals("main",methodCall.getMethodName());
 
+        dumpMethodCall(methodCall);
+
     }
 
 }

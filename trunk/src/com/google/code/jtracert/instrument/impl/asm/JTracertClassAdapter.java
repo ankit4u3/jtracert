@@ -177,13 +177,17 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
                 // todo: add a classloader check above
                 if (getClassName().startsWith("java") || getClassName().startsWith("sun") || getClassName().startsWith("org.xml") || getClassName().startsWith("com.sun") || getClassName().startsWith("$")) {
-                    return new JTracertSystemMethodAdapter(
-                            parentMethodVisitor,
-                            access,
-                            name,
-                            desc,
-                            getClassName()
-                    );
+                    if (getClassName().startsWith("java.util")) {
+                        return new JTracertSystemMethodAdapter(
+                                parentMethodVisitor,
+                                access,
+                                name,
+                                desc,
+                                getClassName()
+                        );
+                    } else {
+                        return parentMethodVisitor;
+                    }
                 } else {
                     return new JTracertMethodAdapter(
                             parentMethodVisitor,

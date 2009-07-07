@@ -3,6 +3,7 @@ package com.google.code.jtracert.traceBuilder.impl;
 import com.google.code.jtracert.config.AnalyzeProperties;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilder;
+import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 import com.google.code.jtracert.traceBuilder.impl.graph.ClassNameResolverMethodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.HashCodeBuilderMethodCallGraphVisitor;
 import com.google.code.jtracert.traceBuilder.impl.graph.NormalizeMetodCallGraphVisitor;
@@ -15,12 +16,8 @@ import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpCl
 import com.google.code.jtracert.traceBuilder.impl.serializable.SerializableTcpServer;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsFileClient;
 import com.google.code.jtracert.traceBuilder.impl.webSequenceDiagrams.WebSequenceDiagramsOutClient;
-import com.google.code.jtracert.util.FileUtils;
-import com.google.code.jtracert.util.SizeOutputStream;
 import com.google.code.jtracert.util.ClassUtils;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -32,8 +29,6 @@ import java.security.ProtectionDomain;
 import java.security.CodeSource;
 import java.lang.instrument.Instrumentation;
 import java.lang.ref.Reference;
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 
 /**
  * Distributed under GNU GENERAL PUBLIC LICENSE Version 3
@@ -127,6 +122,11 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
     private ThreadPoolExecutor executorService;
     private Set<Integer> processedHashCodes;
+
+    public void setBuildingTrace(boolean buildingTrace) {
+        MethodCallTraceBuilderState state = traceBuilderState.get();
+        state.buildingTrace = buildingTrace;
+    }
 
     /**
      *
@@ -294,7 +294,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
 
         if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
 
-            try {
+            /*try {
                 SizeOutputStream out = new SizeOutputStream();
                 ObjectOutputStream outputStream = new ObjectOutputStream(out);
                 outputStream.writeObject(methodCall);
@@ -318,7 +318,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             executorServiceDebugInfo.append("PoolSize").append(executorService.getPoolSize()).append(FileUtils.LINE_SEPARATOR);
             executorServiceDebugInfo.append("TaskCount").append(executorService.getTaskCount()).append(FileUtils.LINE_SEPARATOR);
 
-            System.out.println(executorServiceDebugInfo);
+            System.out.println(executorServiceDebugInfo);*/
 
         }
 
@@ -364,98 +364,104 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
          */
         public void run() {
 
-            long currentTime = System.nanoTime();
+            MethodCallTraceBuilderFactory.getMethodCallTraceBuilder().setBuildingTrace(true);
 
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Normalizing Call Graph <<<");
-            }
-            methodCall.accept(new NormalizeMetodCallGraphVisitor());
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Normalizing Call Graph >>>");
-                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
-            }
+            try {
+                long currentTime = System.nanoTime();
 
-            currentTime = System.nanoTime();
-
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Calculating Call Graph Hash <<<");
-            }
-            int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
-            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                System.out.println("Calculating Call Graph Hash >>>");
-                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
-            }
-
-            if (!processedHashCodes.contains(hashCode)) {
-                processedHashCodes.add(hashCode);
-
-                MethodCallProcessor methodCallProcessor = null;
-
-                if (null != analyzeProperties) {
-                    switch (analyzeProperties.getAnalyzerOutput()) {
-                        case none:
-                            break;
-                        case sdEditOut:
-                            methodCallProcessor = new SDEditOutClient();
-                            break;
-                        case sdEditRtClient:
-                            methodCallProcessor = new SDEditRtClient();
-                            break;
-                        case sdEditFileSystem:
-                            methodCallProcessor = new SDEditFileClient();
-                            break;
-                        case sequenceOut:
-                            methodCallProcessor = new SequenceOutClient();
-                            break;
-                        case sequenceFileSystem:
-                            methodCallProcessor = new SequenceFileClient();
-                            break;
-                        case webSequenceDiagramsOut:
-                            methodCallProcessor = new WebSequenceDiagramsOutClient();
-                            break;
-                        case webSequenceDiagramsFileSystem:
-                            methodCallProcessor = new WebSequenceDiagramsFileClient();
-                            break;
-                        case serializableTcpClient:
-                            methodCallProcessor = new SerializableTcpClient();
-                            break;
-                        case serializableTcpServer:
-                            methodCallProcessor = SerializableTcpServer.getIstance();
-                            break;
-                    }
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Normalizing Call Graph <<<");
+                }
+                methodCall.accept(new NormalizeMetodCallGraphVisitor());
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Normalizing Call Graph >>>");
+                    System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
                 }
 
-                if (null != methodCallProcessor) {
-                    methodCallProcessor.setAnalyzeProperties(analyzeProperties);
+                currentTime = System.nanoTime();
 
-                    if (analyzeProperties.isShortenClassNames()) {
-                        currentTime = System.nanoTime();
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Calculating Call Graph Hash <<<");
+                }
+                int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
+                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                    System.out.println("Calculating Call Graph Hash >>>");
+                    System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
+                }
 
-                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                            System.out.println("Normalize class names <<<");
-                        }
+                if (!processedHashCodes.contains(hashCode)) {
+                    processedHashCodes.add(hashCode);
 
-                        ClassNameResolverMethodCallGraphVisitor classNameResolver =
-                                new ClassNameResolverMethodCallGraphVisitor();
-                        methodCall.accept(classNameResolver);
-                        classNameResolver.setRenaming();
-                        methodCall.accept(classNameResolver);
+                    MethodCallProcessor methodCallProcessor = null;
 
-                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                            System.out.println("Normalize class names >>>");
-                            System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
+                    if (null != analyzeProperties) {
+                        switch (analyzeProperties.getAnalyzerOutput()) {
+                            case none:
+                                break;
+                            case sdEditOut:
+                                methodCallProcessor = new SDEditOutClient();
+                                break;
+                            case sdEditRtClient:
+                                methodCallProcessor = new SDEditRtClient();
+                                break;
+                            case sdEditFileSystem:
+                                methodCallProcessor = new SDEditFileClient();
+                                break;
+                            case sequenceOut:
+                                methodCallProcessor = new SequenceOutClient();
+                                break;
+                            case sequenceFileSystem:
+                                methodCallProcessor = new SequenceFileClient();
+                                break;
+                            case webSequenceDiagramsOut:
+                                methodCallProcessor = new WebSequenceDiagramsOutClient();
+                                break;
+                            case webSequenceDiagramsFileSystem:
+                                methodCallProcessor = new WebSequenceDiagramsFileClient();
+                                break;
+                            case serializableTcpClient:
+                                methodCallProcessor = new SerializableTcpClient();
+                                break;
+                            case serializableTcpServer:
+                                methodCallProcessor = SerializableTcpServer.getIstance();
+                                break;
                         }
                     }
 
-                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
-                    }
-                    methodCallProcessor.processMethodCall(methodCall);
-                    if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
-                        System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
-                    }
+                    if (null != methodCallProcessor) {
+                        methodCallProcessor.setAnalyzeProperties(analyzeProperties);
 
+                        if (analyzeProperties.isShortenClassNames()) {
+                            currentTime = System.nanoTime();
+
+                            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                                System.out.println("Normalize class names <<<");
+                            }
+
+                            ClassNameResolverMethodCallGraphVisitor classNameResolver =
+                                    new ClassNameResolverMethodCallGraphVisitor();
+                            methodCall.accept(classNameResolver);
+                            classNameResolver.setRenaming();
+                            methodCall.accept(classNameResolver);
+
+                            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                                System.out.println("Normalize class names >>>");
+                                System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
+                            }
+                        }
+
+                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
+                        }
+                        methodCallProcessor.processMethodCall(methodCall);
+                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
+                        }
+
+                    }
                 }
+            } finally {
+                MethodCallTraceBuilderFactory.getMethodCallTraceBuilder().setBuildingTrace(false);
             }
         }
 

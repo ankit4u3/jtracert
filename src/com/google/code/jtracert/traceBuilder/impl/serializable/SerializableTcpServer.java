@@ -3,6 +3,7 @@ package com.google.code.jtracert.traceBuilder.impl.serializable;
 import com.google.code.jtracert.config.InstrumentationProperties;
 import com.google.code.jtracert.model.MethodCall;
 import com.google.code.jtracert.traceBuilder.impl.BaseMethodCallProcessor;
+import com.google.code.jtracert.traceBuilder.MethodCallTraceBuilderFactory;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -70,6 +71,9 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
      *
      */
     public void run() {
+
+        MethodCallTraceBuilderFactory.getMethodCallTraceBuilder().setBuildingTrace(true);
+
         running = true;
         try {
             ServerSocket serverSocket = new ServerSocket(port);
@@ -117,6 +121,8 @@ public class SerializableTcpServer extends BaseMethodCallProcessor implements Ru
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            MethodCallTraceBuilderFactory.getMethodCallTraceBuilder().setBuildingTrace(false);
         }
     }
 

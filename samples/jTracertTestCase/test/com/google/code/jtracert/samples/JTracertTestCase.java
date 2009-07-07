@@ -111,7 +111,7 @@ public abstract class JTracertTestCase extends TestCase {
     }
 
     protected Process startJavaProcessWithJTracert(String jarFileName, Collection<String> classpath, boolean verbose) throws IOException {
-        return startJavaProcessWithJTracert(jarFileName, classpath, Collections.<String>emptyList(), false);
+        return startJavaProcessWithJTracert(jarFileName, classpath, Collections.<String>emptyList(), verbose);
     }
 
     protected Process startJavaProcessWithJTracert(String jarFileName, Collection<String> classpath, Collection<String> vmOptions, boolean verbose) throws IOException {
@@ -181,6 +181,10 @@ public abstract class JTracertTestCase extends TestCase {
             }
 
             String classpathString = classpathBuilder.toString();
+
+            if (verbose) {
+                System.out.println("CLASSPATH=" + classpathString);
+            }
 
             processBuilder.environment().put("CLASSPATH",classpathString);
 

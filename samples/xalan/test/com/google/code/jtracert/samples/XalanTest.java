@@ -14,7 +14,13 @@ public class XalanTest extends JTracertTestCase {
 
         Process process = startJavaProcessWithJTracert(
                 "deploy/xalan.jar",
-                Arrays.asList("lib/xercesImpl.jar","lib/xml-apis.jar","lib/xsltc.jar","lib/serializer.jar")
+                Arrays.asList(
+                        "lib/xercesImpl.jar",
+                        "lib/xml-apis.jar",
+                        "lib/xsltc.jar",
+                        "lib/serializer.jar"),
+                Arrays.asList("-DmaximalTraceLength=100"),
+                false
         );
 
         int exitCode = process.waitFor();

@@ -100,6 +100,7 @@ Author: Dmitry.Bedrin@gmail.com
         <jarjar destfile="${deploy.dir}/jTracert.jar">
             <manifest>
                 <attribute name="Premain-Class" value="com.google.code.jtracert.agent.JTracertAgent"/>
+                <attribute name="Boot-Class-Path" value="jTracert.jar"/>
                 <attribute name="Can-Set-Native-Method-Prefix" value="true"/>
                 <attribute name="Can-Retransform-Classes" value="true"/>
                 <attribute name="Can-Redefine-Classes" value="true"/>

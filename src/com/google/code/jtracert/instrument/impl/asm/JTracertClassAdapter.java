@@ -138,7 +138,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
             // instrument java.lang.Object default constructor
 
-            if ("java.lang.Object".equals(getClassName())) {
+            /*if ("java.lang.Object".equals(getClassName())) {
 
                 if (!"<init>".equals(name)) return parentMethodVisitor;
 
@@ -149,7 +149,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                 return new JTracertObjectConstructorAdapter(
                         parentMethodVisitor
                 );
-            }
+            }*/
 
             // instrumenting loadClass method
 
@@ -175,7 +175,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
 
             if (isInstrumentClass()) {
 
-                // todo: add a classloader check above
+                /*// todo: add a classloader check above
                 if (getClassName().startsWith("java") || getClassName().startsWith("sun") || getClassName().startsWith("org.xml") || getClassName().startsWith("com.sun") || getClassName().startsWith("$")) {
                     if (getClassName().startsWith("java.util")) {
                         return new JTracertSystemMethodAdapter(
@@ -198,7 +198,17 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
                             getInstrumentationProperties(),
                             getParentClassName()
                     );
-                }
+                }*/
+
+                return new JTracertMethodAdapter(
+                            parentMethodVisitor,
+                            access,
+                            name,
+                            desc,
+                            getClassName(),
+                            getInstrumentationProperties(),
+                            getParentClassName()
+                    );
 
             } else {
                 return parentMethodVisitor;

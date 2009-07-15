@@ -18,7 +18,7 @@ public class SimpleApp2Test extends JTracertTestCase {
                     "deploy/simpleApp2.jar",
                     Collections.<String>emptyList(),
                     Arrays.asList("-DtransformSystemClasses=true"),
-                    true);
+                    false);
 
             int exitCode = process.waitFor();
 

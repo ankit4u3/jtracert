@@ -176,7 +176,7 @@ public class JTracertClassAdapter extends ClassAdapter implements ConfigurableTr
             if (isInstrumentClass()) {
 
                 if (getClassName().startsWith("java.io") || getClassName().startsWith("java.util.concurrent") || getClassName().startsWith("java.net") || getClassName().startsWith("sun")
-                        || getClassName().startsWith("java.util.jar") || getClassName().startsWith("java.util.zip")
+                        || getClassName().startsWith("java.util.jar") || getClassName().startsWith("java.util.zip") || getClassName().startsWith("java.nio") || getClassName().startsWith("java.security")
                         ) {
                     return parentMethodVisitor;
                 }

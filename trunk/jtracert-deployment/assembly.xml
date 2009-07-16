@@ -3,6 +3,19 @@
     <formats>
         <format>tar.gz</format>
     </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>src/main/bin</directory>
+            <includes>
+                <include>*.sh</include>
+                <include>*.cmd</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>0744</fileMode>
+        </fileSet>
+    </fileSets>
+
     <files>
         <file>
             <source>target/dependency/jtracert-agent.jar</source>
@@ -16,4 +29,7 @@
             <source>target/dependency/sdedit.jar</source>
         </file>
     </files>
+
+
+
 </assembly>

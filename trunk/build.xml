@@ -146,7 +146,7 @@ Author: Dmitry.Bedrin@gmail.com
 
         </copy>
 
-        <chmod file="bin/jtracert.sh" perm="+x"/>
+        <chmod file="jtracert-deployment/src/main/bin/jtracert.sh" perm="+x"/>
         <chmod file="deploy/jtracert.sh" perm="+x"/>
 
         <taskdef

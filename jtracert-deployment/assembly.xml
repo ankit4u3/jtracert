@@ -1,14 +1,19 @@
 <assembly>
+    <baseDirectory>jTracert</baseDirectory>
     <formats>
         <format>tar.gz</format>
     </formats>
-    <fileSets>
-        <fileSet>
-            <directory>target</directory>
-            <includes>
-                <include>jtracert-merged.jar</include>
-            </includes>
-            <outputDirectory>/</outputDirectory>
-        </fileSet>
-    </fileSets>
+    <files>
+        <file>
+            <source>target/dependency/jtracert-agent.jar</source>
+            <destName>jTracert.jar</destName>
+        </file>
+        <file>
+            <source>target/dependency/jtracert-gui.jar</source>
+            <destName>jTracert-gui.jar</destName>
+        </file>
+        <file>
+            <source>target/dependency/sdedit.jar</source>
+        </file>
+    </files>
 </assembly>

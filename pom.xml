@@ -13,7 +13,7 @@
     <modules>
        <module>jtracert-agent</module>
        <module>jtracert-gui</module>
-       <!--<module>jtracert-deployment</module>-->
+       <module>jtracert-deployment</module>
     </modules>
 
     <repositories>

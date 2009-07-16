@@ -52,7 +52,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <phase>package</phase> <!-- todo: change to process-classes phase -->
                         <configuration>
                             <tasks>
 
@@ -65,8 +65,12 @@
 
                                 <unzip src="target/${artifactId}-${version}.jar" dest="target/exploded-jar"/>
 
-                                <jarjar destfile="target/${artifactId}-${version}-merged.jar" manifest="target/exploded-jar/META-INF/MANIFEST.MF">
-                                    <zipfileset src="target/${artifactId}-${version}.jar"/>
+                                <delete file="target/${artifactId}-${version}.jar"/>
+
+                                <jarjar destfile="target/${artifactId}-${version}.jar" manifest="target/exploded-jar/META-INF/MANIFEST.MF">
+                                    <fileset
+                                            dir="target/exploded-jar"
+                                            includes="com/google/code/jtracert/**"/>
                                     <zipfileset src="target/dependency/asm.jar"/>
                                     <zipfileset src="target/dependency/asm-commons.jar"/>
                                     <zipfileset src="target/dependency/asm-tree.jar"/>
@@ -74,6 +78,8 @@
                                     <zipfileset src="target/dependency/asm-analysis.jar"/>
                                     <rule pattern="org.objectweb.asm.**" result="com.google.code.jtracert.org.objectweb.asm.@1"/>
                                 </jarjar>
+
+                                <delete dir="target/exploded-jar"/>
 
                             </tasks>
                         </configuration>

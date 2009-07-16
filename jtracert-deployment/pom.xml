@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <relativePath>..</relativePath>
+        <groupId>com.google.code.jtracert</groupId>
+        <artifactId>jtracert</artifactId>
+        <version>0.1.3</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.google.code.jtracert</groupId>
+    <artifactId>jtracert-deployment</artifactId>
+    <packaging>pom</packaging>
+    <name>${artifactId}</name>
+    <url>http://jtracert.googlecode.com/</url>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <includeGroupIds>com.google.code.jtracert,com.google.code.jarjar,asm,net.sf.sdedit</includeGroupIds>
+                    <stripVersion>true</stripVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+
+                                <taskdef
+                                        name="jarjar"
+                                        classname="com.tonicsystems.jarjar.JarJarTask"
+                                        classpath="target/dependency/jarjar.jar"/>
+
+                                <jarjar destfile="target/jtracert-merged.jar">
+                                    <zipfileset src="target/dependency/jtracert-agent.jar"/>
+                                    <zipfileset src="target/dependency/asm.jar"/>
+                                    <zipfileset src="target/dependency/asm-commons.jar"/>
+                                    <zipfileset src="target/dependency/asm-tree.jar"/>
+                                    <zipfileset src="target/dependency/asm-util.jar"/>
+                                    <zipfileset src="target/dependency/asm-analysis.jar"/>
+                                    <rule pattern="org.objectweb.asm.**" result="com.google.code.jtracert.org.objectweb.asm.@1"/>
+                                </jarjar>
+
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.jtracert</groupId>
+            <artifactId>jtracert-agent</artifactId>
+            <version>0.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.jtracert</groupId>
+            <artifactId>jtracert-gui</artifactId>
+            <version>0.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.jarjar</groupId>
+            <artifactId>jarjar</artifactId>
+            <version>1.0.rc7</version>
+        </dependency>
+    </dependencies>
+
+</project>

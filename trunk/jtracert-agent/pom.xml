@@ -32,6 +32,57 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <stripVersion>true</stripVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+
+                                <taskdef
+                                        name="jarjar"
+                                        classname="com.tonicsystems.jarjar.JarJarTask"
+                                        classpath="target/dependency/jarjar.jar"/>
+
+                                <mkdir dir="target/exploded-jar"/>
+
+                                <unzip src="target/${artifactId}-${version}.jar" dest="target/exploded-jar"/>
+
+                                <jarjar destfile="target/${artifactId}-${version}-merged.jar" manifest="target/exploded-jar/META-INF/MANIFEST.MF">
+                                    <zipfileset src="target/${artifactId}-${version}.jar"/>
+                                    <zipfileset src="target/dependency/asm.jar"/>
+                                    <zipfileset src="target/dependency/asm-commons.jar"/>
+                                    <zipfileset src="target/dependency/asm-tree.jar"/>
+                                    <zipfileset src="target/dependency/asm-util.jar"/>
+                                    <zipfileset src="target/dependency/asm-analysis.jar"/>
+                                    <rule pattern="org.objectweb.asm.**" result="com.google.code.jtracert.org.objectweb.asm.@1"/>
+                                </jarjar>
+
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -55,6 +106,11 @@
             <groupId>asm</groupId>
             <artifactId>asm-util</artifactId>
             <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.jarjar</groupId>
+            <artifactId>jarjar</artifactId>
+            <version>1.0.rc7</version>
         </dependency>
     </dependencies>
 

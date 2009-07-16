@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+   <parent>
+      <relativePath>..</relativePath>
+      <groupId>com.google.code.jtracert</groupId>
+      <artifactId>jtracert</artifactId>
+      <version>0.1.3</version>
+   </parent>
+
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>com.google.code.jtracert</groupId>
+   <artifactId>jtracert-agent</artifactId>
+   <packaging>jar</packaging>
+   <name>${artifactId}</name>
+   <url>http://jtracert.googlecode.com/</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-analysis</artifactId>
+            <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>3.2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>net.sf.sdedit</groupId>
+            <artifactId>sdedit</artifactId>
+            <version>3.0.5</version>
+        </dependency>        
+
+    </dependencies>
+
+</project>

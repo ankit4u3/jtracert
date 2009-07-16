@@ -1,5 +1,0 @@
-Premain-Class: com.google.code.jtracert.agent.JTracertAgent
-Boot-Class-Path: jTracert.jar 
-Can-Set-Native-Method-Prefix: true
-Can-Retransform-Classes: true
-Can-Redefine-Classes: true

@@ -11,7 +11,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.google.code.jtracert</groupId>
-    <artifactId>jtracert-agent</artifactId>
+    <artifactId>jtracert-gui</artifactId>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
     <url>http://jtracert.googlecode.com/</url>
@@ -23,11 +23,11 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
+                        <manifest>
+                            <mainClass>com.google.code.jtracert.gui.MainApp</mainClass>
+                        </manifest>
                         <manifestEntries>
-                            <Premain-Class>com.google.code.jtracert.agent.JTracertAgent</Premain-Class>
-                            <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
-                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
-                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                            <Class-Path>sdedit.jar jTracert.jar</Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -37,24 +37,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-commons</artifactId>
-            <version>3.2</version>
+            <groupId>com.google.code.jtracert</groupId>
+            <artifactId>jtracert-agent</artifactId>
+            <version>0.1.3</version>
         </dependency>
         <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-analysis</artifactId>
-            <version>3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-tree</artifactId>
-            <version>3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-util</artifactId>
-            <version>3.2</version>
+            <groupId>net.sf.sdedit</groupId>
+            <artifactId>sdedit</artifactId>
+            <version>3.0.5</version>
         </dependency>
     </dependencies>
 

@@ -12,7 +12,7 @@
 
     <modules>
        <module>jtracert-agent</module>
-       <!--<module>jtracert-gui</module>-->
+       <module>jtracert-gui</module>
     </modules>
 
     <repositories>
@@ -32,7 +32,6 @@
     </repositories>
 
     <build>
-        <finalName>jtracert</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

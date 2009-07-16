@@ -14,6 +14,14 @@
             <outputDirectory>/</outputDirectory>
             <fileMode>0744</fileMode>
         </fileSet>
+
+        <fileSet>
+            <directory>src/main/3ppLicense</directory>
+            <includes>
+                <include>*.txt</include>
+            </includes>
+            <outputDirectory>3ppLicense</outputDirectory>
+        </fileSet>
     </fileSets>
 
     <files>
@@ -29,7 +37,5 @@
             <source>target/dependency/sdedit.jar</source>
         </file>
     </files>
-
-
 
 </assembly>

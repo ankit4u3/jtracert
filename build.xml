@@ -96,7 +96,7 @@ Author: Dmitry.Bedrin@gmail.com
         <taskdef
             name="jarjar"
             classname="com.tonicsystems.jarjar.JarJarTask"
-            classpath="repository/com/google/code/jarjar/jarjar/1.0.rc7/jarjar-1.0.rc7.jar"/>
+            classpath="${lib.build.dir}/jarjar-1.0rc7.jar"/>
         <jarjar destfile="${deploy.dir}/jTracert.jar">
             <manifest>
                 <attribute name="Premain-Class" value="com.google.code.jtracert.agent.JTracertAgent"/>
@@ -146,7 +146,7 @@ Author: Dmitry.Bedrin@gmail.com
 
         </copy>
 
-        <chmod file="jtracert-deployment/src/main/bin/jtracert.sh" perm="+x"/>
+        <chmod file="bin/jtracert.sh" perm="+x"/>
         <chmod file="deploy/jtracert.sh" perm="+x"/>
 
         <taskdef

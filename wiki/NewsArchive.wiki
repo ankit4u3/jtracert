@@ -1,6 +1,19 @@
 #summary Archive of jTracert related news and updated
 #labels Deprecated
 
+== 11 September 2009 - jTracert recieved SOFTPEDIA "100% FREE" AWARD ==
+http://mac.softpedia.com/base_img/softpedia_free_award_f.gif
+
+Today jTracert has recieved "100% FREE" award from softpedia.com
+
+Below is an extract from [http://mac.softpedia.com/progClean/jtracert-Clean-62712.html softpedia web site]:
+
+This product was last tested in the Softpedia Labs on 09 September 2009 by Sergiu Gatlan
+
+Softpedia guarantees that jtracert 0.1.2 is 100% Free, which means it does not contain any form of malware, including but not limited to: spyware, viruses, trojans and backdoors.
+
+This software product was tested thoroughly and was found absolutely clean; therefore, it can be installed with no concern by any computer user. However, it should be noted that this product will be retested periodically and the award may be withdrawn, so you should check back occasionally and pay attention to the date of testing shown above.
+
 == 25 May 2009 - jTracert is one year old; new version is released ==
 
 The first version of jTracert was released one year ago, on the 31st of May. We've made a lot of work since this first version, and there're a lot of plans for the next year.

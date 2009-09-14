@@ -369,22 +369,24 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
             try {
                 long currentTime = System.nanoTime();
 
-                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                boolean verbose = (null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose());
+                verbose = true;
+                if (verbose) {
                     System.out.println("Normalizing Call Graph <<<");
                 }
                 methodCall.accept(new NormalizeMetodCallGraphVisitor());
-                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                if (verbose) {
                     System.out.println("Normalizing Call Graph >>>");
                     System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
                 }
 
                 currentTime = System.nanoTime();
 
-                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                if (verbose) {
                     System.out.println("Calculating Call Graph Hash <<<");
                 }
                 int hashCode = methodCall.accept(new HashCodeBuilderMethodCallGraphVisitor());
-                if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                if (verbose) {
                     System.out.println("Calculating Call Graph Hash >>>");
                     System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
                 }
@@ -434,7 +436,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                         if (analyzeProperties.isShortenClassNames()) {
                             currentTime = System.nanoTime();
 
-                            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            if (verbose) {
                                 System.out.println("Normalize class names <<<");
                             }
 
@@ -444,17 +446,17 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                             classNameResolver.setRenaming();
                             methodCall.accept(classNameResolver);
 
-                            if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                            if (verbose) {
                                 System.out.println("Normalize class names >>>");
                                 System.out.println("Took " + (System.nanoTime() - currentTime) + " nano seconds");
                             }
                         }
 
-                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                        if (verbose) {
                             System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " <<<");
                         }
                         methodCallProcessor.processMethodCall(methodCall);
-                        if ((null != getAnalyzeProperties()) && (getAnalyzeProperties().isVerbose())) {
+                        if (verbose) {
                             System.out.println("Executing process method call for " + methodCall.getRealClassName() + "." + methodCall.getMethodName() + " >>>");
                         }
 
@@ -501,7 +503,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                 if (null == getAnalyzeProperties()) {
                     graphFinished(contextMethodCall);
                 } else {
-                    if (state.count < getAnalyzeProperties().getMaximalTraceLength()) {
+                    //if (state.count < getAnalyzeProperties().getMaximalTraceLength()) {
                         if (getAnalyzeProperties().isVerbose()) {
                             System.out.println("state.count=" + state.count);
                         }
@@ -513,7 +515,7 @@ public class MethodCallTraceBuilderImpl implements MethodCallTraceBuilder {
                         } else {
                             graphFinished(contextMethodCall);
                         }
-                    }
+                    //}
                 }
 
                 traceBuilderState.remove();

@@ -1,6 +1,16 @@
 #summary Archive of jTracert related news and updated
 #labels Deprecated
 
+== 14 September 2009 - jTracert 0.1.3 released ==
+
+A new minor version of jTracert is released - 0.1.3
+
+Changes list:
+
+    * Bugfixing - Issues 16, 17, 19
+    * Improved instrumentation of classes, loaded by system class laoder
+    * Better large method call trees support
+
 == 11 September 2009 - jTracert recieved SOFTPEDIA "100% FREE" AWARD ==
 http://mac.softpedia.com/base_img/softpedia_free_award_f.gif
 

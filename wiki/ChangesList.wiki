@@ -1,5 +1,13 @@
 #summary jTracert Changes List
 
+=0.1.3=
+
+Released on 14 September 2009
+
+    * Bugfixing - Issues 16, 17, 19
+    * Improved instrumentation of classes, loaded by system class laoder
+    * Better large method call trees support
+
 =0.1.2=
 
 Released on 25 May 2009

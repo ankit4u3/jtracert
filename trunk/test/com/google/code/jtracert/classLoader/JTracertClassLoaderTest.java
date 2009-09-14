@@ -460,6 +460,14 @@ public class JTracertClassLoaderTest extends TestCase {
             //To change body of implemented methods use File | Settings | File Templates.
         }
 
+        public void enter(String className, String methodName, String methodDescriptor, Object object) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        public void setBuildingTrace(boolean buildingTrace) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
         /**
          * 
          * @return

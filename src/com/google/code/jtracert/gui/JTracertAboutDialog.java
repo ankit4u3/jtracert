@@ -20,7 +20,7 @@ public class JTracertAboutDialog extends JDialog {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout(5,5));
 
-        JLabel jTracertLabel = new JLabel("<html>jTracert GUI version 0.1.2<br/>(c) Dmitry Bedrin 2009<br/>http://jtracert.googlecode.com/");
+        JLabel jTracertLabel = new JLabel("<html>jTracert GUI version 0.1.3<br/>(c) Dmitry Bedrin 2009<br/>http://jtracert.googlecode.com/");
         jTracertLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         contentPane.add(jTracertLabel, BorderLayout.NORTH);
 

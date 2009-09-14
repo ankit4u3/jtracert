@@ -16,7 +16,7 @@ public class XercesTest extends JTracertTestCase {
             Process process = startJavaProcessWithJTracert(
                     "deploy/xerces.jar",
                     Arrays.asList("lib/xercesImpl-2.4.0.jar"),
-                    Arrays.asList("-DmaximalTraceLength=10000"),
+                    Arrays.asList("-DmaximalTraceLength=10000","-Xmx512m"),
                     false);
 
             int exitCode = process.waitFor();

@@ -34,10 +34,15 @@ public class SerializableTcpClient extends BaseMethodCallProcessor {
             socketOutputStream = socket.getOutputStream();
 
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socketOutputStream);
+
+            System.out.println("Sending data to server <<<");
+
             objectOutputStream.writeObject(methodCall);
 
             objectOutputStream.flush();
             objectOutputStream.close();
+
+            System.out.println("Sending data to server >>>");
 
         } catch (UnknownHostException e) {
             e.printStackTrace();

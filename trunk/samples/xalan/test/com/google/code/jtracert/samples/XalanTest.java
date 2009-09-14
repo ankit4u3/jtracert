@@ -31,6 +31,8 @@ public class XalanTest extends JTracertTestCase {
 
         assertNotNull(methodCall);
 
+        dumpMethodCall(methodCall);
+
     }
 
 }

@@ -11,6 +11,15 @@ Some common problems reported by jTracert users and resolution for these problem
 
 .exe wrappers are an experimental feature in jTracert. If you're experiencing any issues with using them, please download archive with jTracert binaries (i.e. jTracert-0.1.2.zip) and use jtracert.cmd script instead of .exe files
 
+== jTracert GUI closes immediately after pressing Connect button ==
+
+Since jTracert UI disappears it seems that it fails to connect to jTracert agent running inside tomcat process.
+
+You can download archive with jTracert(i.e. jTracert-0.1.3.zip) and use jtracert.cmd script instead of .exe files
+In this case you'll be able to see the errors.
+
+Most probably you've specified the -javaagent in the wrong place or did it incorrectly. 
+
 == jTracert show no errors, but at the same time no data is generated ==
 
 The most probable reason is that you have set incorrect class file filter. Please note that this filter is a regular expression. If you want to analyze classes from package _com.foo_, you need to set this filter to the following value:
